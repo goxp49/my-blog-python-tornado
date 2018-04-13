@@ -1,0 +1,29 @@
+{% extends "__Base__.html"%}
+
+{% block HearTitle %}
+<title>
+    html模板
+</title>
+{% end %}
+
+{% block BeforeHead %}
+    <link href="static/css/index.css" rel="stylesheet">
+{% end %}
+
+{% block Content %}
+    <div class="blog" data-scroll-reveal="enter top" >
+        {% for item in TitleNum%}
+            {% module IndexImageHead(item) %}
+        {% end %}
+    </div>
+    <ul class="cbp_tmtimeline">
+        {% for item in TimeLineNum%}
+            {% module IndexTimeLine(item) %}
+        {% end %}
+    </ul>
+
+{% end %}
+
+{% block Footer%}
+
+{% end %}

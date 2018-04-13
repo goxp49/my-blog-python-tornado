@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    {% block HearTitle %}
+        <title> Welcome to my blog! </title>
+    {% end %}
+    <meta name="keywords" content="个人博客,王超个人博客,Tornado测试"/>
+    <meta name="description" content="会当凌绝顶，一览山外有山，高又高"/>
+    <link href="static/css/base.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="static/js/modernizr.js"></script>
+    <![endif]-->
+    <script src="static/js/scrollReveal.js"></script>
+    {% block BeforeHead %}<!--there is BeforeHead-->{% end %}
+</head>
+<body>
+<header>
+    <nav class="manage" data-scroll-reveal="enter left over 1s"><a href="/login">系统管理</a></nav>
+    <div class="logo" data-scroll-reveal="enter right over 1s"><a href="/"><img src="static/images/logo.png"></a></div>
+    <nav class="topnav" data-scroll-reveal="enter bottom over 1s after 1s">
+            <a href="/index"><span>首页</span><span class="en">Home</span></a>
+            <a href="/about"><span>关于我</span><span class="en">About</span></a>
+            <a href="/slowlife"><span>慢生活</span><span class="en">Life</span></a>
+            <a href="/share"><span>生活分享</span><span class="en">Share</span></a>
+            <a href="/learn"><span>学无止境</span><span class="en">Learn</span></a>
+            <a href="/bbs"><span>留言</span><span class="en">Saying</span></a>
+    </nav>
+</header>
+<article>
+    <div class="container">
+        {% block Content%}<!-- there is Content -->{% end %}
+    </div>
+</article>
+
+{% block Footer%}<footer><!-- there is footer --></footer>{% end %}
+
+<script>
+    if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))) {
+        (function () {
+            window.scrollReveal = new scrollReveal({reset: true});
+        })();
+    };
+</script>
+
+{% block BeforeBody%}<!-- there is BeforeBody -->{% end %}
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+{% extends "__Base__.html"%}
+
+{% block HearTitle %}
+<title>
+    html模板
+</title>
+{% end %}
+
+{% block BeforeHead %}
+    <link href="static/css/slowlife.css" rel="stylesheet">
+{% end %}
+
+{% block Content %}
+    <h2 class="ctitle"><b>慢生活</b> <span>“慢生活”不是懒惰，放慢速度不是拖延时间，而是让我们在生活中寻找到平衡。 </span></h2>
+    <div class="photowall">
+      <ul class="wall_a">
+
+          {% for item in PhoneNum %}
+            {% module SlowLifePhone(item) %}
+          {% end %}
+
+      </ul>
+    </div>
+
+{% end %}
+
+{% block Footer%}
+
+{% end %}

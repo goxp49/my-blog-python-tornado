@@ -9,11 +9,11 @@
 
 <div class="register-container">
 	<h1>账号注册</h1>
-	
+
 	<div class="connect">
 		<p>爱情原如树叶一样，在人忽视里绿了，在忍耐里露出蓓蕾</p>
 	</div>
-	
+
 	<form action="" method="post" id="registerForm">
 		<div>
 			<input type="text" name="username" class="username" placeholder="您的用户名" autocomplete="off"/>
@@ -30,8 +30,8 @@
 		<div>
 			<input type="email" name="email" class="email" placeholder="输入邮箱地址" oncontextmenu="return false" onpaste="return false" />
 		</div>
-
-		<button id="submit_register" type="submit">注 册</button>
+        <!-- 因为使用Ajax提交，所以这里要屏蔽Button的默认提交功能，设为button -->
+		<button id="submit_register" type="button">注 册</button>
 	</form>
 	<a href="/login">
 		<button type="button" class="register-tis">已经有账号？</button>

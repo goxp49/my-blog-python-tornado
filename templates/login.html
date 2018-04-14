@@ -12,11 +12,11 @@
 
 <div class="login-container">
 	<h1>账号登录</h1>
-	
+
 	<div class="connect">
 		<p>真理惟一可靠的标准就是永远自相符合</p>
 	</div>
-	
+
 	<form action="" method="post" id="loginForm">
 		<div>
 			<input type="text" name="username" class="username" placeholder="用户名" autocomplete="on"/>
@@ -24,7 +24,8 @@
 		<div>
 			<input type="password" name="password" class="password" placeholder="密码" />
 		</div>
-		<button id="submit_login" type="submit">登 录</button>
+        <!-- 因为使用Ajax提交，所以这里要屏蔽Button的默认提交功能，设为button -->
+		<button id="submit_login" type="button">登 录</button>
 	</form>
 
 	<a href="/register">

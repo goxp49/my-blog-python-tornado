@@ -116,7 +116,6 @@ $(document).ready(function () {
 //点击登录时，通过ajax提交
 $(function () {
     $('#submit_login').click(function () {
-        alert("000000！");
         //如果不满足填写要求，则不执行操作
         if (!$("#loginForm").valid()) {
             return;
@@ -126,7 +125,6 @@ $(function () {
         for (x in params) {
             values[params[x].name] = params[x].value;
         }
-        alert("111111！");
         $.ajax({
             type: "post",
             dataType: "json",
@@ -136,13 +134,11 @@ $(function () {
             timeout: 5000,
             //因为dataType设为json，所以回传来的res已经被解析，可以通过XXX.YYY来调用里面的内容
             success: function (data) {
-                alert("22222！");
                 //判断用户名是否正确
                 if (data.status) {
                     //跳转至管理界面
                     alert(data.url);
                     window.location.replace(data.url);
-                    alert("4444444444444");
                 }
                 else {
                     alert(data.message);

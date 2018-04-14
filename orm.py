@@ -32,6 +32,11 @@ class User(Base):
     regdate = Column(DateTime,nullable=False)
     sex = Column(Boolean,nullable=True)
     mobile = Column(String(11))
+    loginnum = Column(Integer,nullable=False,default=0)
+    lasttime = Column(Integer)
+    lastip = Column(String(30))
+    curtime = Column(Integer)
+    curip = Column(String(30))
 
     def __repr__(self):
         return "<User>{}:{}".format(self.name, self.password)

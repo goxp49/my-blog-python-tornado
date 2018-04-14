@@ -7,11 +7,12 @@
     {% end %}
     <meta name="keywords" content="个人博客,王超个人博客,Tornado测试"/>
     <meta name="description" content="会当凌绝顶，一览山外有山，高又高"/>
-    <link href="static/css/base.css" rel="stylesheet">
+    <link href=" {{static_url("css/base.css")}}" rel="stylesheet">
     <!--[if lt IE 9]>
-    <script src="static/js/modernizr.js"></script>
+    <script src="{{static_url("js/modernizr.js")}}"></script>
     <![endif]-->
-    <script src="static/js/scrollReveal.js"></script>
+    <script src="{{static_url("js/scrollReveal.js")}}"></script>
+
     {% block BeforeHead %}<!--there is BeforeHead-->{% end %}
 </head>
 <body>

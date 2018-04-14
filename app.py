@@ -52,15 +52,6 @@ class BBSHandler(BaseHandle):
     def get(self):
         self.render("bbs.html",MessageNum = range(6))
 
-class ManageHandler(BaseHandle):
-    # 如果get_current_user（）返回的值不为真，则跳转到"login_url":"/login"中
-    @tornado.web.authenticated
-    def get(self):
-        pass
-
-    def post(self, *args, **kwargs):
-        return False
-
 class LoginHandler(BaseHandle):
     def get(self):
         self.render("login.html")
@@ -82,9 +73,18 @@ class LoginHandler(BaseHandle):
         if result:
             data['status'] = True
             data["message"] = "successfully"
-            data["url"] = "/index"
+            data["url"] = "/system/index"
             self.set_secure_cookie("username", result.name)
+            #登陆次数+1
+            result.loginnum = result.loginnum + 1
+            #更新最后一次登录时间
+            result.lasttime = result.curtime
+            result.curtime = datetime.now()
+            # 更新最后一次登录IP
+            result.lastip = result.curip
+            result.curip = self.request.remote_ip
             print("当前登录用户为：" + result.name + "    密码：" + result.password)
+            self.session.commit()
         #将data序列化为JSON回传给前端
         self.write(json.dumps(data))
 
@@ -117,6 +117,21 @@ class RegisterHandler(BaseHandle):
             data['message'] = "注册成功，请您重新登录，正在为您跳转…………"
             self.write(json.dumps(data))
 
+
+class SystemIndexHandler(BaseHandle):
+    @tornado.web.authenticated
+    def get(self):
+        currentuser = self.get_current_user()
+        user = self.session.query(User).filter(User.name == currentuser).first()
+        #再次确认用户存在
+        if user:
+            print("CurrentIP:" + (self.request.remote_ip))
+            print("CurrentUser:" + (user.name))
+            self.render("backstage\index.html",currentuser = currentuser,loginnum = user.loginnum,
+                        lasttime = user.lasttime,lastip = user.lastip)
+        #用户不存在则返回登录界面
+        else:
+            self.render("login.html")
 
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is modules --------------------------------------------
@@ -204,9 +219,9 @@ application = tornado.web.Application([
     (r"/share", ShareHandler),
     (r"/learn", LearnHandler),
     (r"/bbs", BBSHandler),
-    (r"/manage", ManageHandler),
     (r"/login", LoginHandler),
     (r"/register", RegisterHandler),
+    (r"/system/index", SystemIndexHandler),
 ],**settings)
 
 if __name__ == "__main__":

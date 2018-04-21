@@ -137,7 +137,6 @@ $(function () {
                 //判断用户名是否正确
                 if (data.status) {
                     //跳转至管理界面
-                    alert(data.url);
                     window.location.replace(data.url);
                 }
                 else {

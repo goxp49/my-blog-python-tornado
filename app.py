@@ -1,7 +1,8 @@
 # -*- coding: UTF-8 -*-
 import json
+import platform
 from datetime import datetime
-from sqlalchemy import and_,or_
+from sqlalchemy import func
 import tornado.ioloop
 import tornado.web
 import orm
@@ -21,7 +22,14 @@ class BaseHandle(tornado.web.RequestHandler):
         self.session = orm.SessionType()
 
     def get_current_user(self):
-        return self.get_secure_cookie("username")
+        user = self.session.query(User).filter(User.name == self.get_secure_cookie("username")).first()
+        if user:
+            self.currentuser = self.get_secure_cookie("username")
+            self.user = self.session.query(User).filter(User.name == self.currentuser).first()
+            print("BaseHandle：当前用户存在")
+            return True
+        return False
+
 
     def on_finish(self):
         self.session.close()
@@ -88,6 +96,11 @@ class LoginHandler(BaseHandle):
         #将data序列化为JSON回传给前端
         self.write(json.dumps(data))
 
+class LogoutHandler(BaseHandle):
+    def get(self):
+        self.clear_cookie("username")
+        #self.set_secure_cookie("username", None)
+        self.render("index.html", TitleNum=range(3), TimeLineNum=range(6))
 
 class RegisterHandler(BaseHandle):
     def get(self):
@@ -121,17 +134,67 @@ class RegisterHandler(BaseHandle):
 class SystemIndexHandler(BaseHandle):
     @tornado.web.authenticated
     def get(self):
-        currentuser = self.get_current_user()
-        user = self.session.query(User).filter(User.name == currentuser).first()
-        #再次确认用户存在
-        if user:
-            print("CurrentIP:" + (self.request.remote_ip))
-            print("CurrentUser:" + (user.name))
-            self.render("backstage\index.html",currentuser = currentuser,loginnum = user.loginnum,
-                        lasttime = user.lasttime,lastip = user.lastip)
-        #用户不存在则返回登录界面
-        else:
-            self.render("login.html")
+
+        UA = self.request.headers["User-Agent"]
+        print("CurrentIP:" + (self.request.remote_ip))
+        print("CurrentUser:" + (self.user.name))
+        windows = "无法识别的操作系统"
+        Windows = {
+            "Windows NT 10.0":"Windows 10",
+            "Windows NT 6.4": "Windows 10",
+            "Windows NT 6.3": "Windows 8.1",
+            "Windows NT 6.2": "Windows 8",
+            "Windows NT 6.0": "Windows 8",
+            "Windows NT 6.1": "Windows 7",
+            "Windows NT 5.1": "Windows XP",
+        }
+        browser = "无法识别的浏览器"
+        Browser = {
+            "SogouMobileBrowser": "搜狗手机浏览器",
+            "UCBrowser": "UC浏览器",
+            "UCWEB": "UC浏览器",
+            "Opera": "Opera浏览器",
+            "QQBrowser": "QQ浏览器",
+            "TencentTraveler": "QQ浏览器",
+            "MetaSr": "搜狗浏览器",
+            "360SE": "360浏览器",
+            "The world": "世界之窗浏览器",
+            "Maxthon": "遨游浏览器",
+            "Chrome":"Chrome浏览器",
+            "safari":"Safari浏览器",
+            "Firefox":"Firefox浏览器"
+        }
+        #判断操作系统版本
+        for os in Windows:
+            if UA.find(os) != -1:
+                windows = Windows[os]
+                break;
+        # 判断操作浏览器版本
+        for name in Browser:
+            if UA.find(name) != -1:
+                browser = Browser[name]
+                break;
+        admin_num = self.session.query(User).filter(User.admin == True).count()
+        member_num = self.session.query(func.count(User.id)).first()[0]
+        current_ip = self.request.remote_ip
+        time = datetime.now()
+        self.render("backstage\index.html",current_user = self.currentuser,login_num = self.user.loginnum,mail = self.user.mail,
+                    phone = self.user.mobile,last_time = self.user.lasttime,last_ip = self.user.lastip,admin_num = admin_num,
+                    browser = browser,python_version = platform.python_version(),os = windows,member_num = member_num,
+                    current_ip = current_ip,time = time)
+
+
+class SystemLearningHandler(BaseHandle):
+    @tornado.web.authenticated
+    def get(self):
+        self.render(r"backstage\learning.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
+                    )
+
+class ArticleAddHandler(BaseHandle):
+    @tornado.web.authenticated
+    def get(self):
+        self.render(r"backstage\add-article.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
+                    )
 
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is modules --------------------------------------------
@@ -220,8 +283,11 @@ application = tornado.web.Application([
     (r"/learn", LearnHandler),
     (r"/bbs", BBSHandler),
     (r"/login", LoginHandler),
+    (r"/logout", LogoutHandler),
     (r"/register", RegisterHandler),
     (r"/system/index", SystemIndexHandler),
+    (r"/system/learning", SystemLearningHandler),
+    (r"/system/article/add", ArticleAddHandler),
 ],**settings)
 
 if __name__ == "__main__":

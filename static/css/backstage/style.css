@@ -509,10 +509,7 @@ input[type=checkbox], input[type=radio] {
  background:#CCC;
  border-radius:20px;
 }
-/*ueditor富文本编辑器样式*/
-.edui-editor-iframeholder{
-	min-height:350px;
-}
+
 /*增加文章功能盒子*/
 .add-article-box{
 	background:#FFF;
@@ -570,4 +567,7 @@ input[type=checkbox], input[type=radio] {
 	color:#888;
 	font-size:12px;
 	margin: 2px;
+}
+#editor{
+	background-color:#fff;
 }

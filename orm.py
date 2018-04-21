@@ -30,13 +30,14 @@ class User(Base):
     password = Column(String(20),nullable=False)
     mail = Column(String(30),nullable=False)
     regdate = Column(DateTime,nullable=False)
-    sex = Column(Boolean,nullable=True)
+    sex = Column(Boolean,nullable=True,default=False)
     mobile = Column(String(11))
     loginnum = Column(Integer,nullable=False,default=0)
-    lasttime = Column(Integer)
+    lasttime = Column(DateTime)
     lastip = Column(String(30))
-    curtime = Column(Integer)
+    curtime = Column(DateTime)
     curip = Column(String(30))
+    admin = Column(Boolean, nullable=True,default=False)
 
     def __repr__(self):
         return "<User>{}:{}".format(self.name, self.password)

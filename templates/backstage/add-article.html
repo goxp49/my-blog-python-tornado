@@ -10,7 +10,7 @@
 {% block Body %}
  <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
       <div class="row">
-        <form action="/Article/add" method="post" class="add-article-form">
+        <form action="/Article/add" method="post" class="add-article-form" >
           <div class="col-md-9">
             <h1 class="page-header">撰写新文章</h1>
             <div class="form-group">
@@ -30,7 +30,7 @@
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>标题图片</span></h2>
               <div class="add-article-box-content">
-                <input id="input-file" type="file" class="file form-control" data-preview-file-type="text" >
+                <input id="input-file" name="input-file" type="file" class="file">
               </div>
             </div>
           </div>
@@ -70,20 +70,23 @@
               </div>
             </div>
             <div class="add-article-box">
-              <h2 class="add-article-box-title"><span>标题图片</span></h2>
+              <h2 class="add-article-box-title"><span>关键字</span></h2>
               <div class="add-article-box-content">
-                <input type="text" class="form-control" placeholder="点击按钮选择图片" id="pictureUpload" name="titlepic" autocomplete="off">
+                <input type="text" class="form-control" placeholder="文章关键字" id="Keyword" name="Keyword" autocomplete="off">
               </div>
-              <div class="add-article-box-footer">
-                <button class="btn btn-default" type="button" ID="upImage">选择</button>
+            </div>
+            <div class="add-article-box">
+              <h2 class="add-article-box-title"><span>访问密码</span></h2>
+              <div class="add-article-box-content">
+                <input type="text" class="form-control" placeholder="当文章未公开时需要填写，不填写默认为123" id="AccessPassword" name="AccessPassword" autocomplete="off">
               </div>
             </div>
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>发布</span></h2>
               <div class="add-article-box-content">
               	<p><label>状态：</label><span class="article-status-display">未发布</span></p>
-                <p><label>公开度：</label><input type="radio" name="visibility" value="0" checked/>公开 <input type="radio" name="visibility" value="1" />加密</p>
-                <p><label>发布于：</label><span class="article-time-display"><input style="border: none;" type="datetime" name="time" value="2016-01-09 17:29:37" /></span></p>
+                <p><label>是否公开：</label><input type="radio" name="visibility" value="0" checked/>公开 <input type="radio" name="visibility" value="1" />加密</p>
+                <p><label>发布时间：</label><span class="article-time-display"><input style="border: none;" type="datetime" name="time" value="2016-01-09 17:29:37" /></span></p>
               </div>
               <div class="add-article-box-footer">
                 <button class="btn btn-primary" type="submit" name="submit">发布</button>
@@ -125,13 +128,13 @@
               'redo'  // 重复
         ]
         // 通过 url 参数配置 debug 模式。url 中带有 wangeditor_debug_mode=1 才会开启 debug 模式
-        editor.customConfig.debug = location.href.indexOf('wangeditor_debug_mode=1') > 0
+        // editor.customConfig.debug = location.href.indexOf('wangeditor_debug_mode=1') > 0
         editor.create()
     </script>
 
-    <script src="{{static_url("js/bootstrap/fileinput.min.js")}}"></script>
-    <script src="{{static_url("js/bootstrap/fileinput-theme.js")}}"></script>
-    <script src="{{static_url("js/bootstrap/fileinput-initial.js")}}"></script>
-    <script src="{{static_url("js/bootstrap/zh.js")}}"></script>
+    <script src="{{static_url("js/bootstrap/fileinput.min.js")}}" type="text/javascript"></script>
+    <script src="{{static_url("js/bootstrap/fileinput-theme.js")}}" type="text/javascript"></script>
+    <script src="{{static_url("js/bootstrap/zh.js")}}" type="text/javascript"></script>
+    <script src="{{static_url("js/bootstrap/fileinput-initial.js")}}" type="text/javascript"></script>
 
 {% end %}

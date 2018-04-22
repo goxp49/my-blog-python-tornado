@@ -3,10 +3,11 @@ import json
 import platform
 from datetime import datetime
 from sqlalchemy import func
-import tornado.ioloop
 import tornado.web
 import orm
 from orm import User
+import os,sys
+import hashlib
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is database --------------------------------------------
 #----------------------------------------------------------------------------------------------------------
@@ -190,11 +191,37 @@ class SystemLearningHandler(BaseHandle):
         self.render(r"backstage\learning.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
                     )
 
-class ArticleAddHandler(BaseHandle):
+class SystemArticleAddHandler(BaseHandle):
     @tornado.web.authenticated
     def get(self):
         self.render(r"backstage\add-article.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
                     )
+
+class SystemFileUploadHandler(BaseHandle):
+    @tornado.web.authenticated
+    def get(self):
+        self.render(r"backstage\add-article.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
+                    )
+    @tornado.web.authenticated
+    def post(self):
+        #这里的属性名要和html中的name一样
+        FileData =  self.request.files["input-file"]
+        for file in FileData:
+            print(file)
+            #filetype = file["content_type"]
+            #filename = file["filename"]
+            filebody = file["body"]
+            filehash = hashlib.md5(filebody).hexdigest()
+            #获得发送来的文件后缀名
+            filesuffix = os.path.splitext(file["filename"])[1]
+            #设置存储图片路径,文件命名方式：用户名 + 日期 + hash值
+            filename = "_".join((self.user.name,datetime.now().strftime("%Y-%m-%d-%H-%M"),filehash))+ filesuffix
+            filepath = os.path.join(sys.path[0],"file","images",filename)
+            print(filepath)
+            with open(filepath, 'wb') as f:
+                f.write(filebody)
+                self.write("true")
+
 
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is modules --------------------------------------------
@@ -287,7 +314,8 @@ application = tornado.web.Application([
     (r"/register", RegisterHandler),
     (r"/system/index", SystemIndexHandler),
     (r"/system/learning", SystemLearningHandler),
-    (r"/system/article/add", ArticleAddHandler),
+    (r"/system/article/add", SystemArticleAddHandler),
+    (r"/system/handle/fileupload", SystemFileUploadHandler),
 ],**settings)
 
 if __name__ == "__main__":

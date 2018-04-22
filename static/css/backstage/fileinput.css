@@ -376,7 +376,7 @@
 }
 
 .file-thumb-loading {
-    background: transparent url(../img/loading.gif) no-repeat scroll center center content-box !important;
+    background: transparent url(../../images/loading.gif) no-repeat scroll center center content-box !important;
 }
 
 .file-drop-zone {
@@ -414,7 +414,7 @@
 }
 
 .file-uploading {
-    background: url(../img/loading-sm.gif) no-repeat center bottom 10px;
+    background: url(../../images/loading-sm.gif) no-repeat center bottom 10px;
     opacity: 0.65;
 }
 

@@ -195,7 +195,24 @@ class SystemArticleAddHandler(BaseHandle):
     @tornado.web.authenticated
     def get(self):
         self.render(r"backstage\add-article.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
+                    article_status = "未发表",article_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                     )
+class SystemAddArticleHandler(BaseHandle):
+    @tornado.web.authenticated
+    def post(self):
+        title = self.get_argument("article-title")
+        describe = self.get_argument("describe")
+        category = self.get_argument("category")
+        keyword = self.get_argument("keyword")
+        accesspassword = self.get_argument("accesspassword")
+        visibility = self.get_argument("visibility")
+        FileData = self.request.files["input-file"]
+        for file in FileData:
+            print(file)
+        print(title+"----"+describe+"----"+category+"----"+keyword+"----"+accesspassword+"----"+visibility)
+        self.render(r"backstage\learning.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
+                    )
+
 
 class SystemFileUploadHandler(BaseHandle):
     @tornado.web.authenticated
@@ -316,6 +333,7 @@ application = tornado.web.Application([
     (r"/system/learning", SystemLearningHandler),
     (r"/system/article/add", SystemArticleAddHandler),
     (r"/system/handle/fileupload", SystemFileUploadHandler),
+    (r"/system/handle/addarticle", SystemAddArticleHandler),
 ],**settings)
 
 if __name__ == "__main__":

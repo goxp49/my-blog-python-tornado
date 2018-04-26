@@ -11,7 +11,7 @@ $("#input-file").fileinput({
 
     uploadAsync: true, //默认异步上传
 
-    showUpload: true, //是否显示上传按钮
+    showUpload: false, //是否显示上传按钮
 
     showRemove: true, //显示移除按钮
 

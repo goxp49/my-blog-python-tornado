@@ -10,12 +10,12 @@
 {% block Body %}
  <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
       <div class="row">
-        <form action="/Article/add" method="post" class="add-article-form" >
+        <form id="article-form" action="/system/handle/addarticle" method="post" class="add-article-form" enctype="multipart/form-data">
           <div class="col-md-9">
             <h1 class="page-header">撰写新文章</h1>
             <div class="form-group">
               <label for="article-title" class="sr-only">标题</label>
-              <input type="text" id="article-title" name="title" class="form-control" placeholder="在此处输入标题" required autofocus autocomplete="off">
+              <input type="text" id="article-title" name="article-title" class="form-control" placeholder="在此处输入标题" required autofocus autocomplete="off">
             </div>
             <div class="form-group" id="editor">
               <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
@@ -23,7 +23,7 @@
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>描述</span></h2>
               <div class="add-article-box-content">
-              	<textarea class="form-control" name="describe" autocomplete="off"></textarea>
+              	<textarea id="describe" class="form-control" name="describe" autocomplete="off" required></textarea>
                 <span class="prompt-text">显示在“学无止境”页面下各文章的简介，不要超过100字~</span>
               </div>
             </div>
@@ -44,27 +44,27 @@
                   <li>
                     <label>
                       <input name="category" type="radio" value="1" checked>
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>1</span> )</em></label>
+                      Python <em class="hidden-md">( 栏目ID: <span>1</span> )</em></label>
                   </li>
                   <li>
                     <label>
                       <input name="category" type="radio" value="2">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>2</span> )</em></label>
+                      JavaScript/CSS <em class="hidden-md">( 栏目ID: <span>2</span> )</em></label>
                   </li>
                   <li>
                     <label>
                       <input name="category" type="radio" value="3">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>3</span> )</em></label>
+                      Tornado <em class="hidden-md">( 栏目ID: <span>3</span> )</em></label>
                   </li>
                   <li>
                     <label>
                       <input name="category" type="radio" value="4">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>4</span> )</em></label>
+                      Sqlalchemy <em class="hidden-md">( 栏目ID: <span>4</span> )</em></label>
                   </li>
                   <li>
                     <label>
                       <input name="category" type="radio" value="5">
-                      这是栏目 <em class="hidden-md">( 栏目ID: <span>5</span> )</em></label>
+                      第三方插件 <em class="hidden-md">( 栏目ID: <span>5</span> )</em></label>
                   </li>
                 </ul>
               </div>
@@ -72,24 +72,24 @@
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>关键字</span></h2>
               <div class="add-article-box-content">
-                <input type="text" class="form-control" placeholder="文章关键字" id="Keyword" name="Keyword" autocomplete="off">
+                <input type="text" class="form-control" placeholder="文章关键字" id="keyword" name="keyword" autocomplete="off">
               </div>
             </div>
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>访问密码</span></h2>
               <div class="add-article-box-content">
-                <input type="text" class="form-control" placeholder="当文章未公开时需要填写，不填写默认为123" id="AccessPassword" name="AccessPassword" autocomplete="off">
+                <input type="text" class="form-control" placeholder="当文章未公开时需要填写" id="accesspassword" name="accesspassword" autocomplete="off">
               </div>
             </div>
             <div class="add-article-box">
               <h2 class="add-article-box-title"><span>发布</span></h2>
               <div class="add-article-box-content">
-              	<p><label>状态：</label><span class="article-status-display">未发布</span></p>
+              	<p><label>状态：</label><span class="article-status-display">{{ article_status}}</span></p>
                 <p><label>是否公开：</label><input type="radio" name="visibility" value="0" checked/>公开 <input type="radio" name="visibility" value="1" />加密</p>
-                <p><label>发布时间：</label><span class="article-time-display"><input style="border: none;" type="datetime" name="time" value="2016-01-09 17:29:37" /></span></p>
+                <p><label>发布时间：</label><span class="article-time-display"><input style="border: none;" type="datetime" name="time" value="{{ article_time }}" /></span></p>
               </div>
               <div class="add-article-box-footer">
-                <button class="btn btn-primary" type="submit" name="submit">发布</button>
+                <button class="btn btn-primary" type="button" id="submit-btn">发布</button>
               </div>
             </div>
           </div>
@@ -105,36 +105,97 @@
 
 
 {% block AfterJavaScript %}
+    <script src="{{static_url("js/bootstrap/fileinput.min.js")}}" type="text/javascript"></script>
+    <script src="{{static_url("js/bootstrap/fileinput-theme.js")}}" type="text/javascript"></script>
+    <script src="{{static_url("js/bootstrap/zh.js")}}" type="text/javascript"></script>
+    <script src="{{static_url("js/bootstrap/fileinput-initial.js")}}" type="text/javascript"></script>
     <script type="text/javascript" src="{{static_url("js/wangEditor.min.js")}}"></script>
     <script type="text/javascript">
         var E = window.wangEditor
         var editor = new E('#editor')
         // 自定义菜单配置
         editor.customConfig.menus = [
-              'head',  // 标题
-              'bold',  // 粗体
-              'fontSize',  // 字号
-              'fontName',  // 字体
-              'italic',  // 斜体
-              'strikeThrough',  // 删除线
-              'foreColor',  // 文字颜色
-              'backColor',  // 背景颜色
-              'justify',  // 对齐方式
-              'quote',  // 引用
-              'emoticon',  // 表情
-              'image',  // 插入图片
-              'code',  // 插入代码
-              'undo',  // 撤销
-              'redo'  // 重复
+            'head',  // 标题
+            'bold',  // 粗体
+            'fontSize',  // 字号
+            'fontName',  // 字体
+            'italic',  // 斜体
+            'strikeThrough',  // 删除线
+            'foreColor',  // 文字颜色
+            'backColor',  // 背景颜色
+            'justify',  // 对齐方式
+            'quote',  // 引用
+            'emoticon',  // 表情
+            'image',  // 插入图片
+            'code',  // 插入代码
+            'undo',  // 撤销
+            'redo'  // 重复
         ]
         // 通过 url 参数配置 debug 模式。url 中带有 wangeditor_debug_mode=1 才会开启 debug 模式
-        // editor.customConfig.debug = location.href.indexOf('wangeditor_debug_mode=1') > 0
+        editor.customConfig.debug = location.href.indexOf('wangeditor_debug_mode=1') > 0
+        editor.customConfig.uploadImgShowBase64 = true   // 使用 base64 保存图片
         editor.create()
+        $(function () {
+            $("#submit-btn").click(function () {
+
+                //获取封面图片数量
+                var filesCount = $('#input-file').fileinput('getFilesCount');
+                //获取文章内容
+                var content = editor.txt.html()
+                //获取文章标题
+                var title =  $('#article-title').val();
+                alert(title)
+                //获取文章简介
+                var describe =  $('#describe').val();
+                alert(describe)
+                //获取栏目分组
+                var category =  $("input[name='category']:checked").val();
+                alert(category)
+                //获取关键字
+                var keywork =  $('#keyword').val();
+                alert(keywork)
+                //获取访问密码
+                var password =  $('#accesspassword').val();
+                alert(password)
+                //获取加密状态
+                var visibility =  $("input[name='visibility']:checked").val();
+                alert(visibility)
+                // 检查是图片、标题、简介是否为空
+                if(filesCount &&  title != "" && describe != ""){
+                    return false
+                }
+                //先上传文章封面
+                $('#fish_file').fileinput('upload');
+                var values = {};
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    url: "/register",
+                    async: true,
+                    data: {
+
+                    },
+                    timeout: 5000,
+                    //因为dataType设为json，所以回传来的res已经被解析，可以通过XXX.YYY来调用里面的内容
+                    success: function (data) {
+                        //判断是否注册成功
+                        if (data.status) {
+                            //跳转至登录界面
+                            alert(data.message);
+                            window.location.replace(data.url);
+                        }
+                        else {
+                            alert(data.message);
+                            window.location.replace(data.url);
+                        }
+                    },
+                    error: function () {
+                        alert("请先按要求输入信息！");
+                    }
+                });
+
+                //$('#article-form').submit();
+            });
+        });
     </script>
-
-    <script src="{{static_url("js/bootstrap/fileinput.min.js")}}" type="text/javascript"></script>
-    <script src="{{static_url("js/bootstrap/fileinput-theme.js")}}" type="text/javascript"></script>
-    <script src="{{static_url("js/bootstrap/zh.js")}}" type="text/javascript"></script>
-    <script src="{{static_url("js/bootstrap/fileinput-initial.js")}}" type="text/javascript"></script>
-
 {% end %}

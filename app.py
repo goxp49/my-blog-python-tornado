@@ -200,16 +200,16 @@ class SystemArticleAddHandler(BaseHandle):
 class SystemAddArticleHandler(BaseHandle):
     @tornado.web.authenticated
     def post(self):
-        title = self.get_argument("article-title")
+        title = self.get_argument("title")
+        content = self.get_argument("content")
         describe = self.get_argument("describe")
         category = self.get_argument("category")
-        keyword = self.get_argument("keyword")
-        accesspassword = self.get_argument("accesspassword")
+        keywork = self.get_argument("keywork")
+        password = self.get_argument("password")
         visibility = self.get_argument("visibility")
-        FileData = self.request.files["input-file"]
-        for file in FileData:
-            print(file)
-        print(title+"----"+describe+"----"+category+"----"+keyword+"----"+accesspassword+"----"+visibility)
+        pictuerName = self.get_argument("pictuername")
+
+
         self.render(r"backstage\learning.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
                     )
 
@@ -237,7 +237,8 @@ class SystemFileUploadHandler(BaseHandle):
             print(filepath)
             with open(filepath, 'wb') as f:
                 f.write(filebody)
-                self.write("true")
+                #将保存的文件名回传回去(JSON格式)
+                self.write({"msg":"文章发布成功！","pictuer":filename,"url":"/system/learning"})
 
 
 #----------------------------------------------------------------------------------------------------------

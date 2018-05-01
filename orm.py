@@ -43,6 +43,23 @@ class User(Base):
         return "<User>{}:{}".format(self.name, self.password)
 
 
+class Article(Base):
+    __tablename__ = 'article'  # 表名
+
+    id = Column(Integer,primary_key=True,autoincrement=True)
+    userName = Column(String(20), nullable=False,unique=True)
+    title = Column(String(100), nullable=False)
+    content = Column(String(50000), nullable=False)
+    describe = Column(String(1000), nullable=False)
+    category = Column(Integer, nullable=False)
+    keywork = Column(String(100))
+    password = Column(String(50))
+    visibility = Column(Boolean)
+    pictuername = Column(String(200))
+
+    def __repr__(self):
+        return "<Article>{}:{}".format(self.name, self.password)
+
 # 初始化数据库连接:
 engine = create_engine(  # 生成连接字符串，有特定的格式
     database_setting['database_type'] +

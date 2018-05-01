@@ -51,9 +51,6 @@ $("#input-file").fileinput({
         actionZoom: ''   //去除上传预览缩略图中的查看详情预览的缩略图标。
     },
 
-}).on("fileuploaded", function (event, data, previewId, index) {
-
-
 });
 
 // with plugin options

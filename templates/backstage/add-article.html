@@ -43,28 +43,28 @@
                         <ul class="category-list">
                             <li>
                                 <label>
-                                    <input name="category" type="radio" value="1" checked>
-                                    Python <em class="hidden-md">( 栏目ID: <span>1</span> )</em></label>
+                                    <input name="category" type="radio" value="0" checked>
+                                    Python <em class="hidden-md">( 栏目ID: <span>0</span> )</em></label>
+                            </li>
+                            <li>
+                                <label>
+                                    <input name="category" type="radio" value="1">
+                                    JavaScript/CSS <em class="hidden-md">( 栏目ID: <span>1</span> )</em></label>
                             </li>
                             <li>
                                 <label>
                                     <input name="category" type="radio" value="2">
-                                    JavaScript/CSS <em class="hidden-md">( 栏目ID: <span>2</span> )</em></label>
+                                    Tornado <em class="hidden-md">( 栏目ID: <span>2</span> )</em></label>
                             </li>
                             <li>
                                 <label>
                                     <input name="category" type="radio" value="3">
-                                    Tornado <em class="hidden-md">( 栏目ID: <span>3</span> )</em></label>
+                                    Sqlalchemy <em class="hidden-md">( 栏目ID: <span>3</span> )</em></label>
                             </li>
                             <li>
                                 <label>
                                     <input name="category" type="radio" value="4">
-                                    Sqlalchemy <em class="hidden-md">( 栏目ID: <span>4</span> )</em></label>
-                            </li>
-                            <li>
-                                <label>
-                                    <input name="category" type="radio" value="5">
-                                    第三方插件 <em class="hidden-md">( 栏目ID: <span>5</span> )</em></label>
+                                    第三方插件 <em class="hidden-md">( 栏目ID: <span>4</span> )</em></label>
                             </li>
                         </ul>
                     </div>
@@ -187,8 +187,7 @@
                     },
 
                     success: function (data) {
-                        //判断是否注册成功
-                        alert(data.response.msg);
+                        alert(data.message)
                         window.location.replace(data.url);
                     },
                     error: function () {

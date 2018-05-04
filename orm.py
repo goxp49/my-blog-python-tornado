@@ -47,14 +47,15 @@ class Article(Base):
     __tablename__ = 'article'  # 表名
 
     id = Column(Integer,primary_key=True,autoincrement=True)
-    userName = Column(String(20), nullable=False,unique=True)
+    userName = Column(String(20), nullable=False)
     title = Column(String(100), nullable=False)
-    content = Column(String(50000), nullable=False)
+    content = Column(String(20000), nullable=False)
     describe = Column(String(1000), nullable=False)
     category = Column(Integer, nullable=False)
     keywork = Column(String(100))
     password = Column(String(50))
-    visibility = Column(Boolean)
+    visibility = Column(Integer,nullable=False)
+    date = Column(DateTime)
     pictuername = Column(String(200))
 
     def __repr__(self):

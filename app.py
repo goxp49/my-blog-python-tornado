@@ -11,7 +11,12 @@ import hashlib
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is database --------------------------------------------
 #----------------------------------------------------------------------------------------------------------
-
+CATEGORY = [{"category": "python", "url": "/learn"},
+            {"category": "JavaScript/CSS", "url": "/learn"},
+            {"category": "Tornado", "url": "/learn"},
+            {"category": "Sqlalchemy", "url": "/learn"},
+            {"category": "第三方插件", "url": "/learn"}
+            ]
 
 
 #----------------------------------------------------------------------------------------------------------
@@ -39,7 +44,19 @@ class IndexHandler(BaseHandle):
     def get(self):
         #self.session.add(User(name="wll",password="12345",mail="444@qq.com",regdate="2018-04-03 21:27:55",sex=True,mobile="13875987564"))
         #self.session.commit()
-        self.render("index.html",TitleNum = range(3),TimeLineNum = range(6))
+        allArticles = []
+        articles = self.session.query(Article).all()
+        for article in articles:
+            tempList = {}
+            tempList["id"] = article.id
+            tempList["title"] = article.title
+            tempList["describe"] = article.describe
+            tempList["category"] = article.category
+            # 留言数还没实现，先用0表示
+            tempList["date"] = article.date
+            tempList["pictuername"] = article.pictuername
+            allArticles.append(tempList)
+        self.render("index.html",TitleNum = range(3),Articles = allArticles)
 
 class AboutHandler(BaseHandle):
     def get(self):
@@ -55,7 +72,19 @@ class ShareHandler(BaseHandle):
 
 class LearnHandler(BaseHandle):
     def get(self):
-        self.render("learn.html",GroupData = range(6),TimeLineNum = range(6))
+        allArticles = []
+        articles = self.session.query(Article).all()
+        for article in articles:
+            tempList = {}
+            tempList["id"] = article.id
+            tempList["title"] = article.title
+            tempList["describe"] = article.describe
+            tempList["category"] = article.category
+            # 留言数还没实现，先用0表示
+            tempList["date"] = article.date
+            tempList["pictuername"] = article.pictuername
+            allArticles.append(tempList)
+        self.render("learn.html",categories = CATEGORY,Articles = allArticles)
 
 class BBSHandler(BaseHandle):
     def get(self):
@@ -169,12 +198,12 @@ class SystemIndexHandler(BaseHandle):
         for os in Windows:
             if UA.find(os) != -1:
                 windows = Windows[os]
-                break;
+                break
         # 判断操作浏览器版本
         for name in Browser:
             if UA.find(name) != -1:
                 browser = Browser[name]
-                break;
+                break
         admin_num = self.session.query(User).filter(User.admin == True).count()
         member_num = self.session.query(func.count(User.id)).first()[0]
         current_ip = self.request.remote_ip
@@ -189,26 +218,34 @@ class SystemLearningHandler(BaseHandle):
     CategorySelect=["Python","JavaScript/CSS","Tornado","Sqlalchemy","第三方插件"]
     @tornado.web.authenticated
     def get(self):
+        allArticles = []
         #如果当前用户为管理员，则显示所有人的文章
         if(self.session.query(User).filter(User.name == self.currentuser,User.admin == True).first()):
-            allArticles=[]
-
+            print("当前是管理员，显示所有文章")
             articles = self.session.query(Article).all()
-            for article in articles:
-                tempList = {}
-                print(article.title)
-                print(article.category)
-                print(article.keywork)
-                print(article.date)
-                tempList["title"] = article.title
-                tempList["category"] = self.CategorySelect[article.category]
-                tempList["keywork"] = article.keywork
-                #留言数还没实现，先用0表示
-                tempList["msg"] = 0
-                tempList["date"] = article.date
-                allArticles.append(tempList)
+            #获得文章数量
+            articlesNum = len(articles)
+        else:
+            print("当前是普通用户，只显示个人文章")
+            articles = self.session.query(Article).filter(Article.userName == self.currentuser).all()
+            # 获得文章数量
+            articlesNum = len(articles)
+        for article in articles:
+            tempList = {}
+            #print(article.title)
+            #print(article.category)
+            #print(article.keywork)
+            #print(article.date)
+            tempList["id"] = article.id
+            tempList["title"] = article.title
+            tempList["category"] = self.CategorySelect[article.category]
+            tempList["keywork"] = article.keywork
+            # 留言数还没实现，先用0表示
+            tempList["msg"] = 0
+            tempList["date"] = article.date
+            allArticles.append(tempList)
         self.render(r"backstage\learning.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
-                    articles = allArticles)
+                    articlesNum = articlesNum,articles = allArticles)
 
 class SystemArticleAddPageHandler(BaseHandle):
     @tornado.web.authenticated
@@ -259,14 +296,61 @@ class SystemFileUploadHandler(BaseHandle):
             filesuffix = os.path.splitext(file["filename"])[1]
             #设置存储图片路径,文件命名方式：用户名 + 日期 + hash值
             filename = hashlib.md5((self.user.name + datetime.now().strftime("%Y%m%d%H%M%S") + filehash).encode('utf-8')).hexdigest() + filesuffix
-            filepath = os.path.join(sys.path[0],"file","images",filename)
+            filepath = os.path.join(sys.path[0],"static","images","articlecover",filename)
             print(filepath)
             with open(filepath, 'wb') as f:
                 f.write(filebody)
                 #将保存的文件名回传回去(JSON格式)
                 self.write({"msg":"文章发布成功！","pictuer":filename,"url":"/system/learning"})
 
+class SystemUpdateArticleHandler(BaseHandle):
+    categorySelect=[["checked","","","","",""],
+                    ["", "checked", "", "", ""],
+                    ["", "", "checked", "", ""],
+                    ["", "", "", "checked", ""],
+                    ["", "", "", "", "checked"],
+                    ]
+    visibilitySelect=[["checked",""],
+                      ["", "checked"],
+                      ]
+    @tornado.web.authenticated
+    def get(self,id):
+        tagArticle = self.session.query(Article).filter(Article.id == id).first()
+        #确定存在该id的文章
+        if tagArticle:
+            title = tagArticle.title
+            content = tagArticle.content
+            describe = tagArticle.describe
+            category = self.categorySelect[tagArticle.category]
+            keywork = tagArticle.keywork
+            passwork = tagArticle.password
+            visibility = self.visibilitySelect[tagArticle.visibility]
+            date = tagArticle.date
+            self.render(r"backstage\update-article.html",article_title = title,article_content = content,
+                        article_describe = describe,article_category = category,article_keywork = keywork,
+                        article_passwork = passwork,article_visibility = visibility,article_date = date,
+                        article_id = id,
+                        current_user=self.currentuser, mail=self.user.mail, phone=self.user.mobile,
+                        )
 
+    @tornado.web.authenticated
+    def post(self, id):
+        tagArticle = self.session.query(Article).filter(Article.id == id).first()
+        # 确定存在该id的文章
+        if tagArticle:
+            tagArticle.title = self.get_argument("title")
+            tagArticle.content = self.get_argument("content")
+            tagArticle.describe = self.get_argument("describe")
+            tagArticle.category = self.get_argument("category")
+            tagArticle.keywork = self.get_argument("keywork")
+            tagArticle.password = self.get_argument("password")
+            tagArticle.visibility = self.get_argument("visibility")
+            tagArticle.date = datetime.now()
+            #将文章内容更新到数据库中
+            self.session.commit()
+            data = {'message': '文章已更新成功！', 'url': "/system/learning"}  # 封装数据
+            #回传AJAX结果
+            self.write(json.dumps(data))
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is modules --------------------------------------------
 #----------------------------------------------------------------------------------------------------------
@@ -281,15 +365,18 @@ class IndexImageHeadModule(tornado.web.UIModule):
         return self.render_string("modules\IndexImageHead.html",data=data)
 
 class TimeLineModule(tornado.web.UIModule):
-    def render(self, item):
-        data = {
-            "month_day":"03-31",
-            "year":"2018",
-            "title":"三步实现螺旋上天的唯美效果",
-            "image":"t02.jpg",
-            "content":"现在很多网站都有这种效果，我就整理了一下，分享出来。利用滚动条来实现动画效果，ScrollReveal.js 用于创建和管理元素进入可视区域时的动画效果，帮助你的网站增加吸引力...。",
+    def render(self, article):
+        print(article)
+        articleData = {
+            "month_day":article["date"].strftime("%m-%d"),
+            "year":article["date"].strftime("%Y"),
+            "title":article["title"],
+            "image":article["pictuername"],
+            "describe":article["describe"],
         }
-        return self.render_string("modules\TimeLine.html",data=data)
+        print(type(article["date"]))
+        print(article["date"].strftime("%Y-%m-%d"))
+        return self.render_string("modules\TimeLine.html",article=articleData)
 
 class AboutTimeLineModul(tornado.web.UIModule):
     def render(self, clas):
@@ -310,12 +397,8 @@ class SlowLifePhoneModul(tornado.web.UIModule):
         return self.render_string("modules\SlowLifePhone.html",data=data)
 
 class LearnGroupModul(tornado.web.UIModule):
-    def render(self, clas):
-        data = {
-            "target":"/index",
-            "content":"心得笔记",
-        }
-        return self.render_string("modules\LearnGroup.html",data=data)
+    def render(self, category):
+        return self.render_string("modules\LearnGroup.html",category=category)
 
 class MessageModul(tornado.web.UIModule):
     def render(self, clas):
@@ -366,6 +449,7 @@ application = tornado.web.Application([
     (r"/system/article/add", SystemArticleAddPageHandler),
     (r"/system/handle/fileupload", SystemFileUploadHandler),
     (r"/system/handle/addarticle", SystemAddArticleHandler),
+    (r"/system/handle/updatearticle/(\d+)", SystemUpdateArticleHandler),
 ],**settings)
 
 if __name__ == "__main__":

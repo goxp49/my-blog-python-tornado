@@ -10,7 +10,7 @@
         <ol class="breadcrumb">
           <li><a href="/system/article/add">增加文章</a></li>
         </ol>
-        <h1 class="page-header">管理 <span class="badge">7</span></h1>
+        <h1 class="page-header">管理 <span class="badge">{{ articlesNum }}</span></h1>
         <div class="table-responsive">
           <table class="table table-striped table-hover">
             <thead>
@@ -57,29 +57,57 @@
 
 {% end %}
 
-{% block BeforeHtmlEnd %}
+{% block AfterJavaScript %}
 <script>
-//是否确认删除
-$(function(){
-	$("#main table tbody tr td a").click(function(){
-		var name = $(this);
-		var id = name.attr("rel"); //对应id
-		if (event.srcElement.outerText == "删除")
-		{
-			if(window.confirm("此操作不可逆，是否确认？"))
-			{
-				$.ajax({
-					type: "POST",
-					url: "/Article/delete",
-					data: "id=" + id,
-					cache: false, //不缓存此页面
-					success: function (data) {
-						window.location.reload();
-					}
-				});
-			};
-		};
-	});
-});
+
+    var checkall = document.getElementsByName("checkbox[]");
+
+    //全选
+    function select() {
+        for (var $i = 0; $i < checkall.length; $i++) {
+            checkall[$i].checked = true;
+        }
+    };
+
+    //反选
+    function reverse() {
+        for (var $i = 0; $i < checkall.length; $i++) {
+            if (checkall[$i].checked) {
+                checkall[$i].checked = false;
+            } else {
+                checkall[$i].checked = true;
+            }
+        }
+    }
+
+    //全不选
+    function noselect() {
+        for (var $i = 0; $i < checkall.length; $i++) {
+            checkall[$i].checked = false;
+        }
+    }
+
+    //是否确认删除
+    $(function () {
+        $("#main table tbody tr td a").click(function () {
+            var name = $(this);
+            var id = name.attr("rel"); //对应id
+            if (event.srcElement.outerText == "删除") {
+                if (window.confirm("此操作不可逆，是否确认？")) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Article/delete",
+                        data: "id=" + id,
+                        cache: false, //不缓存此页面
+                        success: function (data) {
+                            window.location.reload();
+                        }
+                    });
+                }
+                ;
+            }
+            ;
+        });
+    });
 </script>
 {% end %}

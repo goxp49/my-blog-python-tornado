@@ -22,8 +22,8 @@
         <li><a href="/news/jsex/">JS经典实例</a></li>
         <li><a href="/jstt/t/">推荐工具</a></li>
         -->
-        {% for item in GroupData %}
-            {% module LearnGroup(item) %}
+        {% for category in categories %}
+            {% module LearnGroup(category) %}
         {% end %}
     </ul>
 </div>
@@ -39,8 +39,8 @@
             <a href="/" target="_blank" class="readmore">阅读全文&gt;&gt;</a></div>
     </li>
     -->
-    {% for item in TimeLineNum%}
-        {% module IndexTimeLine(item) %}
+    {% for article in Articles %}
+        {% module IndexTimeLine(article) %}
     {% end %}
 </ul>
 

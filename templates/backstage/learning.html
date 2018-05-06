@@ -38,7 +38,7 @@
             <div class="btn-toolbar operation" role="toolbar">
               <div class="btn-group" role="group"> <a class="btn btn-default" onClick="select()">全选</a> <a class="btn btn-default" onClick="reverse()">反选</a> <a class="btn btn-default" onClick="noselect()">不选</a> </div>
               <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="删除全部选中" name="checkbox_delete">删除</button>
+                <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="删除全部选中" name="checkbox_delete" id="checkbox_delete">删除</button>
               </div>
             </div>
             <ul class="pagination pagenav">
@@ -89,24 +89,28 @@
 
     //是否确认删除
     $(function () {
-        $("#main table tbody tr td a").click(function () {
-            var name = $(this);
-            var id = name.attr("rel"); //对应id
-            if (event.srcElement.outerText == "删除") {
-                if (window.confirm("此操作不可逆，是否确认？")) {
-                    $.ajax({
-                        type: "POST",
-                        url: "/Article/delete",
-                        data: "id=" + id,
-                        cache: false, //不缓存此页面
-                        success: function (data) {
-                            window.location.reload();
-                        }
-                    });
-                }
-                ;
+        $("#checkbox_delete").click(function () {
+            obj = document.getElementsByName("checkbox[]");
+            check_val = [];
+            for(k in obj)
+            {
+                if(obj[k].checked)
+                    check_val.push(obj[k].value);
             }
-            ;
+            //alert(check_val);
+            if (window.confirm("此操作不可逆，是否确认？")) {
+                $.ajax({
+                    type: "POST",
+                    url: "/system/handle/deletearticle/all",
+                    data:{
+                         "check_val":check_val,
+                    },
+                    cache: false, //不缓存此页面
+                    success: function (data) {
+                        window.location.reload();
+                    }
+                });
+            };
         });
     });
 </script>

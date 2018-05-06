@@ -17,7 +17,15 @@ CATEGORY = [{"category": "python", "url": "/learn"},
             {"category": "Sqlalchemy", "url": "/learn"},
             {"category": "第三方插件", "url": "/learn"}
             ]
-
+categoryCheck = [["checked", "", "", "", "", ""],
+                  ["", "checked", "", "", ""],
+                  ["", "", "checked", "", ""],
+                  ["", "", "", "checked", ""],
+                  ["", "", "", "", "checked"],
+                  ]
+visibilitySelect = [["checked", ""],
+                    ["", "checked"],
+                    ]
 
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is handler --------------------------------------------
@@ -304,15 +312,6 @@ class SystemFileUploadHandler(BaseHandle):
                 self.write({"msg":"文章发布成功！","pictuer":filename,"url":"/system/learning"})
 
 class SystemUpdateArticleHandler(BaseHandle):
-    categorySelect=[["checked","","","","",""],
-                    ["", "checked", "", "", ""],
-                    ["", "", "checked", "", ""],
-                    ["", "", "", "checked", ""],
-                    ["", "", "", "", "checked"],
-                    ]
-    visibilitySelect=[["checked",""],
-                      ["", "checked"],
-                      ]
     @tornado.web.authenticated
     def get(self,id):
         tagArticle = self.session.query(Article).filter(Article.id == id).first()
@@ -321,10 +320,10 @@ class SystemUpdateArticleHandler(BaseHandle):
             title = tagArticle.title
             content = tagArticle.content
             describe = tagArticle.describe
-            category = self.categorySelect[tagArticle.category]
+            category = categoryCheck[tagArticle.category]
             keywork = tagArticle.keywork
             passwork = tagArticle.password
-            visibility = self.visibilitySelect[tagArticle.visibility]
+            visibility = visibilitySelect[tagArticle.visibility]
             date = tagArticle.date
             self.render(r"backstage\update-article.html",article_title = title,article_content = content,
                         article_describe = describe,article_category = category,article_keywork = keywork,
@@ -351,6 +350,39 @@ class SystemUpdateArticleHandler(BaseHandle):
             data = {'message': '文章已更新成功！', 'url': "/system/learning"}  # 封装数据
             #回传AJAX结果
             self.write(json.dumps(data))
+
+class SystemDeleteArticleHandler(BaseHandle):
+    #get用于处理单个删除请求
+    @tornado.web.authenticated
+    def get(self,cls):
+        tagArticle = self.session.query(Article).filter(Article.id == cls).first()
+        #确定存在该id的文章
+        if tagArticle:
+            #先删除图片再删除数据
+            filepath = os.path.join(sys.path[0], "static", "images", "articlecover", tagArticle.pictuername)
+            #print(filepath)
+            if os.path.exists(filepath):
+                os.remove(filepath)
+            self.session.delete(tagArticle)
+            self.session.commit()
+        #重定向回文章管理界面
+        self.redirect("/system/learning")
+
+    #post用于处理下方的多选删除请求
+    @tornado.web.authenticated
+    def post(self,cls):
+        # 传递的是数组等多个结果的值时，一定要用get_arguments，get_argument一次只能获取一个结果
+        deletetag = self.get_arguments("check_val[]")
+        print(deletetag)
+        #确认参数是否正确
+        if cls == "all" and deletetag:
+            for id in deletetag:
+                tagArticle = self.session.query(Article).filter(Article.id == id).first()
+                #确认文章是否存在
+                if tagArticle:
+                    self.session.delete(tagArticle)
+            self.session.commit()
+        self.write("ture")
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is modules --------------------------------------------
 #----------------------------------------------------------------------------------------------------------
@@ -450,6 +482,7 @@ application = tornado.web.Application([
     (r"/system/handle/fileupload", SystemFileUploadHandler),
     (r"/system/handle/addarticle", SystemAddArticleHandler),
     (r"/system/handle/updatearticle/(\d+)", SystemUpdateArticleHandler),
+    (r"/system/handle/deletearticle/(\w+)", SystemDeleteArticleHandler),
 ],**settings)
 
 if __name__ == "__main__":

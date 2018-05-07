@@ -61,6 +61,22 @@ class Article(Base):
     def __repr__(self):
         return "<Article>{}:{}".format(self.name, self.password)
 
+
+class LifeShare(Base):
+    __tablename__ = 'article'  # 表名
+
+    id = Column(Integer,primary_key=True,autoincrement=True)
+    userName = Column(String(20), nullable=False)
+    title = Column(String(100), nullable=False)
+    content = Column(String(20000), nullable=False)
+    describe = Column(String(1000), nullable=False)
+    visibility = Column(Integer,nullable=False)
+    date = Column(DateTime)
+    pictuername = Column(String(200))
+
+    def __repr__(self):
+        return "<Article>{}:{}".format(self.name, self.password)
+
 # 初始化数据库连接:
 engine = create_engine(  # 生成连接字符串，有特定的格式
     database_setting['database_type'] +

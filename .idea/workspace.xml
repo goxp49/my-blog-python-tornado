@@ -5,23 +5,52 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d5dfc381-ac25-4de6-b792-b4727693e7b2" name="默认的" comment="修改图片存储尺寸">
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/28a0dbd787e0e0b62656cf6556c9172b.jpg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/2e466b70f6de152fcd53940b3615034c.jpg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/31adc0b924cd936c7844367a88c69317.jpg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/33b9ad2700af025525f764020e274620.jpg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/4df82355f75dd95760d35d8375e1f4c8.jpg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/524f203a7a05bcff289f8d7f4cf83f42.jpg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/734bd02bc0fb4d895a80072aabd4f191.jpg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/97d008159073b5ab103848f69e9e87e8.jpg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/998c794b47086ab718429df800dab0f2.jpg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/ab4accb251cb21c0ee7bbf336a189412.jpg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/bcf19d8e88390d51dda3dc829bdf337b.jpg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/e7de53c408912be5d03523214a228d44.jpg" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/f04ef8c00554c1754f03119fc8338daa.jpg" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/1bb85a9efda86223bd016be7285ee0a4.jpg" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/67d8f78081af8b26e2e9020f13ff47a0.jpg" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/8b66c5d3332933df3cf4f717d9c673f5.jpg" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/ce4f8e37b8a719f8658f04ab9f390d91.jpg" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/d2ddb54e4e60f4417943d1b3b5b98a45.jpg" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/templates/backstage/lifeshare.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/templates/modules/LifeShareManageItem.html" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/app.py" afterPath="$PROJECT_DIR$/app.py" />
+      <change beforePath="$PROJECT_DIR$/orm.py" afterPath="$PROJECT_DIR$/orm.py" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/28a0dbd787e0e0b62656cf6556c9172b.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/2e466b70f6de152fcd53940b3615034c.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/31adc0b924cd936c7844367a88c69317.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/33b9ad2700af025525f764020e274620.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/411ddf06de4483b98028ff8a14edd205.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/4df82355f75dd95760d35d8375e1f4c8.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/524f203a7a05bcff289f8d7f4cf83f42.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/72bc539ec13ab793485e12f33eec2d18.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/734bd02bc0fb4d895a80072aabd4f191.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/8f25e095b9394e6731a99cf5dd4d7bc7.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/97d008159073b5ab103848f69e9e87e8.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/998c794b47086ab718429df800dab0f2.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/ab4accb251cb21c0ee7bbf336a189412.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/b245cbbe2fd9274f0cc1f4250b0e3e91.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/b72920813117295fb89341b6c2274d02.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/bcf19d8e88390d51dda3dc829bdf337b.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/c610fc372c4aaec2b0f89a944ecdf376.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/c7e3b9b2f8fd3f7ee38dfd25d045d734.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/e7de53c408912be5d03523214a228d44.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/static/images/articlecover/f04ef8c00554c1754f03119fc8338daa.jpg" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/templates/__Base__.html" afterPath="$PROJECT_DIR$/templates/__Base__.html" />
       <change beforePath="$PROJECT_DIR$/templates/backstage/__BackstageBase__.html" afterPath="$PROJECT_DIR$/templates/backstage/__BackstageBase__.html" />
-      <change beforePath="$PROJECT_DIR$/templates/backstage/add-article.html" afterPath="$PROJECT_DIR$/templates/backstage/add-article.html" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/add-flink.html" afterPath="$PROJECT_DIR$/templates/backstage/add-flink.html" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/add-notice.html" afterPath="$PROJECT_DIR$/templates/backstage/add-notice.html" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/category.html" afterPath="$PROJECT_DIR$/templates/backstage/category.html" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/comment.html" afterPath="$PROJECT_DIR$/templates/backstage/comment.html" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/flink.html" afterPath="$PROJECT_DIR$/templates/backstage/flink.html" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/loginlog.html" afterPath="$PROJECT_DIR$/templates/backstage/loginlog.html" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/manage-user.html" afterPath="$PROJECT_DIR$/templates/backstage/manage-user.html" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/notice.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/readset.html" afterPath="$PROJECT_DIR$/templates/backstage/readset.html" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/setting.html" afterPath="$PROJECT_DIR$/templates/backstage/setting.html" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/update-category.html" afterPath="$PROJECT_DIR$/templates/backstage/update-category.html" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/update-flink.html" afterPath="$PROJECT_DIR$/templates/backstage/update-flink.html" />
+      <change beforePath="$PROJECT_DIR$/templates/modules/ArticleManageItem.html" afterPath="$PROJECT_DIR$/templates/modules/ArticleManageItem.html" />
+      <change beforePath="$PROJECT_DIR$/templates/share.html" afterPath="" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -33,7 +62,7 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/Tornado_Blog$orm.coverage" NAME="orm Coverage Results" MODIFIED="1522760952252" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Tornado_Blog$main.coverage" NAME="main Coverage Results" MODIFIED="1522577103850" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../Blog" />
-    <SUITE FILE_PATH="coverage/Tornado_Blog$app.coverage" NAME="app Coverage Results" MODIFIED="1525684484958" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Tornado_Blog$app.coverage" NAME="app Coverage Results" MODIFIED="1525698641889" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -55,8 +84,8 @@
       <file leaf-file-name="app.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="393">
-              <caret line="316" column="27" lean-forward="true" selection-start-line="316" selection-start-column="27" selection-end-line="316" selection-end-column="27" />
+            <state relative-caret-position="-323">
+              <caret line="391" column="82" lean-forward="true" selection-start-line="391" selection-start-column="82" selection-end-line="391" selection-end-column="82" />
               <folding>
                 <element signature="e#24#35#0" expanded="true" />
               </folding>
@@ -64,11 +93,41 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="lifeshare.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/backstage/lifeshare.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="192">
+              <caret line="24" column="15" lean-forward="false" selection-start-line="24" selection-start-column="15" selection-end-line="29" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ArticleManageItem.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/modules/ArticleManageItem.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="184">
+              <caret line="8" column="16" lean-forward="true" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="67" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LifeShareManageItem.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/modules/LifeShareManageItem.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="92">
+              <caret line="4" column="123" lean-forward="false" selection-start-line="4" selection-start-column="123" selection-end-line="4" selection-end-column="123" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="learning.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/backstage/learning.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1881">
-              <caret line="105" column="47" lean-forward="true" selection-start-line="105" selection-start-column="47" selection-end-line="105" selection-end-column="47" />
+            <state relative-caret-position="138">
+              <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="116" selection-end-column="9" />
               <folding>
                 <element signature="e#2401#2408#1" expanded="true" />
                 <element signature="e#2721#2728#1" expanded="true" />
@@ -77,11 +136,21 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="__Base__.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/__Base__.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-137">
+              <caret line="24" column="56" lean-forward="false" selection-start-line="24" selection-start-column="56" selection-end-line="24" selection-end-column="56" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="add-article.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/backstage/add-article.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="198" column="42" lean-forward="true" selection-start-line="198" selection-start-column="42" selection-end-line="198" selection-end-column="42" />
+            <state relative-caret-position="4554">
+              <caret line="198" column="42" lean-forward="false" selection-start-line="198" selection-start-column="42" selection-end-line="198" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -90,8 +159,8 @@
       <file leaf-file-name="orm.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/orm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1064">
-              <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+            <state relative-caret-position="159">
+              <caret line="64" column="15" lean-forward="false" selection-start-line="64" selection-start-column="6" selection-end-line="64" selection-end-column="15" />
               <folding>
                 <element signature="e#0#77#0" expanded="true" />
               </folding>
@@ -102,8 +171,8 @@
       <file leaf-file-name="__BackstageBase__.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/backstage/__BackstageBase__.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="703">
-              <caret line="37" column="39" lean-forward="false" selection-start-line="37" selection-start-column="39" selection-end-line="37" selection-end-column="39" />
+            <state relative-caret-position="185">
+              <caret line="66" column="71" lean-forward="false" selection-start-line="66" selection-start-column="71" selection-end-line="66" selection-end-column="71" />
               <folding />
             </state>
           </provider>
@@ -115,8 +184,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
-        <option value="HTML File" />
         <option value="JavaScript File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -157,9 +226,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/static/css/book.css" />
-        <option value="$PROJECT_DIR$/static/css/learn.css" />
-        <option value="$PROJECT_DIR$/static/css/main.css" />
         <option value="$PROJECT_DIR$/static/css/msh.css" />
         <option value="$PROJECT_DIR$/static/css/share.css" />
         <option value="$PROJECT_DIR$/static/js/scrollReveal.js" />
@@ -184,7 +250,6 @@
         <option value="$PROJECT_DIR$/templates/slowlife.html" />
         <option value="$PROJECT_DIR$/templates/login.html" />
         <option value="$PROJECT_DIR$/templates/register.html" />
-        <option value="$PROJECT_DIR$/templates/__Base__.html" />
         <option value="$PROJECT_DIR$/templates/backstage/__Base__.html" />
         <option value="$PROJECT_DIR$/xxxx.html" />
         <option value="$PROJECT_DIR$/xx1.html" />
@@ -196,18 +261,22 @@
         <option value="$PROJECT_DIR$/static/css/backstage/fileinput.css" />
         <option value="$PROJECT_DIR$/static/js/wangEditor.min.js" />
         <option value="$PROJECT_DIR$/static/js/login.js" />
-        <option value="$PROJECT_DIR$/orm.py" />
         <option value="$PROJECT_DIR$/static/js/bootstrap/fileinput-initial.js" />
         <option value="$PROJECT_DIR$/templates/backstage/update-article.html" />
         <option value="$PROJECT_DIR$/templates/modules/LearnGroup.html" />
         <option value="$PROJECT_DIR$/templates/learn.html" />
         <option value="$PROJECT_DIR$/templates/modules/TimeLine.html" />
         <option value="$PROJECT_DIR$/templates/index.html" />
-        <option value="$PROJECT_DIR$/templates/modules/ArticleManageItem.html" />
         <option value="$PROJECT_DIR$/templates/backstage/learning.html" />
-        <option value="$PROJECT_DIR$/templates/backstage/__BackstageBase__.html" />
         <option value="$PROJECT_DIR$/templates/backstage/add-article.html" />
+        <option value="$PROJECT_DIR$/templates/__Base__.html" />
+        <option value="$PROJECT_DIR$/templates/backstage/notice.html" />
+        <option value="$PROJECT_DIR$/templates/backstage/lifeshare.html" />
+        <option value="$PROJECT_DIR$/templates/backstage/__BackstageBase__.html" />
+        <option value="$PROJECT_DIR$/orm.py" />
+        <option value="$PROJECT_DIR$/templates/modules/ArticleManageItem.html" />
         <option value="$PROJECT_DIR$/app.py" />
+        <option value="$PROJECT_DIR$/templates/modules/LifeShareManageItem.html" />
       </list>
     </option>
   </component>
@@ -241,6 +310,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -280,7 +350,6 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -445,16 +514,16 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290398" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="调试" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26697892" sideWeight="0.50429183" order="15" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290398" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32435596" sideWeight="0.49570817" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290398" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32480535" sideWeight="0.49570817" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23614073" sideWeight="0.49305555" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23927039" sideWeight="0.49305555" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -495,16 +564,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/static/images/icon/icon.psd">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/images/icon/favicon.ico">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/backstage/login.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-171">
@@ -516,13 +575,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-304">
           <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/__Base__.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="32" column="8" lean-forward="true" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="60" />
         </state>
       </provider>
     </entry>
@@ -698,13 +750,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/modules/LearnGroup.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="47" lean-forward="false" selection-start-line="0" selection-start-column="39" selection-end-line="0" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/learn.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="326">
@@ -726,16 +771,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/orm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1064">
-          <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#77#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/register.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
@@ -750,26 +785,60 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/backstage/__BackstageBase__.html">
+    <entry file="file://$PROJECT_DIR$/templates/backstage/add-article.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="703">
-          <caret line="37" column="39" lean-forward="false" selection-start-line="37" selection-start-column="39" selection-end-line="37" selection-end-column="39" />
+        <state relative-caret-position="4554">
+          <caret line="198" column="42" lean-forward="false" selection-start-line="198" selection-start-column="42" selection-end-line="198" selection-end-column="42" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/modules/ArticleManageItem.html">
+    <entry file="file://$PROJECT_DIR$/templates/backstage/__BackstageBase__.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="8" column="73" lean-forward="false" selection-start-line="8" selection-start-column="73" selection-end-line="8" selection-end-column="73" />
+        <state relative-caret-position="185">
+          <caret line="66" column="71" lean-forward="false" selection-start-line="66" selection-start-column="71" selection-end-line="66" selection-end-column="71" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/__Base__.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-137">
+          <caret line="24" column="56" lean-forward="false" selection-start-line="24" selection-start-column="56" selection-end-line="24" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/orm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="64" column="15" lean-forward="false" selection-start-line="64" selection-start-column="6" selection-end-line="64" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#77#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/modules/LearnGroup.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="47" lean-forward="false" selection-start-line="0" selection-start-column="39" selection-end-line="0" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/backstage/lifeshare.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="24" column="15" lean-forward="false" selection-start-line="24" selection-start-column="15" selection-end-line="29" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/backstage/learning.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1881">
-          <caret line="105" column="47" lean-forward="true" selection-start-line="105" selection-start-column="47" selection-end-line="105" selection-end-column="47" />
+        <state relative-caret-position="138">
+          <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="116" selection-end-column="9" />
           <folding>
             <element signature="e#2401#2408#1" expanded="true" />
             <element signature="e#2721#2728#1" expanded="true" />
@@ -777,18 +846,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/backstage/add-article.html">
+    <entry file="file://$PROJECT_DIR$/templates/modules/ArticleManageItem.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="198" column="42" lean-forward="true" selection-start-line="198" selection-start-column="42" selection-end-line="198" selection-end-column="42" />
+        <state relative-caret-position="184">
+          <caret line="8" column="16" lean-forward="true" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/modules/LifeShareManageItem.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret line="4" column="123" lean-forward="false" selection-start-line="4" selection-start-column="123" selection-end-line="4" selection-end-column="123" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
-          <caret line="316" column="27" lean-forward="true" selection-start-line="316" selection-start-column="27" selection-end-line="316" selection-end-column="27" />
+        <state relative-caret-position="-323">
+          <caret line="391" column="82" lean-forward="true" selection-start-line="391" selection-start-column="82" selection-end-line="391" selection-end-column="82" />
           <folding>
             <element signature="e#24#35#0" expanded="true" />
           </folding>

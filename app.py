@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlalchemy import func
 import tornado.web
 import orm
-from orm import User,Article
+from orm import User,Article,LifeShare
 import os,sys
 import hashlib                      #用于md5加密
 from PIL import Image               #用于图片处理
@@ -256,6 +256,31 @@ class SystemLearningHandler(BaseHandle):
         self.render(r"backstage\learning.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
                     articlesNum = articlesNum,articles = allArticles)
 
+class SystemLifeShareHandler(BaseHandle):
+
+    @tornado.web.authenticated
+    def get(self):
+        allArticles = []
+        #如果当前用户为管理员，则显示所有人的文章
+        if(self.session.query(LifeShare).filter(LifeShare.name == self.currentuser,User.admin == True).first()):
+            print("当前是管理员，显示所有文章")
+            articles = self.session.query(LifeShare).all()
+            #获得文章数量
+            articlesNum = len(articles)
+        else:
+            print("当前是普通用户，只显示个人文章")
+            articles = self.session.query(LifeShare).filter(LifeShare.userName == self.currentuser).all()
+            # 获得文章数量
+            articlesNum = len(articles)
+        for article in articles:
+            tempList = {}
+            tempList["id"] = article.id
+            tempList["title"] = article.title
+            tempList["date"] = article.date
+            allArticles.append(tempList)
+        self.render(r"backstage\lifeshare.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
+                    articlesNum = articlesNum,articles = allArticles)
+
 class SystemArticleAddPageHandler(BaseHandle):
     @tornado.web.authenticated
     def get(self):
@@ -312,7 +337,7 @@ class SystemFileUploadHandler(BaseHandle):
                 f.write(filebody)
             try:
                 image = Image.open(filepath)
-                image.resize((300, 256))
+                image.resize((300, 256), Image.ANTIALIAS)
                 image.save(filepath)
             except IOError:
                 print("cannot create thumbnail for", filepath)
@@ -487,11 +512,12 @@ application = tornado.web.Application([
     (r"/register", RegisterHandler),
     (r"/system/index", SystemIndexHandler),
     (r"/system/learning", SystemLearningHandler),
+    (r"/system/lifeshare", SystemLifeShareHandler),
     (r"/system/article/add", SystemArticleAddPageHandler),
     (r"/system/handle/fileupload", SystemFileUploadHandler),
     (r"/system/handle/addarticle", SystemAddArticleHandler),
-    (r"/system/handle/updatearticle/(\d+)", SystemUpdateArticleHandler),
-    (r"/system/handle/deletearticle/(\w+)", SystemDeleteArticleHandler),
+    (r"/system/handle/update/article/(\d+)", SystemUpdateArticleHandler),
+    (r"/system/handle/delete/article/(\w+)", SystemDeleteArticleHandler),
 ],**settings)
 
 if __name__ == "__main__":

@@ -10,7 +10,7 @@
 {% block Body %}
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
     <div class="row">
-        <form id="article-form" action="/system/handle/addarticle" method="post" class="add-article-form" enctype="multipart/form-data">
+        <div id="article-form"  class="add-article-form" >
             <div class="col-md-9">
                 <h1 class="page-header">撰写新文章</h1>
                 <div class="form-group">
@@ -93,7 +93,7 @@
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
@@ -187,7 +187,7 @@
                     },
 
                     success: function (data) {
-                        alert(data.message)
+                        alert(data.message);
                         window.location.replace(data.url);
                     },
                     error: function () {

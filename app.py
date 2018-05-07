@@ -7,7 +7,8 @@ import tornado.web
 import orm
 from orm import User,Article
 import os,sys
-import hashlib
+import hashlib                      #用于md5加密
+from PIL import Image               #用于图片处理
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is database --------------------------------------------
 #----------------------------------------------------------------------------------------------------------
@@ -302,14 +303,22 @@ class SystemFileUploadHandler(BaseHandle):
             #print(hashlib.md5((self.user.name + datetime.now().strftime("%Y%m%d%H%M%S") + filehash).encode('utf-8')).hexdigest())
             #获得发送来的文件后缀名
             filesuffix = os.path.splitext(file["filename"])[1]
-            #设置存储图片路径,文件命名方式：用户名 + 日期 + hash值
-            filename = hashlib.md5((self.user.name + datetime.now().strftime("%Y%m%d%H%M%S") + filehash).encode('utf-8')).hexdigest() + filesuffix
+            #设置存储图片路径,文件命名方式：用户名 + 日期 + hash值 + 目前已有文章数量
+            articleNum = self.session.query(Article).count()
+            filename = hashlib.md5((self.user.name + datetime.now().strftime("%Y%m%d%H%M%S") + filehash + str(articleNum)).encode('utf-8')).hexdigest() + filesuffix
             filepath = os.path.join(sys.path[0],"static","images","articlecover",filename)
             print(filepath)
             with open(filepath, 'wb') as f:
                 f.write(filebody)
-                #将保存的文件名回传回去(JSON格式)
-                self.write({"msg":"文章发布成功！","pictuer":filename,"url":"/system/learning"})
+            try:
+                image = Image.open(filepath)
+                image.resize((300, 256))
+                image.save(filepath)
+            except IOError:
+                print("cannot create thumbnail for", filepath)
+
+            #将保存的文件名回传回去(JSON格式)
+            self.write({"msg":"文章发布成功！","pictuer":filename,"url":"/system/learning"})
 
 class SystemUpdateArticleHandler(BaseHandle):
     @tornado.web.authenticated

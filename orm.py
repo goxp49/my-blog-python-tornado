@@ -63,7 +63,7 @@ class Article(Base):
 
 
 class LifeShare(Base):
-    __tablename__ = 'article'  # 表名
+    __tablename__ = 'lifeshare'  # 表名
 
     id = Column(Integer,primary_key=True,autoincrement=True)
     userName = Column(String(20), nullable=False)
@@ -75,7 +75,7 @@ class LifeShare(Base):
     pictuername = Column(String(200))
 
     def __repr__(self):
-        return "<Article>{}:{}".format(self.name, self.password)
+        return "<LifeShare>{}:{}".format(self.name, self.password)
 
 # 初始化数据库连接:
 engine = create_engine(  # 生成连接字符串，有特定的格式

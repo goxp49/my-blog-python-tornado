@@ -1,6 +1,6 @@
 {% extends "__BackstageBase__.html" %}
 
-{% block title_learning %}class="active"{% end %}
+{% block title_share %}class="active"{% end %}
 
 {% block AfterCSS %}
 <link rel="stylesheet" type="text/css" href="{{static_url("css/backstage/fileinput.css")}}">
@@ -15,16 +15,17 @@
                 <h1 class="page-header">撰写新文章</h1>
                 <div class="form-group">
                     <label for="article-title" class="sr-only">标题</label>
-                    <input type="text" id="article-title" name="article-title" class="form-control" placeholder="在此处输入标题" required autofocus autocomplete="off">
+                    <input type="text" id="article-title" name="article-title" class="form-control" placeholder="在此处输入标题"
+                           value="{{ share_title}}" required autofocus autocomplete="off">
                 </div>
                 <div class="form-group" id="editor">
-                    <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
+                    {% raw share_content %}
                 </div>
                 <div class="add-article-box">
                     <h2 class="add-article-box-title"><span>描述</span></h2>
                     <div class="add-article-box-content">
-                        <textarea id="describe" class="form-control" name="describe" autocomplete="off" required></textarea>
-                        <span class="prompt-text">显示在“学无止境”页面下各文章的简介，不要超过100字~</span>
+                        <textarea id="describe" class="form-control" name="describe" autocomplete="off" required>{{ share_describe}}</textarea>
+                        <span class="prompt-text">在“慢生活”页面中的对应文章封面上显示。</span>
                     </div>
                 </div>
                 <div class="add-article-box">
@@ -38,55 +39,11 @@
             <div class="col-md-3">
                 <h1 class="page-header">操作</h1>
                 <div class="add-article-box">
-                    <h2 class="add-article-box-title"><span>栏目</span></h2>
-                    <div class="add-article-box-content">
-                        <ul class="category-list">
-                            <li>
-                                <label>
-                                    <input name="category" type="radio" value="0" checked>
-                                    Python <em class="hidden-md">( 栏目ID: <span>0</span> )</em></label>
-                            </li>
-                            <li>
-                                <label>
-                                    <input name="category" type="radio" value="1">
-                                    JavaScript/CSS <em class="hidden-md">( 栏目ID: <span>1</span> )</em></label>
-                            </li>
-                            <li>
-                                <label>
-                                    <input name="category" type="radio" value="2">
-                                    Tornado <em class="hidden-md">( 栏目ID: <span>2</span> )</em></label>
-                            </li>
-                            <li>
-                                <label>
-                                    <input name="category" type="radio" value="3">
-                                    Sqlalchemy <em class="hidden-md">( 栏目ID: <span>3</span> )</em></label>
-                            </li>
-                            <li>
-                                <label>
-                                    <input name="category" type="radio" value="4">
-                                    第三方插件 <em class="hidden-md">( 栏目ID: <span>4</span> )</em></label>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="add-article-box">
-                    <h2 class="add-article-box-title"><span>关键字</span></h2>
-                    <div class="add-article-box-content">
-                        <input type="text" class="form-control" placeholder="文章关键字" id="keyword" name="keyword" autocomplete="off">
-                    </div>
-                </div>
-                <div class="add-article-box">
-                    <h2 class="add-article-box-title"><span>访问密码</span></h2>
-                    <div class="add-article-box-content">
-                        <input type="text" class="form-control" placeholder="当文章未公开时需要填写" id="accesspassword" name="accesspassword" autocomplete="off">
-                    </div>
-                </div>
-                <div class="add-article-box">
                     <h2 class="add-article-box-title"><span>发布</span></h2>
                     <div class="add-article-box-content">
-                        <p><label>状态：</label><span class="article-status-display">{{ article_status}}</span></p>
-                        <p><label>是否公开：</label><input type="radio" name="visibility" value="0" checked/>公开 <input type="radio" name="visibility" value="1" />加密</p>
-                        <p><label>发布时间：</label><span class="article-time-display"><input style="border: none;" type="datetime" name="time" value="{{ article_time }}" /></span></p>
+                        <p><label>状态：</label><span class="article-status-display">已发布</span></p>
+                        <p><label>是否公开：</label><input type="radio" name="visibility" value="0" {{ share_visibility[0] }}/>公开 <input type="radio" name="visibility" value="1" {{ share_visibility[1] }}/>加密</p>
+                        <p><label>发布时间：</label><span class="article-time-display"><input style="border: none;" type="datetime" name="time" value="{{ share_time }}" /></span></p>
                     </div>
                     <div class="add-article-box-footer">
                         <button class="btn btn-primary" type="button" id="submit-btn">发布</button>
@@ -109,7 +66,65 @@
 <script src="{{static_url("js/bootstrap/fileinput-theme.js")}}" type="text/javascript"></script>
 <script src="{{static_url("js/bootstrap/zh.js")}}" type="text/javascript"></script>
 <script src="{{static_url("js/bootstrap/fileinput-initial.js")}}" type="text/javascript"></script>
-<script type="text/javascript" src="{{static_url("js/wangEditor.min.js")}}"></script>
+<script type="text/javascript">
+    // initialize with defaults
+    $("#input-file").fileinput({
+
+        language: 'zh', //设置语言
+
+        uploadUrl: "/system/handle/fileupload", //上传的地址
+
+        allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+
+        //uploadExtraData:{"id": 1, "fileName":'123.mp3'},
+
+        uploadAsync: true, //默认异步上传
+
+        showUpload: false, //是否显示上传按钮
+
+        showRemove: true, //显示移除按钮
+
+        showPreview: true, //是否显示预览
+
+        showCaption: false,//是否显示标题
+
+        browseClass: "btn btn-primary", //按钮样式
+
+        dropZoneEnabled: false,//是否显示拖拽区域
+
+        //minImageWidth: 50, //图片的最小宽度
+
+        //minImageHeight: 50,//图片的最小高度
+
+        //maxImageWidth: 1000,//图片的最大宽度
+
+        //maxImageHeight: 1000,//图片的最大高度
+
+        maxFileSize: 5 * 1024,//单位为kb，如果为0表示不限制文件大小
+
+        //minFileCount: 0,
+
+        maxFileCount: 1, //表示允许同时上传的最大文件个数
+
+        enctype: 'multipart/form-data',
+
+        validateInitialCount: true,
+
+        previewFileIcon: "<iclass='glyphicon glyphicon-king'></i>",
+
+        msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+
+        initialPreview: [
+            "<img src='/static/images/wang.jpg' class='file-preview-image' alt='Desert' title='Desert' style=\"height:185px\">",
+        ],
+        layoutTemplates: {
+            actionDelete: '', //去除上传预览的缩略图中的删除图标
+            actionUpload: '',//去除上传预览缩略图中的上传图片；
+            actionZoom: ''   //去除上传预览缩略图中的查看详情预览的缩略图标。
+        },
+
+    });
+</script>
 <script type="text/javascript">
     var E = window.wangEditor;
     var editor = new E('#editor');
@@ -149,15 +164,6 @@
             //获取文章简介
             var describe = $('#describe').val();
             //alert("文章简介" + describe);
-            //获取栏目分组
-            var category = $("input[name='category']:checked").val();
-            //alert(category);
-            //获取关键字
-            var keywork = $('#keyword').val();
-            //alert(keywork);
-            //获取访问密码
-            var password = $('#accesspassword').val();
-            //alert(password);
             //获取加密状态
             var visibility = $("input[name='visibility']:checked").val();
             //alert(visibility);
@@ -173,22 +179,19 @@
                 $.ajax({
                     type: "post",
                     dataType: "json",
-                    url: "/system/handle/addarticle",
+                    url: "/system/handle/addlifeshare",
                     async: true,
                     data: {
                         "title": title,
                         "content": content,
                         "describe": describe,
-                        "category": category,
-                        "keywork": keywork,
-                        "password": password,
                         "visibility": visibility,
                         "pictuername": data.response.pictuer,//从服务器回传的图片名
                     },
 
                     success: function (data) {
                         alert(data.message);
-                        window.location.replace("/system/learning");
+                        window.location.replace("/system/lifeshare");
                     },
                     error: function () {
                         alert("网络传输错误，请稍后再试~");

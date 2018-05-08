@@ -260,32 +260,39 @@ class SystemLifeShareHandler(BaseHandle):
 
     @tornado.web.authenticated
     def get(self):
-        allArticles = []
+        allShare = []
         #如果当前用户为管理员，则显示所有人的文章
-        if(self.session.query(LifeShare).filter(LifeShare.name == self.currentuser,User.admin == True).first()):
+        if(self.session.query(User).filter(User.name == self.currentuser,User.admin == True).first()):
             print("当前是管理员，显示所有文章")
             articles = self.session.query(LifeShare).all()
             #获得文章数量
-            articlesNum = len(articles)
+            shareNum = len(articles)
         else:
             print("当前是普通用户，只显示个人文章")
             articles = self.session.query(LifeShare).filter(LifeShare.userName == self.currentuser).all()
             # 获得文章数量
-            articlesNum = len(articles)
+            shareNum = len(articles)
         for article in articles:
             tempList = {}
             tempList["id"] = article.id
             tempList["title"] = article.title
             tempList["date"] = article.date
-            allArticles.append(tempList)
+            allShare.append(tempList)
         self.render(r"backstage\lifeshare.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
-                    articlesNum = articlesNum,articles = allArticles)
+                    shareNum = shareNum,shares = allShare)
 
 class SystemArticleAddPageHandler(BaseHandle):
     @tornado.web.authenticated
     def get(self):
         self.render(r"backstage\add-article.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
                     article_status = "未发表",article_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    )
+
+class SystemLifeShareAddPageHandler(BaseHandle):
+    @tornado.web.authenticated
+    def get(self):
+        self.render(r"backstage\add-lifeshare.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
+                    share_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                     )
 
 class SystemAddArticleHandler(BaseHandle):
@@ -309,6 +316,23 @@ class SystemAddArticleHandler(BaseHandle):
         #回传AJAX结果
         self.write(json.dumps(data))
 
+class SystemAddLifeShareHandler(BaseHandle):
+    @tornado.web.authenticated
+    def post(self):
+        title = self.get_argument("title")
+        content = self.get_argument("content")
+        describe = self.get_argument("describe")
+        visibility = self.get_argument("visibility")
+        pictuerName = self.get_argument("pictuername")
+        #print(title + "------" + content + "------" + describe + "------" + category + "------" + keywork + "------" + password + "------" + visibility + "------" + pictuerName)
+        #将文章内容存储到数据库中
+        self.session.add(LifeShare(userName = self.user.name,title = title,content = content,describe = describe,
+                                 visibility = visibility,pictuername = pictuerName,date = datetime.now()))
+        self.session.commit()
+        data = {'message': '文章已发表成功！', 'url': "/system/lifeshare"}  # 封装数据
+        #回传AJAX结果
+        self.write(json.dumps(data))
+
 
 class SystemFileUploadHandler(BaseHandle):
     @tornado.web.authenticated
@@ -328,62 +352,81 @@ class SystemFileUploadHandler(BaseHandle):
             #print(hashlib.md5((self.user.name + datetime.now().strftime("%Y%m%d%H%M%S") + filehash).encode('utf-8')).hexdigest())
             #获得发送来的文件后缀名
             filesuffix = os.path.splitext(file["filename"])[1]
-            #设置存储图片路径,文件命名方式：用户名 + 日期 + hash值 + 目前已有文章数量
-            articleNum = self.session.query(Article).count()
-            filename = hashlib.md5((self.user.name + datetime.now().strftime("%Y%m%d%H%M%S") + filehash + str(articleNum)).encode('utf-8')).hexdigest() + filesuffix
+            #设置存储图片路径,文件命名方式：用户名 + 日期 + hash值
+            filename = hashlib.md5((self.user.name + datetime.now().strftime("%Y%m%d%H%M%S") + filehash).encode('utf-8')).hexdigest() + filesuffix
             filepath = os.path.join(sys.path[0],"static","images","articlecover",filename)
             print(filepath)
             with open(filepath, 'wb') as f:
                 f.write(filebody)
             try:
                 image = Image.open(filepath)
-                image.resize((300, 256), Image.ANTIALIAS)
-                image.save(filepath)
+                newimage = image.resize((300, 256), Image.ANTIALIAS)
+               #newimage.show()
+                newimage.save(filepath)
             except IOError:
                 print("cannot create thumbnail for", filepath)
 
             #将保存的文件名回传回去(JSON格式)
-            self.write({"msg":"文章发布成功！","pictuer":filename,"url":"/system/learning"})
+            self.write({"msg":"文章发布成功！","pictuer":filename})
 
-class SystemUpdateArticleHandler(BaseHandle):
+class SystemUpdateHandler(BaseHandle):
     @tornado.web.authenticated
-    def get(self,id):
-        tagArticle = self.session.query(Article).filter(Article.id == id).first()
-        #确定存在该id的文章
-        if tagArticle:
-            title = tagArticle.title
-            content = tagArticle.content
-            describe = tagArticle.describe
-            category = categoryCheck[tagArticle.category]
-            keywork = tagArticle.keywork
-            passwork = tagArticle.password
-            visibility = visibilitySelect[tagArticle.visibility]
-            date = tagArticle.date
-            self.render(r"backstage\update-article.html",article_title = title,article_content = content,
-                        article_describe = describe,article_category = category,article_keywork = keywork,
-                        article_passwork = passwork,article_visibility = visibility,article_date = date,
-                        article_id = id,
-                        current_user=self.currentuser, mail=self.user.mail, phone=self.user.mobile,
-                        )
+    def get(self,obj,id):
+        #判断是否要修改学习文章
+        if obj == "article":
+            tagArticle = self.session.query(Article).filter(Article.id == id).first()
+            #确定存在该id的文章
+            if tagArticle:
+                title = tagArticle.title
+                content = tagArticle.content
+                describe = tagArticle.describe
+                category = categoryCheck[tagArticle.category]
+                keywork = tagArticle.keywork
+                passwork = tagArticle.password
+                visibility = visibilitySelect[tagArticle.visibility]
+                date = tagArticle.date
+                self.render(r"backstage\update-article.html",article_title = title,article_content = content,
+                            article_describe = describe,article_category = category,article_keywork = keywork,
+                            article_passwork = passwork,article_visibility = visibility,article_date = date,
+                            article_id = id,
+                            current_user=self.currentuser, mail=self.user.mail, phone=self.user.mobile,
+                            )
+        # 判断是否要修改生活分享
+        if obj == "lifeshare":
+            tagShare = self.session.query(LifeShare).filter(LifeShare.id == id).first()
+            # 确定存在该id的文章
+            if tagShare:
+                title = tagShare.title
+                content = tagShare.content
+                describe = tagShare.describe
+                visibility = visibilitySelect[tagShare.visibility]
+                date = tagShare.date
+                self.render(r"backstage\update-lifeshare.html", article_title=title, article_content=content,
+                            article_describe=describe,article_visibility=visibility, article_date=date,
+                            article_id=id,
+                            current_user=self.currentuser, mail=self.user.mail, phone=self.user.mobile,
+                            )
 
     @tornado.web.authenticated
-    def post(self, id):
-        tagArticle = self.session.query(Article).filter(Article.id == id).first()
-        # 确定存在该id的文章
-        if tagArticle:
-            tagArticle.title = self.get_argument("title")
-            tagArticle.content = self.get_argument("content")
-            tagArticle.describe = self.get_argument("describe")
-            tagArticle.category = self.get_argument("category")
-            tagArticle.keywork = self.get_argument("keywork")
-            tagArticle.password = self.get_argument("password")
-            tagArticle.visibility = self.get_argument("visibility")
-            tagArticle.date = datetime.now()
-            #将文章内容更新到数据库中
-            self.session.commit()
-            data = {'message': '文章已更新成功！', 'url': "/system/learning"}  # 封装数据
-            #回传AJAX结果
-            self.write(json.dumps(data))
+    def post(self,obj, id):
+        # 判断是否要修改学习文章
+        if obj == "article":
+            tagArticle = self.session.query(Article).filter(Article.id == id).first()
+            # 确定存在该id的文章
+            if tagArticle:
+                tagArticle.title = self.get_argument("title")
+                tagArticle.content = self.get_argument("content")
+                tagArticle.describe = self.get_argument("describe")
+                tagArticle.category = self.get_argument("category")
+                tagArticle.keywork = self.get_argument("keywork")
+                tagArticle.password = self.get_argument("password")
+                tagArticle.visibility = self.get_argument("visibility")
+                tagArticle.date = datetime.now()
+                #将文章内容更新到数据库中
+                self.session.commit()
+                data = {'message': '文章已更新成功！', 'url': "/system/learning"}  # 封装数据
+                #回传AJAX结果
+                self.write(json.dumps(data))
 
 class SystemDeleteArticleHandler(BaseHandle):
     #get用于处理单个删除请求
@@ -479,6 +522,10 @@ class ArticleManageItemModul(tornado.web.UIModule):
     def render(self, article):
         return self.render_string("modules\ArticleManageItem.html",article=article)
 
+class LifeShareManageItemModul(tornado.web.UIModule):
+    def render(self, share):
+        return self.render_string("modules\LifeShareManageItem.html",share=share)
+
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is initial --------------------------------------------
 #----------------------------------------------------------------------------------------------------------
@@ -494,6 +541,7 @@ settings = {
                     "LearnGroup":LearnGroupModul,
                     "Message":MessageModul,
                     "ArticleManageItem":ArticleManageItemModul,
+                    "LifeShareManageItem":LifeShareManageItemModul,
                    },
     "login_url":"/login",
     "cookie_secret": "bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E=",
@@ -514,9 +562,11 @@ application = tornado.web.Application([
     (r"/system/learning", SystemLearningHandler),
     (r"/system/lifeshare", SystemLifeShareHandler),
     (r"/system/article/add", SystemArticleAddPageHandler),
+    (r"/system/lifeshare/add", SystemLifeShareAddPageHandler),
     (r"/system/handle/fileupload", SystemFileUploadHandler),
     (r"/system/handle/addarticle", SystemAddArticleHandler),
-    (r"/system/handle/update/article/(\d+)", SystemUpdateArticleHandler),
+    (r"/system/handle/addlifeshare", SystemAddLifeShareHandler),
+    (r"/system/handle/update/(\w+)/(\d+)", SystemUpdateHandler),
     (r"/system/handle/delete/article/(\w+)", SystemDeleteArticleHandler),
 ],**settings)
 

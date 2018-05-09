@@ -401,9 +401,10 @@ class SystemUpdateHandler(BaseHandle):
                 describe = tagShare.describe
                 visibility = visibilitySelect[tagShare.visibility]
                 date = tagShare.date
-                self.render(r"backstage\update-lifeshare.html", article_title=title, article_content=content,
-                            article_describe=describe,article_visibility=visibility, article_date=date,
-                            article_id=id,
+                inipictureaddress = tagShare.pictuername
+                self.render(r"backstage\update-lifeshare.html", share_title=title, share_content=content,
+                            share_describe=describe,share_visibility=visibility, share_date=date,
+                            share_id=id,inipictureaddress=inipictureaddress,
                             current_user=self.currentuser, mail=self.user.mail, phone=self.user.mobile,
                             )
 

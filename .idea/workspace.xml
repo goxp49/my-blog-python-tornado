@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d5dfc381-ac25-4de6-b792-b4727693e7b2" name="默认的" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/ff5a12f211f8842ad6cdced2c3804f74.jpg" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/static/images/articlecover/5a66c32aaf699704beb70c1727df98dc.jpg" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/app.py" afterPath="$PROJECT_DIR$/app.py" />
+      <change beforePath="$PROJECT_DIR$/templates/backstage/update-article.html" afterPath="$PROJECT_DIR$/templates/backstage/update-article.html" />
       <change beforePath="$PROJECT_DIR$/templates/backstage/update-lifeshare.html" afterPath="$PROJECT_DIR$/templates/backstage/update-lifeshare.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,7 +21,7 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/Tornado_Blog$orm.coverage" NAME="orm Coverage Results" MODIFIED="1522760952252" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Tornado_Blog$main.coverage" NAME="main Coverage Results" MODIFIED="1522577103850" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../Blog" />
-    <SUITE FILE_PATH="coverage/Tornado_Blog$app.coverage" NAME="app Coverage Results" MODIFIED="1525874775562" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Tornado_Blog$app.coverage" NAME="app Coverage Results" MODIFIED="1525959722318" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -39,11 +40,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="app.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="app.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="138">
-              <caret line="403" column="36" lean-forward="false" selection-start-line="403" selection-start-column="36" selection-end-line="403" selection-end-column="36" />
+            <state relative-caret-position="172">
+              <caret line="523" column="6" lean-forward="false" selection-start-line="523" selection-start-column="6" selection-end-line="523" selection-end-column="6" />
               <folding>
                 <element signature="e#24#35#0" expanded="true" />
               </folding>
@@ -51,43 +52,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="update-lifeshare.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/backstage/update-lifeshare.html">
+      <file leaf-file-name="slowlife.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/slowlife.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-787">
-              <caret line="70" column="0" lean-forward="true" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
-              <folding>
-                <marker date="1525874775510" expanded="true" signature="4480:4492" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="update-article.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/backstage/update-article.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-232">
-              <caret line="95" column="0" lean-forward="true" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+            <state relative-caret-position="408">
+              <caret line="18" column="35" lean-forward="true" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="35" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="add-article.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/backstage/add-article.html">
+      <file leaf-file-name="slowlife.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/css/slowlife.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="107" column="0" lean-forward="false" selection-start-line="107" selection-start-column="0" selection-end-line="111" selection-end-column="85" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="lifeshare.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/backstage/lifeshare.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="58">
-              <caret line="97" column="55" lean-forward="false" selection-start-line="97" selection-start-column="48" selection-end-line="97" selection-end-column="55" />
+            <state relative-caret-position="138">
+              <caret line="6" column="33" lean-forward="true" selection-start-line="6" selection-start-column="33" selection-end-line="6" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -96,7 +75,7 @@
       <file leaf-file-name="orm.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/orm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
+            <state relative-caret-position="23">
               <caret line="64" column="15" lean-forward="false" selection-start-line="64" selection-start-column="6" selection-end-line="64" selection-end-column="15" />
               <folding>
                 <element signature="e#0#77#0" expanded="true" />
@@ -153,7 +132,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/static/css/about.css" />
         <option value="$PROJECT_DIR$/templates/modules/AboutTimeLine.html" />
         <option value="$PROJECT_DIR$/templates/modules/SlowLifePhone.html" />
         <option value="$PROJECT_DIR$/templates/modules/IndexTimeLine.html" />
@@ -185,7 +163,6 @@
         <option value="$PROJECT_DIR$/static/css/backstage/fileinput.css" />
         <option value="$PROJECT_DIR$/static/js/wangEditor.min.js" />
         <option value="$PROJECT_DIR$/static/js/login.js" />
-        <option value="$PROJECT_DIR$/templates/backstage/update-article.html" />
         <option value="$PROJECT_DIR$/templates/modules/LearnGroup.html" />
         <option value="$PROJECT_DIR$/templates/learn.html" />
         <option value="$PROJECT_DIR$/templates/modules/TimeLine.html" />
@@ -202,8 +179,10 @@
         <option value="$PROJECT_DIR$/templates/backstage/learning.html" />
         <option value="$PROJECT_DIR$/static/js/bootstrap/fileinput-initial.js" />
         <option value="$PROJECT_DIR$/templates/backstage/cc.html" />
-        <option value="$PROJECT_DIR$/app.py" />
+        <option value="$PROJECT_DIR$/templates/backstage/update-article.html" />
         <option value="$PROJECT_DIR$/templates/backstage/update-lifeshare.html" />
+        <option value="$PROJECT_DIR$/app.py" />
+        <option value="$PROJECT_DIR$/static/css/slowlife.css" />
       </list>
     </option>
   </component>
@@ -237,6 +216,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -258,14 +239,7 @@
               <item name="Tornado_Blog" type="b2602c69:ProjectViewProjectNode" />
               <item name="Tornado_Blog" type="462c0819:PsiDirectoryNode" />
               <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="images" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Tornado_Blog" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Tornado_Blog" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="images" type="462c0819:PsiDirectoryNode" />
-              <item name="articlecover" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Tornado_Blog" type="b2602c69:ProjectViewProjectNode" />
@@ -301,8 +275,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -468,7 +440,14 @@
       <option name="project" value="LOCAL" />
       <updated>1525788588723</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="修正生活分享修改页面显示异常问题">
+      <created>1525874872825</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1525874872825</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TodoView">
@@ -488,9 +467,9 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26697892" sideWeight="0.50429183" order="15" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290398" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32435596" sideWeight="0.49570817" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290398" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24570815" sideWeight="0.49305555" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32435596" sideWeight="0.49570817" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24892704" sideWeight="0.49305555" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -525,7 +504,8 @@
     <MESSAGE value="开始添加生活分享界面" />
     <MESSAGE value="1.修正图片上传后没有修改尺寸问题；&#10;2.合并学习和生活分享的handler；&#10;3.开始添加生活分享上传页面；" />
     <MESSAGE value="修正生活分享修改页面显示异常问题" />
-    <option name="LAST_COMMIT_MESSAGE" value="修正生活分享修改页面显示异常问题" />
+    <MESSAGE value="完成生活分享修改功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="完成生活分享修改功能" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -534,20 +514,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/static/js/jquery.validate.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="3" column="1078" lean-forward="false" selection-start-line="3" selection-start-column="1078" selection-end-line="3" selection-end-column="1078" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/jquery.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/css/backstage/style.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="23">
@@ -663,13 +629,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/learn.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="41" column="4" lean-forward="false" selection-start-line="41" selection-start-column="4" selection-end-line="43" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/modules/IndexImageHead.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="46">
@@ -705,13 +664,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/modules/ArticleManageItem.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="8" column="16" lean-forward="false" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/backstage/add-lifeshare.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -739,6 +691,28 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/bootstrap/fileinput-initial.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1104">
+          <caret line="48" column="29" lean-forward="false" selection-start-line="48" selection-start-column="29" selection-end-line="48" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/backstage/cc.html" />
+    <entry file="file://$PROJECT_DIR$/templates/__Base__.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="20" column="119" lean-forward="true" selection-start-line="20" selection-start-column="119" selection-end-line="20" selection-end-column="119" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/backstage/__BackstageBase__.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1538">
+          <caret line="68" column="69" lean-forward="false" selection-start-line="68" selection-start-column="69" selection-end-line="68" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/modules/LifeShareManageItem.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="92">
@@ -747,63 +721,63 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/modules/ArticleManageItem.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="5" column="51" lean-forward="true" selection-start-line="5" selection-start-column="51" selection-end-line="5" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/learn.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="41" column="4" lean-forward="false" selection-start-line="41" selection-start-column="4" selection-end-line="43" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/backstage/learning.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2346">
+        <state relative-caret-position="352">
           <caret line="102" column="33" lean-forward="false" selection-start-line="102" selection-start-column="33" selection-end-line="102" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/backstage/add-article.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-897">
+          <caret line="120" column="26" lean-forward="true" selection-start-line="120" selection-start-column="26" selection-end-line="120" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/backstage/update-article.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="168" column="41" lean-forward="true" selection-start-line="168" selection-start-column="41" selection-end-line="168" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/backstage/update-lifeshare.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="210" column="24" lean-forward="true" selection-start-line="210" selection-start-column="24" selection-end-line="210" selection-end-column="24" />
+          <folding>
+            <marker date="1525959589865" expanded="true" signature="4554:4566" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/orm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
+        <state relative-caret-position="23">
           <caret line="64" column="15" lean-forward="false" selection-start-line="64" selection-start-column="6" selection-end-line="64" selection-end-column="15" />
           <folding>
             <element signature="e#0#77#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="403" column="36" lean-forward="false" selection-start-line="403" selection-start-column="36" selection-end-line="403" selection-end-column="36" />
-          <folding>
-            <element signature="e#24#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/bootstrap/fileinput-initial.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1104">
-          <caret line="48" column="29" lean-forward="false" selection-start-line="48" selection-start-column="29" selection-end-line="48" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/backstage/cc.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1639">
-          <caret line="368" column="25" lean-forward="true" selection-start-line="368" selection-start-column="25" selection-end-line="368" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/__Base__.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="20" column="119" lean-forward="true" selection-start-line="20" selection-start-column="119" selection-end-line="20" selection-end-column="119" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/backstage/__BackstageBase__.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1538">
-          <caret line="68" column="69" lean-forward="false" selection-start-line="68" selection-start-column="69" selection-end-line="68" selection-end-column="69" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -815,28 +789,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/backstage/update-article.html">
+    <entry file="file://$PROJECT_DIR$/static/css/slowlife.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-232">
-          <caret line="95" column="0" lean-forward="true" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+        <state relative-caret-position="138">
+          <caret line="6" column="33" lean-forward="true" selection-start-line="6" selection-start-column="33" selection-end-line="6" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/backstage/add-article.html">
+    <entry file="file://$PROJECT_DIR$/templates/slowlife.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="107" column="0" lean-forward="false" selection-start-line="107" selection-start-column="0" selection-end-line="111" selection-end-column="85" />
+        <state relative-caret-position="408">
+          <caret line="18" column="35" lean-forward="true" selection-start-line="18" selection-start-column="21" selection-end-line="18" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/backstage/update-lifeshare.html">
+    <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-787">
-          <caret line="70" column="0" lean-forward="true" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+        <state relative-caret-position="172">
+          <caret line="523" column="6" lean-forward="false" selection-start-line="523" selection-start-column="6" selection-end-line="523" selection-end-column="6" />
           <folding>
-            <marker date="1525874775510" expanded="true" signature="4480:4492" ph="..." />
+            <element signature="e#24#35#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -428,8 +428,31 @@ class SystemUpdateHandler(BaseHandle):
                 data = {'message': '文章已更新成功！', 'url': "/system/learning"}  # 封装数据
                 #回传AJAX结果
                 self.write(json.dumps(data))
+        # 判断是否要修改生活分享
+        if obj == "lifeshare":
+            tagArticle = self.session.query(LifeShare).filter(LifeShare.id == id).first()
+            # 确定存在该id的文章
+            if tagArticle:
+                #如果有replace，代表有上传新的封面，需要把旧的图片删除
+                if(self.get_argument("replace",None)) :
+                    filepath = os.path.join(sys.path[0], "static", "images", "articlecover", tagArticle.pictuername)
+                    #先判断文件是否存在才删除
+                    if(os.path.exists(filepath)):
+                        os.remove(filepath)
+                    #更新图片名称
+                    tagArticle.pictuername = self.get_argument("pictuername", None)
+                tagArticle.title = self.get_argument("title",None)
+                tagArticle.content = self.get_argument("content",None)
+                tagArticle.describe = self.get_argument("describe",None)
+                tagArticle.visibility = self.get_argument("visibility",None)
+                tagArticle.date = datetime.now()
+                #将文章内容更新到数据库中
+                self.session.commit()
+                data = {'message': '生活分享已更新成功！', 'url': "/system/lifeshare"}  # 封装数据
+                #回传AJAX结果
+                self.write(json.dumps(data))
 
-class SystemDeleteArticleHandler(BaseHandle):
+class SystemDeleteHandler(BaseHandle):
     #get用于处理单个删除请求
     @tornado.web.authenticated
     def get(self,cls):
@@ -448,7 +471,7 @@ class SystemDeleteArticleHandler(BaseHandle):
 
     #post用于处理下方的多选删除请求
     @tornado.web.authenticated
-    def post(self,cls):
+    def post(self,obj,cls):
         # 传递的是数组等多个结果的值时，一定要用get_arguments，get_argument一次只能获取一个结果
         deletetag = self.get_arguments("check_val[]")
         print(deletetag)
@@ -568,7 +591,7 @@ application = tornado.web.Application([
     (r"/system/handle/addarticle", SystemAddArticleHandler),
     (r"/system/handle/addlifeshare", SystemAddLifeShareHandler),
     (r"/system/handle/update/(\w+)/(\d+)", SystemUpdateHandler),
-    (r"/system/handle/delete/article/(\w+)", SystemDeleteArticleHandler),
+    (r"/system/handle/delete/(\w+)/(\w+)", SystemDeleteHandler),
 ],**settings)
 
 if __name__ == "__main__":

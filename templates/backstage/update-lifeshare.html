@@ -31,6 +31,7 @@
                 <div class="add-article-box">
                     <h2 class="add-article-box-title"><span>标题图片</span></h2>
                     <div class="add-article-box-content">
+                        <span class="prompt-text"> 注意：不上传新图片将保留原封面</span>
                         <input id="input-file" name="input-file" type="file" class="file">
                     </div>
                 </div>
@@ -155,7 +156,7 @@
 
             //获取封面图片数量
             var filesCount = $('#input-file').fileinput('getFilesCount');
-            //alert("封面图片数量"+filesCount);
+            alert("封面图片数量"+filesCount);
             //获取文章内容
             var content = editor.txt.html();
             //获取文章标题
@@ -167,26 +168,56 @@
             //获取加密状态
             var visibility = $("input[name='visibility']:checked").val();
             //alert(visibility);
-            // 检查是图片、标题、简介是否为空
-            if (!filesCount && title == "" && describe == "") {
+            // 检查标题、简介是否为空
+            if ( title == "" && describe == "") {
                 alert("请填完整内容");
                 return false;
             }
-            //上传封面成功后上传文章内容
-            $('#input-file').fileinput().on("fileuploaded", function (event, data) {
+            //如果图片数量不为0，则表示有上传新图片
+            if(filesCount)
+            {
+                //上传封面成功后上传文章内容
+                $('#input-file').fileinput().on("fileuploaded", function (event, data) {
 
+                    var values = {};
+                    $.ajax({
+                        type: "post",
+                        dataType: "json",
+                        url: "/system/handle/update/lifeshare/{{ share_id }}",
+                        async: true,
+                        data: {
+                            "title": title,
+                            "content": content,
+                            "describe": describe,
+                            "visibility": visibility,
+                            "replace":true,//如果有该项，表示会删除旧的封面图片
+                            "pictuername": data.response.pictuer,//从服务器回传的图片名
+                        },
+
+                        success: function (data) {
+                            alert(data.message);
+                            window.location.replace("/system/lifeshare");
+                        },
+                        error: function () {
+                            alert("网络传输错误，请稍后再试~");
+                        },
+                    });
+                });
+                $('#input-file').fileinput('upload');
+            }
+            else//如题图片数量为0，则不需要上传新图片
+            {
                 var values = {};
                 $.ajax({
                     type: "post",
                     dataType: "json",
-                    url: "/system/handle/addlifeshare",
+                    url: "/system/handle/update/lifeshare/{{ share_id }}",
                     async: true,
                     data: {
                         "title": title,
                         "content": content,
                         "describe": describe,
                         "visibility": visibility,
-                        "pictuername": data.response.pictuer,//从服务器回传的图片名
                     },
 
                     success: function (data) {
@@ -197,9 +228,8 @@
                         alert("网络传输错误，请稍后再试~");
                     },
                 });
-            });
-            $('#input-file').fileinput('upload');
-            //$('#article-form').submit();
+            }
+
         });
     });
 </script>

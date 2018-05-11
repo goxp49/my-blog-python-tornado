@@ -73,11 +73,16 @@ class AboutHandler(BaseHandle):
 
 class LifeHandler(BaseHandle):
     def get(self):
-        self.render("slowlife.html",PhoneNum = range(8))
-
-class ShareHandler(BaseHandle):
-    def get(self):
-        self.render("share.html",GroupData = range(8))
+        allShares = []
+        lifeshares = self.session.query(LifeShare).all()
+        for lifeshare in lifeshares:
+            tempList = {}
+            tempList["id"] = lifeshare.id
+            tempList["title"] = lifeshare.title
+            tempList["describe"] = lifeshare.describe
+            tempList["pictuername"] = lifeshare.pictuername
+            allShares.append(tempList)
+        self.render("slowlife.html",ShareNum = allShares)
 
 class LearnHandler(BaseHandle):
     def get(self):
@@ -169,6 +174,19 @@ class RegisterHandler(BaseHandle):
             data['message'] = "注册成功，请您重新登录，正在为您跳转…………"
             self.write(json.dumps(data))
 
+class ViewHandler(BaseHandle):
+    def get(self,obj,id):
+        #通过obj判断要查看什么内容
+        if(obj == "lifeshare"):
+            lifeshare = self.session.query(LifeShare).filter(LifeShare.id == id).first()
+            #判断文章是否存在
+            if lifeshare:
+                title = lifeshare.title
+                content = lifeshare.content
+                date = lifeshare.date
+                username = lifeshare.userName
+                viewNum = 0
+            self.render("view-lifeshare.html",title=title,content=content,date=date,username=username,viewNum=viewNum)
 
 class SystemIndexHandler(BaseHandle):
     @tornado.web.authenticated
@@ -522,12 +540,8 @@ class AboutTimeLineModul(tornado.web.UIModule):
         return self.render_string("modules\AboutTimeXAxis.html",data=data)
 
 class SlowLifePhoneModul(tornado.web.UIModule):
-    def render(self, clas):
-        data = {
-            "phone":"girl.jpg",
-            "content":"/index",
-        }
-        return self.render_string("modules\SlowLifePhone.html",data=data)
+    def render(self, lifeshare):
+        return self.render_string("modules\SlowLifePhone.html",lifeshare=lifeshare)
 
 class LearnGroupModul(tornado.web.UIModule):
     def render(self, category):
@@ -576,12 +590,12 @@ application = tornado.web.Application([
     (r"/index", IndexHandler),
     (r"/about", AboutHandler),
     (r"/slowlife", LifeHandler),
-    (r"/share", ShareHandler),
     (r"/learn", LearnHandler),
     (r"/bbs", BBSHandler),
     (r"/login", LoginHandler),
     (r"/logout", LogoutHandler),
     (r"/register", RegisterHandler),
+    (r"/view/(\w+)/(\d+)", ViewHandler),
     (r"/system/index", SystemIndexHandler),
     (r"/system/learning", SystemLearningHandler),
     (r"/system/lifeshare", SystemLifeShareHandler),

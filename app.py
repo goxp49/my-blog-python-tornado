@@ -353,39 +353,66 @@ class SystemAddLifeShareHandler(BaseHandle):
 
 
 class SystemFileUploadHandler(BaseHandle):
+
     @tornado.web.authenticated
-    def get(self):
-        self.render(r"backstage\add-article.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
-                    )
-    @tornado.web.authenticated
-    def post(self):
-        #这里的属性名要和html中的name一样
-        FileData =  self.request.files["input-file"]
-        for file in FileData:
-            print(file)
-            #filetype = file["content_type"]
-            #filename = file["filename"]
-            filebody = file["body"]
-            filehash = hashlib.md5(filebody).hexdigest()
-            #print(hashlib.md5((self.user.name + datetime.now().strftime("%Y%m%d%H%M%S") + filehash).encode('utf-8')).hexdigest())
-            #获得发送来的文件后缀名
-            filesuffix = os.path.splitext(file["filename"])[1]
-            #设置存储图片路径,文件命名方式：用户名 + 日期 + hash值
-            filename = hashlib.md5((self.user.name + datetime.now().strftime("%Y%m%d%H%M%S") + filehash).encode('utf-8')).hexdigest() + filesuffix
-            filepath = os.path.join(sys.path[0],"static","images","articlecover",filename)
-            print(filepath)
-            with open(filepath, 'wb') as f:
-                f.write(filebody)
-            try:
-                image = Image.open(filepath)
-                newimage = image.resize((300, 256), Image.ANTIALIAS)
-               #newimage.show()
-                newimage.save(filepath)
-            except IOError:
-                print("cannot create thumbnail for", filepath)
+    def post(self,handler):
+        #如果是上传封面图片
+        if(handler == "cover"):
+            #这里的属性名要和html中的name一样
+            FileData =  self.request.files["input-file"]
+            for file in FileData:
+                print(file)
+                #filetype = file["content_type"]
+                #filename = file["filename"]
+                filebody = file["body"]
+                filehash = hashlib.md5(filebody).hexdigest()
+                #print(hashlib.md5((self.user.name + datetime.now().strftime("%Y%m%d%H%M%S") + filehash).encode('utf-8')).hexdigest())
+                #获得发送来的文件后缀名
+                filesuffix = os.path.splitext(file["filename"])[1]
+                #设置存储图片路径,文件命名方式：用户名 + 日期 + hash值
+                filename = hashlib.md5((self.user.name + datetime.now().strftime("%Y%m%d%H%M%S") + filehash).encode('utf-8')).hexdigest() + filesuffix
+                filepath = os.path.join(sys.path[0],"static","images","articlecover",filename)
+                print(filepath)
+                with open(filepath, 'wb') as f:
+                    f.write(filebody)
+                try:
+                    image = Image.open(filepath)
+                    newimage = image.resize((300, 256), Image.ANTIALIAS)
+                   #newimage.show()
+                    newimage.save(filepath)
+                except IOError:
+                    print("cannot create thumbnail for", filepath)
+
+                #将保存的文件名回传回去(JSON格式)
+                self.write({"msg":"文章发布成功！","pictuer":filename})
+
+        #如果是上传编辑器中的图片
+        if(handler == "editorpicture"):
+            #这里的属性名要和editor.customConfig.uploadFileName一样！
+            PictureData =  self.request.files["EditorPicture"]
+            for picture in PictureData:
+                print(picture)
+                filebody = picture["body"]
+                filehash = hashlib.md5(filebody).hexdigest()
+                #获得发送来的文件后缀名
+                filesuffix = os.path.splitext(picture["filename"])[1]
+                #设置存储图片路径,文件命名方式：用户名 + 日期 + hash值
+                filename = hashlib.md5((self.user.name + datetime.now().strftime("%Y%m%d%H%M%S") + filehash).encode('utf-8')).hexdigest() + filesuffix
+                filepath = os.path.join(sys.path[0],"static","images","editorpicture",filename)
+                print(filepath)
+                with open(filepath, 'wb') as f:
+                    f.write(filebody)
+                #注意：此处路径static前有"/"表示使用的是绝对路径
+                resultDate={
+                    "errno": 0,
+                    "data": [
+                        "/static/images/editorpicture/"+filename,
+                        ]
+                }
 
             #将保存的文件名回传回去(JSON格式)
-            self.write({"msg":"文章发布成功！","pictuer":filename})
+            self.write(resultDate)
+
 
 class SystemUpdateHandler(BaseHandle):
     @tornado.web.authenticated
@@ -601,7 +628,7 @@ application = tornado.web.Application([
     (r"/system/lifeshare", SystemLifeShareHandler),
     (r"/system/article/add", SystemArticleAddPageHandler),
     (r"/system/lifeshare/add", SystemLifeShareAddPageHandler),
-    (r"/system/handle/fileupload", SystemFileUploadHandler),
+    (r"/system/handle/upload/(\w+)", SystemFileUploadHandler),
     (r"/system/handle/addarticle", SystemAddArticleHandler),
     (r"/system/handle/addlifeshare", SystemAddLifeShareHandler),
     (r"/system/handle/update/(\w+)/(\d+)", SystemUpdateHandler),

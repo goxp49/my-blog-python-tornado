@@ -3,7 +3,7 @@ $("#input-file").fileinput({
 
     language: 'zh', //设置语言
 
-    uploadUrl: "/system/handle/fileupload", //上传的地址
+    uploadUrl: "/system/handle/upload/cover", //上传的地址
 
     allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
 

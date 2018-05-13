@@ -8,6 +8,7 @@
 
 {% block BeforeHead %}
 <link href="{{static_url("css/bbs.css")}}" rel="stylesheet">
+<link href="{{static_url("css/bbs_button.css")}}" rel="stylesheet">
 {% end %}
 
 {% block Content %}
@@ -24,8 +25,12 @@
             <li></li>
             <li></li>
         </div>
-        {% for item in MessageNum%}
-            {% module Message(item) %}
+        <div class="about_girl"><span><a href="/"><img src="/static/images/girl.jpg"></a></span>
+          <p>当您驻足停留过，从此便注定我们的缘分。站在时间的尽头，我们已是朋友，前端的路上我再也不用一个人独自行走。</p>
+        </div>
+
+        {% for message in allMessages%}
+            {% module Message(message) %}
         {% end %}
         <!--
         <div class="about_girl"><span><a href="/"><img src="images/girl.jpg"></a></span>
@@ -33,11 +38,73 @@
         </div>
         -->
     </div>
+    <div class="editor" id="editor" name="editor">
+        <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
+    </div>
+     <div class="button blue commit-message" id="commit-message" name="commit-message"><div class="shine"></div>发表留言</div>
+
 </div>
 
 
 {% end %}
 
 {% block Footer%}
+<script type="text/javascript" src="{{static_url("js/wangEditor.min.js")}}"></script>
+<script type="text/javascript">
+    var E = window.wangEditor;
+    var editor = new E('#editor');
+    // 自定义菜单配置
+    editor.customConfig.menus = [
+        'head',  // 标题
+        'bold',  // 粗体
+        'fontSize',  // 字号
+        'fontName',  // 字体
+        'italic',  // 斜体
+        'strikeThrough',  // 删除线
+        'foreColor',  // 文字颜色
+        'backColor',  // 背景颜色
+        'justify',  // 对齐方式
+        'quote',  // 引用
+        'emoticon',  // 表情
+        'code',  // 插入代码
+        'undo',  // 撤销
+        'redo'  // 重复
+    ];
+    // 通过 url 参数配置 debug 模式。url 中带有 wangeditor_debug_mode=1 才会开启 debug 模式
+    editor.customConfig.debug = location.href.indexOf('wangeditor_debug_mode=1') > 0;
+    editor.create();
+    $(function () {
+        $("#commit-message").click(function () {
 
+            //获取文章内容
+            var content = editor.txt.html();
+
+            // 检查是图片、标题、简介是否为空
+            if (content.length < 6) {
+                alert("请最少填写6个字符");
+                return false;
+            }
+
+            var values = {};
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/system/handle/addbbsmssage",
+                async: true,
+                data: {
+                    "content": content,
+                },
+
+                success: function (data) {
+                    alert(data.message);
+                    window.location.replace("/bbs");
+                },
+                error: function () {
+                    alert("网络传输错误，请稍后再试~");
+                },
+            });
+
+        });
+    });
+</script>
 {% end %}

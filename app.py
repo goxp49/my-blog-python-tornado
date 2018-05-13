@@ -5,18 +5,19 @@ from datetime import datetime
 from sqlalchemy import func
 import tornado.web
 import orm
-from orm import User,Article,LifeShare
+from orm import User,Article,LifeShare,BBS
 import os,sys
 import hashlib                      #用于md5加密
 from PIL import Image               #用于图片处理
+import random                       #用于生成随机数
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is database --------------------------------------------
 #----------------------------------------------------------------------------------------------------------
-CATEGORY = [{"category": "python", "url": "/learn"},
-            {"category": "JavaScript/CSS", "url": "/learn"},
-            {"category": "Tornado", "url": "/learn"},
-            {"category": "Sqlalchemy", "url": "/learn"},
-            {"category": "第三方插件", "url": "/learn"}
+CATEGORY = [{"category": "python", "url": "/learn/python"},
+            {"category": "JavaScript/CSS", "url": "/learn/javascript"},
+            {"category": "Tornado", "url": "/learn/tornado"},
+            {"category": "Sqlalchemy", "url": "/learn/sqlalchemy"},
+            {"category": "第三方插件", "url": "/learn/otherlib"}
             ]
 categoryCheck = [["checked", "", "", "", "", ""],
                   ["", "checked", "", "", ""],
@@ -85,24 +86,50 @@ class LifeHandler(BaseHandle):
         self.render("slowlife.html",ShareNum = allShares)
 
 class LearnHandler(BaseHandle):
-    def get(self):
+    def get(self,clas):
+        #根据clas分类显示不同类型的文章
         allArticles = []
-        articles = self.session.query(Article).all()
-        for article in articles:
-            tempList = {}
-            tempList["id"] = article.id
-            tempList["title"] = article.title
-            tempList["describe"] = article.describe
-            tempList["category"] = article.category
-            # 留言数还没实现，先用0表示
-            tempList["date"] = article.date
-            tempList["pictuername"] = article.pictuername
-            allArticles.append(tempList)
+        if(clas=="all"):
+            articles = self.session.query(Article).all()
+        if(clas=="python"):
+            articles = self.session.query(Article).filter(Article.category == 0 ).all()
+        if (clas == "javascript"):
+            articles = self.session.query(Article).filter(Article.category == 1).all()
+        if (clas == "tornado"):
+            articles = self.session.query(Article).filter(Article.category == 2).all()
+        if (clas == "sqlalchemy"):
+            articles = self.session.query(Article).filter(Article.category == 3).all()
+        if (clas == "otherlib"):
+            articles = self.session.query(Article).filter(Article.category == 4).all()
+        #确定是否有找到对象
+        if articles:
+            for article in articles:
+                tempList = {}
+                tempList["id"] = article.id
+                tempList["title"] = article.title
+                tempList["describe"] = article.describe
+                tempList["category"] = article.category
+                # 留言数还没实现，先用0表示
+                tempList["date"] = article.date
+                tempList["pictuername"] = article.pictuername
+                allArticles.append(tempList)
         self.render("learn.html",categories = CATEGORY,Articles = allArticles)
 
 class BBSHandler(BaseHandle):
     def get(self):
-        self.render("bbs.html",MessageNum = range(6))
+        allMessages = []
+        mssages = self.session.query(BBS).all()
+        for message in mssages:
+            tempList = {}
+            tempList["id"] = message.id
+            tempList["content"] = message.content
+            tempList["date"] = message.date
+            #点击头像后跳转的连接，还没实现
+            tempList["target"] = "/bbs"
+            # 头像图片，还没实现
+            tempList["icon"] = "ico_%d.jpg" % (message.icon)    #"ico_1.jpg"
+            allMessages.append(tempList)
+        self.render("bbs.html",allMessages = allMessages)
 
 class LoginHandler(BaseHandle):
     def get(self):
@@ -187,6 +214,18 @@ class ViewHandler(BaseHandle):
                 username = lifeshare.userName
                 viewNum = 0
             self.render("view-lifeshare.html",title=title,content=content,date=date,username=username,viewNum=viewNum)
+
+        if (obj == "learn"):
+            article = self.session.query(Article).filter(Article.id == id).first()
+            # 判断文章是否存在
+            if article:
+                title = article.title
+                content = article.content
+                date = article.date
+                username = article.userName
+                viewNum = 0
+            self.render("view-learn.html", title=title, content=content, date=date, username=username,
+                        viewNum=viewNum)
 
 class SystemIndexHandler(BaseHandle):
     @tornado.web.authenticated
@@ -351,6 +390,18 @@ class SystemAddLifeShareHandler(BaseHandle):
         #回传AJAX结果
         self.write(json.dumps(data))
 
+class SystemAddBBSMssageHandler(BaseHandle):
+    @tornado.web.authenticated
+    def post(self):
+        #由于CSS问题，此处要将wangeditor自动生成的<p>标签删除，否则会显示异常
+        content = self.get_argument("content").replace('<p>','').replace('</p>','')
+        #将文章内容存储到数据库中
+        self.session.add(BBS(ipaddress=self.request.remote_ip,content = content,date = datetime.now(),
+                             icon=random.randint(1,20)))
+        self.session.commit()
+        data = {'message': '留言已发表成功！', 'url': "/bbs"}  # 封装数据
+        #回传AJAX结果
+        self.write(json.dumps(data))
 
 class SystemFileUploadHandler(BaseHandle):
 
@@ -500,34 +551,59 @@ class SystemUpdateHandler(BaseHandle):
 class SystemDeleteHandler(BaseHandle):
     #get用于处理单个删除请求
     @tornado.web.authenticated
-    def get(self,cls):
-        tagArticle = self.session.query(Article).filter(Article.id == cls).first()
-        #确定存在该id的文章
-        if tagArticle:
-            #先删除图片再删除数据
-            filepath = os.path.join(sys.path[0], "static", "images", "articlecover", tagArticle.pictuername)
-            #print(filepath)
-            if os.path.exists(filepath):
-                os.remove(filepath)
-            self.session.delete(tagArticle)
-            self.session.commit()
-        #重定向回文章管理界面
-        self.redirect("/system/learning")
+    def get(self,obj,cls):
+        #判断要删除哪个表
+        if(obj == "article"):
+            tagArticle = self.session.query(Article).filter(Article.id == cls).first()
+            #确定存在该id的文章
+            if tagArticle:
+                #先删除图片再删除数据
+                filepath = os.path.join(sys.path[0], "static", "images", "articlecover", tagArticle.pictuername)
+                #print(filepath)
+                if os.path.exists(filepath):
+                    os.remove(filepath)
+                self.session.delete(tagArticle)
+                self.session.commit()
+            #重定向回文章管理界面
+            self.redirect("/system/learning")
+        if(obj == "lifeshare"):
+            tagArticle = self.session.query(LifeShare).filter(LifeShare.id == cls).first()
+            # 确定存在该id的文章
+            if tagArticle:
+                # 先删除图片再删除数据
+                filepath = os.path.join(sys.path[0], "static", "images", "articlecover", tagArticle.pictuername)
+                # print(filepath)
+                if os.path.exists(filepath):
+                    os.remove(filepath)
+                self.session.delete(tagArticle)
+                self.session.commit()
+            # 重定向回文章管理界面
+            self.redirect("/system/lifeshare")
 
     #post用于处理下方的多选删除请求
     @tornado.web.authenticated
     def post(self,obj,cls):
-        # 传递的是数组等多个结果的值时，一定要用get_arguments，get_argument一次只能获取一个结果
-        deletetag = self.get_arguments("check_val[]")
-        print(deletetag)
-        #确认参数是否正确
-        if cls == "all" and deletetag:
-            for id in deletetag:
-                tagArticle = self.session.query(Article).filter(Article.id == id).first()
-                #确认文章是否存在
-                if tagArticle:
-                    self.session.delete(tagArticle)
-            self.session.commit()
+        if(obj=="article"):
+            # 传递的是数组等多个结果的值时，一定要用get_arguments，get_argument一次只能获取一个结果
+            deletetag = self.get_arguments("check_val[]")
+            #确认参数是否正确
+            if cls == "all" and deletetag:
+                for id in deletetag:
+                    tagArticle = self.session.query(Article).filter(Article.id == id).first()
+                    #确认文章是否存在
+                    if tagArticle:
+                        self.session.delete(tagArticle)
+                self.session.commit()
+        if(obj=="lifeshare"):
+            deletetag = self.get_arguments("check_val[]")
+            # 确认参数是否正确
+            if cls == "all" and deletetag:
+                for id in deletetag:
+                    tagArticle = self.session.query(LifeShare).filter(LifeShare.id == id).first()
+                    # 确认文章是否存在
+                    if tagArticle:
+                        self.session.delete(tagArticle)
+                self.session.commit()
         self.write("ture")
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is modules --------------------------------------------
@@ -546,6 +622,7 @@ class TimeLineModule(tornado.web.UIModule):
     def render(self, article):
         print(article)
         articleData = {
+            "id":article["id"],
             "month_day":article["date"].strftime("%m-%d"),
             "year":article["date"].strftime("%Y"),
             "title":article["title"],
@@ -575,13 +652,8 @@ class LearnGroupModul(tornado.web.UIModule):
         return self.render_string("modules\LearnGroup.html",category=category)
 
 class MessageModul(tornado.web.UIModule):
-    def render(self, clas):
-        data = {
-            "target":"/index",
-            "phone":"girl.jpg",
-            "message":"当您驻足停留过，从此便注定我们的缘分。站在时间的尽头，我们已是朋友，前端的路上我再也不用一个人独自行走。",
-        }
-        return self.render_string("modules\BBSMessage.html",data=data)
+    def render(self, mssage):
+        return self.render_string("modules\BBSMessage.html",message=mssage)
 
 class ArticleManageItemModul(tornado.web.UIModule):
     def render(self, article):
@@ -617,7 +689,7 @@ application = tornado.web.Application([
     (r"/index", IndexHandler),
     (r"/about", AboutHandler),
     (r"/slowlife", LifeHandler),
-    (r"/learn", LearnHandler),
+    (r"/learn/(\w+)", LearnHandler),
     (r"/bbs", BBSHandler),
     (r"/login", LoginHandler),
     (r"/logout", LogoutHandler),
@@ -631,6 +703,7 @@ application = tornado.web.Application([
     (r"/system/handle/upload/(\w+)", SystemFileUploadHandler),
     (r"/system/handle/addarticle", SystemAddArticleHandler),
     (r"/system/handle/addlifeshare", SystemAddLifeShareHandler),
+    (r"/system/handle/addbbsmssage", SystemAddBBSMssageHandler),
     (r"/system/handle/update/(\w+)/(\d+)", SystemUpdateHandler),
     (r"/system/handle/delete/(\w+)/(\w+)", SystemDeleteHandler),
 ],**settings)

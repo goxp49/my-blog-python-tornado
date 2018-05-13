@@ -29,23 +29,23 @@
             </table>
         </div>
         <footer class="message_footer">
-            <nav>
-                <div class="btn-toolbar operation" role="toolbar">
-                    <div class="btn-group" role="group"><a class="btn btn-default" onClick="select()">全选</a> <a
-                            class="btn btn-default" onClick="reverse()">反选</a> <a class="btn btn-default"
-                                                                                  onClick="noselect()">不选</a></div>
-                    <div class="btn-group" role="group">
-                        <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="bottom"
-                                title="删除全部选中" name="checkbox_delete">删除
-                        </button>
-                    </div>
-                </div>
-                <ul class="pagination pagenav">
-                    <li class="disabled"><a aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>
-                    <li class="active"><a>1</a></li>
-                    <li class="disabled"><a aria-label="Next"> <span aria-hidden="true">&raquo;</span> </a></li>
-                </ul>
-            </nav>
+          <nav>
+            <div class="btn-toolbar operation" role="toolbar">
+              <div class="btn-group" role="group"> <a class="btn btn-default" onClick="select()">全选</a> <a class="btn btn-default" onClick="reverse()">反选</a> <a class="btn btn-default" onClick="noselect()">不选</a> </div>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="删除全部选中" name="checkbox_delete" id="checkbox_delete">删除</button>
+              </div>
+            </div>
+            <ul class="pagination pagenav">
+              <li class="disabled"><a aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a> </li>
+              <li class="active"><a href="#">1</a></li>
+              <li><a href="#">2</a></li>
+              <li><a href="#">3</a></li>
+              <li><a href="#">4</a></li>
+              <li><a href="#">5</a></li>
+              <li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span> </a> </li>
+            </ul>
+          </nav>
         </footer>
     </form>
 </div>
@@ -73,14 +73,14 @@
                 checkall[$i].checked = true;
             }
         }
-    }
+    };
 
     //全不选
     function noselect() {
         for (var $i = 0; $i < checkall.length; $i++) {
             checkall[$i].checked = false;
         }
-    }
+    };
 
     //是否确认删除
     $(function () {
@@ -95,7 +95,7 @@
             if (window.confirm("此操作不可逆，是否确认？")) {
                 $.ajax({
                     type: "POST",
-                    url: "/system/handle/delete/article/all",
+                    url: "/system/handle/delete/lifeshare/all",
                     data: {
                         "check_val": check_val,
                     },
@@ -104,8 +104,7 @@
                         window.location.reload();
                     }
                 });
-            }
-            ;
+            };
         });
     });
 </script>

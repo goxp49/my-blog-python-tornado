@@ -62,7 +62,7 @@ background-color:#FFFFFF;
 .about_girl span img { width: 130px; height: 130px; border-radius: 100% }
 .about_girl { width: 100%; margin: 10px auto 0; overflow: hidden }
 .about_girl span { float: left; margin-right: 30px }
-.about_girl p { margin: 20px; background: #ececec; color: #444; float: left; padding: 20px; width: 46%; border-radius: 6px; position: relative; box-shadow: inset #999 -1px -1px 1px; ; text-shadow: #fff 1px 1px 0px; width: 450px }
+.about_girl p { margin: 20px; background: #ececec; color: #444; float: left; padding: 20px; width: 46%; border-radius: 6px; position: relative; box-shadow: inset #999 -1px -1px 1px; ; text-shadow: #fff 1px 1px 0px; width: 550px }
 .about_girl p::before { content: ""; width: 0px; height: 0px; border-style: solid; border-width: 20px 20px 20px 0; border-color: transparent #ececec transparent; position: absolute; left: -20px; top: 24px; }/* 三角形 */
 .gbko {
     background: rgb(255, 255, 255);

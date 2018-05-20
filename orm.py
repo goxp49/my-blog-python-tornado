@@ -86,8 +86,19 @@ class BBS(Base):
     content = Column(String(20000), nullable=False)
     date = Column(DateTime)
 
-    def __repr__(self):
-        return "<BBS>{}:{}".format(self.name, self.password)
+
+
+class System(Base):
+    __tablename__ = 'system'  # 表名
+
+    id = Column(Integer,primary_key=True,autoincrement=True)
+    handlers = Column(String(20),nullable=False)
+    ipaddress = Column(String(30))
+    dataclass = Column(String(30), nullable=False,unique=True)
+    content = Column(String(20000), nullable=False)
+    date = Column(DateTime)
+
+
 
 # 初始化数据库连接:
 engine = create_engine(  # 生成连接字符串，有特定的格式

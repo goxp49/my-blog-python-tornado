@@ -1,0 +1,68 @@
+{% extends "__BackstageBase__.html" %}
+
+{% block title_about %}class="active"{% end %}
+
+{% block AfterCSS %}
+<link rel="stylesheet" type="text/css" href="{{static_url("css/backstage/fileinput.css")}}">
+{% end %}
+
+
+{% block Body %}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
+    <div class="row">
+            <div class="col-md-9">
+                <h1 class="page-header">更新个人简介</h1>
+                <textarea id="introduce" name=introduce"  class="introduce" style="height: 500px;width: 930px;">
+                    {{ introduce }}
+                </textarea>
+            </div>
+
+            <div class="col-md-3">
+                <h1 class="page-header">操作</h1>
+                <div class="add-article-box">
+                    <h2 class="add-article-box-title"><span>操作</span></h2>
+                    <div class="add-article-box-footer">
+                        <button class="btn btn-primary" type="button" id="submit-btn">更新</button>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+{% end %}
+
+{% block BeforeJavaScript %}
+    <script type="text/javascript" src="{{static_url("js/bootstrap/piexif.min.js")}}"></script>
+{% end %}
+
+
+
+{% block AfterJavaScript %}
+<script type="text/javascript">
+    $(function(){
+        $("#submit-btn").click(function (){
+            var introduce = $('#introduce').val();
+            var length = $('#introduce').val().length;
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/system/handle/update/introduce/" + length,
+                async: true,
+                data: {
+                    "dataclass": "introduce",
+                    "content": introduce,
+                },
+
+                success: function (data) {
+                    alert(data.message);
+                    window.location.reload();
+                },
+                error: function () {
+                    alert("网络传输错误，请稍后再试~");
+                },
+            });
+        });
+
+});
+</script>
+{% end %}

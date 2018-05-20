@@ -1,0 +1,7 @@
+<tr>
+    <td><input type="checkbox" class="input-control" name="checkbox[]" value="{{ message["id"] }}"/></td>
+    <td class="article-title">{{ message["content"] }}</td>
+    <td>{{ message["date"] }}</td>
+    <td class="hidden-sm">{{ message["ipaddress"] }}</td>
+    <td><a href="/system/handle/delete/message/{{ message["id"] }}">删除</a></td>
+</tr>

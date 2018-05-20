@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlalchemy import func
 import tornado.web
 import orm
-from orm import User,Article,LifeShare,BBS
+from orm import User,Article,LifeShare,BBS,System
 import os,sys
 import hashlib                      #用于md5加密
 from PIL import Image               #用于图片处理
@@ -70,7 +70,8 @@ class IndexHandler(BaseHandle):
 
 class AboutHandler(BaseHandle):
     def get(self):
-        self.render("about.html",ItemNum = ["n1","n2","n3","n4","n5"])
+        tarData = self.session.query(System).filter(System.dataclass == "introduce").first()
+        self.render("about.html",ItemNum = ["n1","n2","n3","n4","n5"],introduce = tarData.content)
 
 class LifeHandler(BaseHandle):
     def get(self):
@@ -131,6 +132,7 @@ class BBSHandler(BaseHandle):
             allMessages.append(tempList)
         self.render("bbs.html",allMessages = allMessages)
 
+
 class LoginHandler(BaseHandle):
     def get(self):
         self.render("login.html")
@@ -153,7 +155,7 @@ class LoginHandler(BaseHandle):
             data['status'] = True
             data["message"] = "successfully"
             data["url"] = "/system/index"
-            self.set_secure_cookie("username", result.name)
+            self.set_secure_cookie("username", result.name,expires_days=1) #这里设置有效期为1天
             #登陆次数+1
             result.loginnum = result.loginnum + 1
             #更新最后一次登录时间
@@ -171,7 +173,8 @@ class LogoutHandler(BaseHandle):
     def get(self):
         self.clear_cookie("username")
         #self.set_secure_cookie("username", None)
-        self.render("index.html", TitleNum=range(3), TimeLineNum=range(6))
+        # 重定向回文章管理界面
+        self.redirect("/index")
 
 class RegisterHandler(BaseHandle):
     def get(self):
@@ -338,6 +341,42 @@ class SystemLifeShareHandler(BaseHandle):
         self.render(r"backstage\lifeshare.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
                     shareNum = shareNum,shares = allShare)
 
+class SystemMessageHandler(BaseHandle):
+    @tornado.web.authenticated
+    def get(self):
+        allMessage = []
+        #如果当前用户为管理员，则显示所有人的留言，否则无法查看
+        if(self.session.query(User).filter(User.name == self.currentuser,User.admin == True).first()):
+            print("当前是管理员，显示所有文章")
+            messages = self.session.query(BBS).all()
+            #获得文章数量
+            messageNum = len(messages)
+
+            for message in messages:
+                tempList = {}
+                tempList["id"] = message.id
+                tempList["content"] = message.content[0:50] #截取内容显示
+                tempList["date"] = message.date
+                tempList["ipaddress"] = message.ipaddress
+                allMessage.append(tempList)
+            self.render(r"backstage\message.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
+                        messageNum = messageNum,allMessage = allMessage)
+
+class SystemAboutHandler(BaseHandle):
+    @tornado.web.authenticated
+    def get(self):
+        #如果当前用户为管理员，则显示所有人的留言，否则无法查看
+        if(self.session.query(User).filter(User.name == self.currentuser,User.admin == True).first()):
+            systemData = self.session.query(System).filter(System.dataclass == "introduce").first()
+            #如果还没设置个人介绍，则使用默认信息
+            if systemData:
+                introduce = systemData.content
+            else:
+                introduce = "这个人很懒，还没写自我介绍哦~"
+            self.render(r"backstage\about.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
+                        introduce = introduce)
+
+
 class SystemArticleAddPageHandler(BaseHandle):
     @tornado.web.authenticated
     def get(self):
@@ -465,6 +504,7 @@ class SystemFileUploadHandler(BaseHandle):
             self.write(resultDate)
 
 
+
 class SystemUpdateHandler(BaseHandle):
     @tornado.web.authenticated
     def get(self,obj,id):
@@ -525,7 +565,7 @@ class SystemUpdateHandler(BaseHandle):
                 #回传AJAX结果
                 self.write(json.dumps(data))
         # 判断是否要修改生活分享
-        if obj == "lifeshare":
+        elif obj == "lifeshare":
             tagArticle = self.session.query(LifeShare).filter(LifeShare.id == id).first()
             # 确定存在该id的文章
             if tagArticle:
@@ -547,6 +587,26 @@ class SystemUpdateHandler(BaseHandle):
                 data = {'message': '生活分享已更新成功！', 'url': "/system/lifeshare"}  # 封装数据
                 #回传AJAX结果
                 self.write(json.dumps(data))
+        #如果都不是前面的，就是修改系统信息
+        else:
+            #print(self.request.body_arguments)
+            #print(self.get_body_argument('dataclass'))
+            tarData = self.session.query(System).filter(System.dataclass == self.get_body_argument("dataclass")).first()
+            # 如果已经存在数据则直接修改
+            if tarData:
+                tarData.handlers = self.user.name
+                tarData.ipaddress = self.request.remote_ip
+                tarData.content = self.get_body_argument("content")
+                tarData.date = datetime.now()
+            #如果没有写入过该数据则进行添加
+            else:
+                self.session.add(System(handlers=self.user.name, ipaddress=self.request.remote_ip, dataclass=self.get_body_argument("dataclass"),
+                           content=self.get_body_argument("content"), date=datetime.now()))
+
+            data = {'message': '个人简介已更新成功！', 'url': "/system/about"}  # 封装数据
+            self.session.commit()
+            # 回传AJAX结果
+            self.write(json.dumps(data))
 
 class SystemDeleteHandler(BaseHandle):
     #get用于处理单个删除请求
@@ -579,6 +639,14 @@ class SystemDeleteHandler(BaseHandle):
                 self.session.commit()
             # 重定向回文章管理界面
             self.redirect("/system/lifeshare")
+        if (obj == "message"):
+            tagArticle = self.session.query(BBS).filter(BBS.id == cls).first()
+            # 确定存在该id的文章
+            if tagArticle:
+                self.session.delete(tagArticle)
+                self.session.commit()
+            # 重定向回文章管理界面
+            self.redirect("/system/message")
 
     #post用于处理下方的多选删除请求
     @tornado.web.authenticated
@@ -600,6 +668,16 @@ class SystemDeleteHandler(BaseHandle):
             if cls == "all" and deletetag:
                 for id in deletetag:
                     tagArticle = self.session.query(LifeShare).filter(LifeShare.id == id).first()
+                    # 确认文章是否存在
+                    if tagArticle:
+                        self.session.delete(tagArticle)
+                self.session.commit()
+        if (obj == "message"):
+            deletetag = self.get_arguments("check_val[]")
+            # 确认参数是否正确
+            if cls == "all" and deletetag:
+                for id in deletetag:
+                    tagArticle = self.session.query(BBS).filter(BBS.id == id).first()
                     # 确认文章是否存在
                     if tagArticle:
                         self.session.delete(tagArticle)
@@ -663,6 +741,10 @@ class LifeShareManageItemModul(tornado.web.UIModule):
     def render(self, share):
         return self.render_string("modules\LifeShareManageItem.html",share=share)
 
+class MessageManageItemModul(tornado.web.UIModule):
+    def render(self, message):
+        return self.render_string("modules\MessageManageItem.html",message=message)
+
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is initial --------------------------------------------
 #----------------------------------------------------------------------------------------------------------
@@ -679,6 +761,7 @@ settings = {
                     "Message":MessageModul,
                     "ArticleManageItem":ArticleManageItemModul,
                     "LifeShareManageItem":LifeShareManageItemModul,
+                    "MessageManageItem":MessageManageItemModul,
                    },
     "login_url":"/login",
     "cookie_secret": "bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E=",
@@ -698,6 +781,8 @@ application = tornado.web.Application([
     (r"/system/index", SystemIndexHandler),
     (r"/system/learning", SystemLearningHandler),
     (r"/system/lifeshare", SystemLifeShareHandler),
+    (r"/system/message", SystemMessageHandler),
+    (r"/system/about", SystemAboutHandler),
     (r"/system/article/add", SystemArticleAddPageHandler),
     (r"/system/lifeshare/add", SystemLifeShareAddPageHandler),
     (r"/system/handle/upload/(\w+)", SystemFileUploadHandler),

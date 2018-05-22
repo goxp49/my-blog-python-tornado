@@ -5,24 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d5dfc381-ac25-4de6-b792-b4727693e7b2" name="默认的" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/templates/backstage/about.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/templates/backstage/message.html" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/templates/modules/MessageManageItem.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/templates/backstage/category（源文件）.html" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/app.py" afterPath="$PROJECT_DIR$/app.py" />
-      <change beforePath="$PROJECT_DIR$/orm.py" afterPath="$PROJECT_DIR$/orm.py" />
-      <change beforePath="$PROJECT_DIR$/templates/about.html" afterPath="$PROJECT_DIR$/templates/about.html" />
       <change beforePath="$PROJECT_DIR$/templates/backstage/__BackstageBase__.html" afterPath="$PROJECT_DIR$/templates/backstage/__BackstageBase__.html" />
-      <change beforePath="$PROJECT_DIR$/templates/backstage/add-flink.html" afterPath="$PROJECT_DIR$/templates/backstage/add-flink.html" />
       <change beforePath="$PROJECT_DIR$/templates/backstage/category.html" afterPath="$PROJECT_DIR$/templates/backstage/category.html" />
-      <change beforePath="$PROJECT_DIR$/templates/backstage/comment.html" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/templates/backstage/flink.html" afterPath="$PROJECT_DIR$/templates/backstage/flink.html" />
-      <change beforePath="$PROJECT_DIR$/templates/backstage/loginlog.html" afterPath="$PROJECT_DIR$/templates/backstage/loginlog.html" />
-      <change beforePath="$PROJECT_DIR$/templates/backstage/manage-user.html" afterPath="$PROJECT_DIR$/templates/backstage/manage-user.html" />
-      <change beforePath="$PROJECT_DIR$/templates/backstage/readset.html" afterPath="$PROJECT_DIR$/templates/backstage/readset.html" />
-      <change beforePath="$PROJECT_DIR$/templates/backstage/setting.html" afterPath="$PROJECT_DIR$/templates/backstage/setting.html" />
-      <change beforePath="$PROJECT_DIR$/templates/backstage/update-category.html" afterPath="$PROJECT_DIR$/templates/backstage/update-category.html" />
-      <change beforePath="$PROJECT_DIR$/templates/backstage/update-flink.html" afterPath="$PROJECT_DIR$/templates/backstage/update-flink.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -34,7 +21,7 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/Tornado_Blog$orm.coverage" NAME="orm Coverage Results" MODIFIED="1522760952252" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Tornado_Blog$main.coverage" NAME="main Coverage Results" MODIFIED="1522577103850" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../Blog" />
-    <SUITE FILE_PATH="coverage/Tornado_Blog$app.coverage" NAME="app Coverage Results" MODIFIED="1526778758865" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Tornado_Blog$app.coverage" NAME="app Coverage Results" MODIFIED="1526997465571" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -56,8 +43,8 @@
       <file leaf-file-name="app.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="374" column="28" lean-forward="false" selection-start-line="374" selection-start-column="28" selection-end-line="374" selection-end-column="28" />
+            <state relative-caret-position="449">
+              <caret line="394" column="46" lean-forward="true" selection-start-line="394" selection-start-column="46" selection-end-line="394" selection-end-column="46" />
               <folding>
                 <element signature="e#24#35#0" expanded="true" />
               </folding>
@@ -65,11 +52,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="about.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/about.html">
+      <file leaf-file-name="lifeshare.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/backstage/lifeshare.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="173">
-              <caret line="25" column="17" lean-forward="true" selection-start-line="25" selection-start-column="17" selection-end-line="25" selection-end-column="17" />
+            <state relative-caret-position="115">
+              <caret line="5" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="110" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="category.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/backstage/category.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="334">
+              <caret line="74" column="14" lean-forward="true" selection-start-line="74" selection-start-column="14" selection-end-line="74" selection-end-column="14" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="category（源文件）.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/backstage/category（源文件）.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2335">
+              <caret line="186" column="4" lean-forward="false" selection-start-line="97" selection-start-column="93" selection-end-line="186" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -78,8 +85,8 @@
       <file leaf-file-name="__BackstageBase__.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/backstage/__BackstageBase__.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="23">
-              <caret line="68" column="67" lean-forward="false" selection-start-line="68" selection-start-column="67" selection-end-line="68" selection-end-column="67" />
+            <state relative-caret-position="380">
+              <caret line="77" column="13" lean-forward="true" selection-start-line="77" selection-start-column="13" selection-end-line="77" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -88,8 +95,8 @@
       <file leaf-file-name="orm.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/orm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="23">
-              <caret line="90" column="12" lean-forward="false" selection-start-line="90" selection-start-column="6" selection-end-line="90" selection-end-column="12" />
+            <state relative-caret-position="197">
+              <caret line="97" column="11" lean-forward="false" selection-start-line="97" selection-start-column="4" selection-end-line="97" selection-end-column="11" />
               <folding>
                 <element signature="e#0#77#0" expanded="true" />
               </folding>
@@ -147,7 +154,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/static/js/supersized.3.2.7.min.js" />
         <option value="$PROJECT_DIR$/static/css/login_register.css" />
         <option value="$PROJECT_DIR$/../Blog/templates/base.htm" />
         <option value="$PROJECT_DIR$/static/js/supersized-init.js" />
@@ -193,11 +199,12 @@
         <option value="$PROJECT_DIR$/templates/backstage/bbs.html" />
         <option value="$PROJECT_DIR$/templates/modules/MessageManageItem.html" />
         <option value="$PROJECT_DIR$/templates/backstage/message.html" />
-        <option value="$PROJECT_DIR$/templates/backstage/__BackstageBase__.html" />
         <option value="$PROJECT_DIR$/orm.py" />
         <option value="$PROJECT_DIR$/templates/backstage/about.html" />
-        <option value="$PROJECT_DIR$/app.py" />
         <option value="$PROJECT_DIR$/templates/about.html" />
+        <option value="$PROJECT_DIR$/templates/backstage/category.html" />
+        <option value="$PROJECT_DIR$/templates/backstage/__BackstageBase__.html" />
+        <option value="$PROJECT_DIR$/app.py" />
       </list>
     </option>
   </component>
@@ -283,18 +290,18 @@
     <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\python_workspace\Tornado_Blog\static\images\articlecover" />
+      <recent name="D:\python_workspace\Tornado_Blog\static\js\bootstrap" />
+      <recent name="D:\python_workspace\Tornado_Blog" />
+      <recent name="D:\python_workspace\Tornado_Blog\templates" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\python_workspace\Tornado_Blog\templates\backstage" />
       <recent name="D:\python_workspace\Tornado_Blog\templates\modules" />
       <recent name="D:\python_workspace\Tornado_Blog\static\images\bbsicon" />
       <recent name="D:\python_workspace\Tornado_Blog\static\css" />
       <recent name="D:\python_workspace\Tornado_Blog\static\images" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\python_workspace\Tornado_Blog\static\images\articlecover" />
-      <recent name="D:\python_workspace\Tornado_Blog\static\js\bootstrap" />
-      <recent name="D:\python_workspace\Tornado_Blog" />
-      <recent name="D:\python_workspace\Tornado_Blog\templates" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -471,7 +478,14 @@
       <option name="project" value="LOCAL" />
       <updated>1526210498581</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="已更新个人简介功能，准备添加分类修改功能。">
+      <created>1526780106955</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1526780106955</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TodoView">
@@ -493,18 +507,18 @@
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290398" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290398" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="运行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32435596" sideWeight="0.49570817" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19259657" sideWeight="0.49305555" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19527897" sideWeight="0.49305555" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="数据库" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22424893" sideWeight="0.5069444" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="检验" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3290398" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="数据库" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299356" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -532,7 +546,8 @@
     <MESSAGE value="1.完成生活分享展示页面设计与查看页面设计；&#10;2.由于Base64编码过长导致添加文章时无法存入MYSQL，准备使用云存储方式解决；" />
     <MESSAGE value="已修正wangeditor中插图图片存储问题，直接将图片存储到本地文件夹中，之后回调地址给ditor，目前还没解决图片被删除后本地图片如何处理的问题。" />
     <MESSAGE value="已添加留言前端界面，后端准备添加。" />
-    <option name="LAST_COMMIT_MESSAGE" value="已添加留言前端界面，后端准备添加。" />
+    <MESSAGE value="已更新个人简介功能，准备添加分类修改功能。" />
+    <option name="LAST_COMMIT_MESSAGE" value="已更新个人简介功能，准备添加分类修改功能。" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -541,16 +556,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/static/css/backstage/fileinput.css" />
-    <entry file="file://$PROJECT_DIR$/static/js/bootstrap/piexif.min.js" />
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/pycharm.jar!/resources/html5-schema/html5/web-forms.rnc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="558" column="22" lean-forward="false" selection-start-line="558" selection-start-column="22" selection-end-line="558" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://D:/Anaconda3/Lib/site-packages/widgetsnbextension/static/extension.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="172">
@@ -817,7 +822,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3956">
           <caret line="172" column="43" lean-forward="false" selection-start-line="172" selection-start-column="43" selection-end-line="172" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -825,16 +829,21 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1196">
           <caret line="52" column="28" lean-forward="false" selection-start-line="52" selection-start-column="21" selection-end-line="52" selection-end-column="28" />
-          <folding>
-            <element signature="n#style#0;n#textarea#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/about.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="26" column="9" lean-forward="true" selection-start-line="26" selection-start-column="9" selection-end-line="26" selection-end-column="9" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/orm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="90" column="12" lean-forward="false" selection-start-line="90" selection-start-column="6" selection-end-line="90" selection-end-column="12" />
+        <state relative-caret-position="197">
+          <caret line="97" column="11" lean-forward="false" selection-start-line="97" selection-start-column="4" selection-end-line="97" selection-end-column="11" />
           <folding>
             <element signature="e#0#77#0" expanded="true" />
           </folding>
@@ -843,34 +852,50 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/backstage/lifeshare.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="50" column="6" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="50" selection-end-column="6" />
+        <state relative-caret-position="115">
+          <caret line="5" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="110" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/backstage/category（源文件）.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2335">
+          <caret line="186" column="4" lean-forward="false" selection-start-line="97" selection-start-column="93" selection-end-line="186" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/Anaconda3/Lib/site-packages/tornado/netutil.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3450">
+          <caret line="162" column="0" lean-forward="false" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/backstage/__BackstageBase__.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="68" column="67" lean-forward="false" selection-start-line="68" selection-start-column="67" selection-end-line="68" selection-end-column="67" />
+        <state relative-caret-position="380">
+          <caret line="77" column="13" lean-forward="true" selection-start-line="77" selection-start-column="13" selection-end-line="77" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="374" column="28" lean-forward="false" selection-start-line="374" selection-start-column="28" selection-end-line="374" selection-end-column="28" />
+        <state relative-caret-position="449">
+          <caret line="394" column="46" lean-forward="true" selection-start-line="394" selection-start-column="46" selection-end-line="394" selection-end-column="46" />
           <folding>
             <element signature="e#24#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/about.html">
+    <entry file="file://$PROJECT_DIR$/templates/backstage/category.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="25" column="17" lean-forward="true" selection-start-line="25" selection-start-column="17" selection-end-line="25" selection-end-column="17" />
+        <state relative-caret-position="334">
+          <caret line="74" column="14" lean-forward="true" selection-start-line="74" selection-start-column="14" selection-end-line="74" selection-end-column="14" />
           <folding />
         </state>
       </provider>

@@ -376,6 +376,24 @@ class SystemAboutHandler(BaseHandle):
             self.render(r"backstage\about.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
                         introduce = introduce)
 
+class SystemCategoryHandler(BaseHandle):
+    @tornado.web.authenticated
+    def get(self):
+        #如果当前用户为管理员，则显示所有人的留言，否则无法查看
+        if(self.session.query(User).filter(User.name == self.currentuser,User.admin == True).first()):
+            # self.session.add(System(handlers="wang",ipaddress="101.1.0.1",dataclass="json",date=datetime.now(),
+            #                    content=json.dumps({'id': 22, 'title': '带图片'})))
+            data = self.session.query(System).filter(System.dataclass == "json").first().content
+            print(json.loads(data))
+            print(type(json.loads(data)))
+            #如果还没设置个人介绍，则使用默认信息
+            # if systemData:
+            #     introduce = systemData.content
+            # else:
+            #     introduce = "这个人很懒，还没写自我介绍哦~"
+            self.render(r"backstage\category.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
+                        introduce = "这个人很懒，还没写自我介绍哦~")
+
 
 class SystemArticleAddPageHandler(BaseHandle):
     @tornado.web.authenticated
@@ -783,6 +801,7 @@ application = tornado.web.Application([
     (r"/system/lifeshare", SystemLifeShareHandler),
     (r"/system/message", SystemMessageHandler),
     (r"/system/about", SystemAboutHandler),
+    (r"/system/category", SystemCategoryHandler),
     (r"/system/article/add", SystemArticleAddPageHandler),
     (r"/system/lifeshare/add", SystemLifeShareAddPageHandler),
     (r"/system/handle/upload/(\w+)", SystemFileUploadHandler),

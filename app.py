@@ -29,6 +29,8 @@ visibilitySelect = [["checked", ""],
                     ["", "checked"],
                     ]
 
+defaultCategory = {0:"python-/learn/python",1:"JavaScript/CSS-/learn/javascript",2:"Tornado-/learn/tornado",
+                   3:"Sqlalchemy-/learn/sqlalchemy",4:"OtherLib-/learn/otherlib"}
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is handler --------------------------------------------
 #----------------------------------------------------------------------------------------------------------
@@ -383,14 +385,21 @@ class SystemCategoryHandler(BaseHandle):
         if(self.session.query(User).filter(User.name == self.currentuser,User.admin == True).first()):
             # self.session.add(System(handlers="wang",ipaddress="101.1.0.1",dataclass="json",date=datetime.now(),
             #                    content=json.dumps({'id': 22, 'title': '带图片'})))
-            data = self.session.query(System).filter(System.dataclass == "json").first().content
-            print(json.loads(data))
-            print(type(json.loads(data)))
-            #如果还没设置个人介绍，则使用默认信息
-            # if systemData:
-            #     introduce = systemData.content
-            # else:
-            #     introduce = "这个人很懒，还没写自我介绍哦~"
+            data = self.session.query(System).filter(System.dataclass == "category").first()
+            #如果没存储过分类数据，则使用默认分组
+            dataPack = {}
+            allCategory = {}
+            dataPack["class"] = "category"
+            if data:
+                pass
+            else:
+                allCategory = defaultCategory
+
+            dataPack["data"] = allCategory
+            #print(json.loads(data))
+            #print(type(json.loads(data)))
+
+
             self.render(r"backstage\category.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
                         introduce = "这个人很懒，还没写自我介绍哦~")
 
@@ -763,6 +772,11 @@ class MessageManageItemModul(tornado.web.UIModule):
     def render(self, message):
         return self.render_string("modules\MessageManageItem.html",message=message)
 
+class CommonItemModul(tornado.web.UIModule):
+    def render(self, dataPack):
+        if dataPack["class"] == "category":
+            category = dataPack["data"]
+            return self.render_string("modules\CategoryManageItem.html",category=category)
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is initial --------------------------------------------
 #----------------------------------------------------------------------------------------------------------
@@ -780,6 +794,7 @@ settings = {
                     "ArticleManageItem":ArticleManageItemModul,
                     "LifeShareManageItem":LifeShareManageItemModul,
                     "MessageManageItem":MessageManageItemModul,
+                    "CommonItem":CommonItemModul,
                    },
     "login_url":"/login",
     "cookie_secret": "bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E=",

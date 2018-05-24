@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlalchemy import func
 import tornado.web
 import orm
-from orm import User,Article,LifeShare,BBS,System
+from orm import User,Article,LifeShare,BBS,System,Category
 import os,sys
 import hashlib                      #用于md5加密
 from PIL import Image               #用于图片处理
@@ -29,8 +29,11 @@ visibilitySelect = [["checked", ""],
                     ["", "checked"],
                     ]
 
-defaultCategory = {0:"python-/learn/python",1:"JavaScript/CSS-/learn/javascript",2:"Tornado-/learn/tornado",
-                   3:"Sqlalchemy-/learn/sqlalchemy",4:"OtherLib-/learn/otherlib"}
+defaultCategory = [{"id":0,"categoryname":"python","describe":"python","number":0},
+                   {"id": 1, "categoryname": "JavaScript", "describe": "JavaScript", "number": 1},
+                   {"id": 2, "categoryname": "Tornado", "describe": "Tornado", "number": 2},
+                   {"id": 3, "categoryname": "Sqlalchemy", "describe": "Sqlalchemy", "number": 3},
+                   {"id": 4, "categoryname": "第三方插件", "describe": "第三方插件", "number": 4}]
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is handler --------------------------------------------
 #----------------------------------------------------------------------------------------------------------
@@ -383,25 +386,22 @@ class SystemCategoryHandler(BaseHandle):
     def get(self):
         #如果当前用户为管理员，则显示所有人的留言，否则无法查看
         if(self.session.query(User).filter(User.name == self.currentuser,User.admin == True).first()):
-            # self.session.add(System(handlers="wang",ipaddress="101.1.0.1",dataclass="json",date=datetime.now(),
-            #                    content=json.dumps({'id': 22, 'title': '带图片'})))
-            data = self.session.query(System).filter(System.dataclass == "category").first()
+            categores = self.session.query(Category).all()
             #如果没存储过分类数据，则使用默认分组
-            dataPack = {}
-            allCategory = {}
-            dataPack["class"] = "category"
-            if data:
-                pass
+            allCategory = []
+            if categores:
+                for category in categores:
+                    tempDict = {}
+                    tempDict["id"] = category.id
+                    tempDict["categoryname"] = category.categoryname
+                    tempDict["describe"] = category.describe
+                    tempDict["number"] = category.number
+                    allCategory.append(tempDict)
             else:
                 allCategory = defaultCategory
 
-            dataPack["data"] = allCategory
-            #print(json.loads(data))
-            #print(type(json.loads(data)))
-
-
             self.render(r"backstage\category.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
-                        introduce = "这个人很懒，还没写自我介绍哦~")
+                        categoryItem = allCategory)
 
 
 class SystemArticleAddPageHandler(BaseHandle):
@@ -773,10 +773,9 @@ class MessageManageItemModul(tornado.web.UIModule):
         return self.render_string("modules\MessageManageItem.html",message=message)
 
 class CommonItemModul(tornado.web.UIModule):
-    def render(self, dataPack):
-        if dataPack["class"] == "category":
-            category = dataPack["data"]
-            return self.render_string("modules\CategoryManageItem.html",category=category)
+    def render(self,moduleClass, data):
+        if moduleClass == "category":
+            return self.render_string("modules\CategoryManageItem.html",category=data)
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is initial --------------------------------------------
 #----------------------------------------------------------------------------------------------------------

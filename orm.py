@@ -98,7 +98,13 @@ class System(Base):
     content = Column(String(20000), nullable=False)
     date = Column(DateTime)
 
+class Category(Base):
+    __tablename__ = 'category'  # 表名
 
+    id = Column(Integer,primary_key=True,autoincrement=False)
+    categoryname = Column(String(30),nullable=False)
+    describe = Column(String(100))
+    number = Column(Integer, default=0)
 
 # 初始化数据库连接:
 engine = create_engine(  # 生成连接字符串，有特定的格式

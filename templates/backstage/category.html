@@ -35,7 +35,7 @@
                     </thead>
                     <tbody>
                     {% for category in categoryItem %}
-                        {% module CommonItem(category) %}
+                        {% module CommonItem("category",category) %}
                     {% end %}
                     </tbody>
                 </table>

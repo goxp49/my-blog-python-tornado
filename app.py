@@ -13,12 +13,7 @@ import random                       #用于生成随机数
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is database --------------------------------------------
 #----------------------------------------------------------------------------------------------------------
-CATEGORY = [{"category": "python", "url": "/learn/python"},
-            {"category": "JavaScript/CSS", "url": "/learn/javascript"},
-            {"category": "Tornado", "url": "/learn/tornado"},
-            {"category": "Sqlalchemy", "url": "/learn/sqlalchemy"},
-            {"category": "第三方插件", "url": "/learn/otherlib"}
-            ]
+
 categoryCheck = [["checked", "", "", "", "", ""],
                   ["", "checked", "", "", ""],
                   ["", "", "checked", "", ""],
@@ -95,19 +90,19 @@ class LearnHandler(BaseHandle):
     def get(self,clas):
         #根据clas分类显示不同类型的文章
         allArticles = []
+        allCategory = []
+        allCategoryDataBase = self.session.query(Category).all()
+        #提取所有数据,用于顶部标签显示
+        for categoryDataBase in allCategoryDataBase:
+            tempDict = {}
+            tempDict["id"] = categoryDataBase.id
+            tempDict["categoryname"] = categoryDataBase.categoryname
+            allCategory.append(tempDict)
 
         if(clas=="all"):
             articles = self.session.query(Article).all()
-        if(clas=="python"):
-            articles = self.session.query(Article).filter(Article.category == 0 ).all()
-        if (clas == "javascript"):
-            articles = self.session.query(Article).filter(Article.category == 1).all()
-        if (clas == "tornado"):
-            articles = self.session.query(Article).filter(Article.category == 2).all()
-        if (clas == "sqlalchemy"):
-            articles = self.session.query(Article).filter(Article.category == 3).all()
-        if (clas == "otherlib"):
-            articles = self.session.query(Article).filter(Article.category == 4).all()
+        else:
+            articles = self.session.query(Article).filter(Article.category == clas).all()
         #确定是否有找到对象
         if articles:
             for article in articles:
@@ -120,7 +115,7 @@ class LearnHandler(BaseHandle):
                 tempList["date"] = article.date
                 tempList["pictuername"] = article.pictuername
                 allArticles.append(tempList)
-        self.render("learn.html",categories = CATEGORY,Articles = allArticles)
+        self.render("learn.html",categories = allCategory,Articles = allArticles)
 
 class BBSHandler(BaseHandle):
     def get(self):
@@ -290,7 +285,7 @@ class SystemIndexHandler(BaseHandle):
 
 
 class SystemLearningHandler(BaseHandle):
-    CategorySelect=["Python","JavaScript/CSS","Tornado","Sqlalchemy","第三方插件"]
+
     @tornado.web.authenticated
     def get(self):
         allArticles = []
@@ -305,6 +300,7 @@ class SystemLearningHandler(BaseHandle):
             articles = self.session.query(Article).filter(Article.userName == self.currentuser).all()
             # 获得文章数量
             articlesNum = len(articles)
+
         for article in articles:
             tempList = {}
             #print(article.title)
@@ -313,7 +309,8 @@ class SystemLearningHandler(BaseHandle):
             #print(article.date)
             tempList["id"] = article.id
             tempList["title"] = article.title
-            tempList["category"] = self.CategorySelect[article.category]
+            # 增加从数据库获取文章分类 by 2018.5.26
+            tempList["category"] = self.session.query(Category).filter(Category.id == article.category).first().categoryname
             tempList["keywork"] = article.keywork
             # 留言数还没实现，先用0表示
             tempList["msg"] = 0
@@ -415,8 +412,17 @@ class SystemCategoryHandler(BaseHandle):
 class SystemArticleAddPageHandler(BaseHandle):
     @tornado.web.authenticated
     def get(self):
+        allCategory = []
+        allCategoryDataBase = self.session.query(Category).all()
+        #提取所有数据,用于顶部标签显示
+        for categoryDataBase in allCategoryDataBase:
+            tempDict = {}
+            tempDict["id"] = categoryDataBase.id
+            tempDict["categoryname"] = categoryDataBase.categoryname
+            allCategory.append(tempDict)
+
         self.render(r"backstage\add-article.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
-                    article_status = "未发表",article_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    article_status = "未发表",article_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),categoryItem=allCategory
                     )
 
 class SystemLifeShareAddPageHandler(BaseHandle):
@@ -870,6 +876,8 @@ class CommonItemModul(tornado.web.UIModule):
     def render(self,moduleClass, data):
         if moduleClass == "category":
             return self.render_string("modules\CategoryManageItem.html",category=data)
+        elif moduleClass == "addArticleCategory":
+            return self.render_string("modules\AddArticleCategoryItem.html",category=data)
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is initial --------------------------------------------
 #----------------------------------------------------------------------------------------------------------

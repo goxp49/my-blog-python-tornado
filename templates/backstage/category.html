@@ -62,6 +62,11 @@
             //必须都填写才能提交
             if(categoryname && describe && id)
             {
+                if(id > 99)
+                {
+                    alert("ID范围：0 ~ 99 ，请重新输入ID值");
+                    return;
+                }
                 $.ajax({
                     type: "POST",
                     dataType: "json",

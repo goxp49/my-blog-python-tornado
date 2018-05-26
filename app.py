@@ -95,6 +95,7 @@ class LearnHandler(BaseHandle):
     def get(self,clas):
         #根据clas分类显示不同类型的文章
         allArticles = []
+
         if(clas=="all"):
             articles = self.session.query(Article).all()
         if(clas=="python"):
@@ -387,7 +388,7 @@ class SystemCategoryHandler(BaseHandle):
         #如果当前用户为管理员，则显示所有人的留言，否则无法查看
         if(self.session.query(User).filter(User.name == self.currentuser,User.admin == True).first()):
             categores = self.session.query(Category).all()
-            #如果没存储过分类数据，则使用默认分组
+            #如果没存储过分类数据，则使用默认分组存入数据库
             allCategory = []
             if categores:
                 for category in categores:
@@ -398,8 +399,15 @@ class SystemCategoryHandler(BaseHandle):
                     tempDict["number"] = category.number
                     allCategory.append(tempDict)
             else:
+                for defualtData in defaultCategory:
+                    categoryDataBase = Category()
+                    categoryDataBase.id = defualtData["id"]
+                    categoryDataBase.categoryname = defualtData["categoryname"]
+                    categoryDataBase.describe = defualtData["describe"]
+                    categoryDataBase.number = defualtData["number"]
+                    self.session.add(categoryDataBase)
+                self.session.commit()
                 allCategory = defaultCategory
-
             self.render(r"backstage\category.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
                         categoryItem = allCategory)
 
@@ -466,6 +474,37 @@ class SystemAddBBSMssageHandler(BaseHandle):
                              icon=random.randint(1,20)))
         self.session.commit()
         data = {'message': '留言已发表成功！', 'url': "/bbs"}  # 封装数据
+        #回传AJAX结果
+        self.write(json.dumps(data))
+
+class SystemAddCategoryHandler(BaseHandle):
+    @tornado.web.authenticated
+    def post(self):
+        data = {'message': '栏目分类已添加成功！', 'status': "success"}  # 封装数据
+        id = self.get_argument("id",None)
+        categoryname = self.get_argument("categoryname",None)
+        describe = self.get_argument("describe",None)
+        print(id)
+        print(categoryname)
+        #检查id与栏目名是否合法
+        if id and categoryname :
+            #如果ID已存在则提示
+            if self.session.query(Category).filter(Category.id == id).first():
+                data["message"]="该ID已存在，请重新填写！"
+                data["status"]="fail"
+                self.write(json.dumps(data))
+                self.flush()
+                return
+            # 如果栏目名称已存在则提示
+            elif self.session.query(Category).filter(Category.categoryname == categoryname).first():
+                data["message"] = "该栏目名称已存在，请重新填写！"
+                data["status"] = "fail"
+                self.write(json.dumps(data))
+                self.flush()
+                return
+            else:
+                self.session.add(Category(id=id, categoryname=categoryname, describe=describe))
+                self.session.commit()
         #回传AJAX结果
         self.write(json.dumps(data))
 
@@ -555,7 +594,7 @@ class SystemUpdateHandler(BaseHandle):
                             current_user=self.currentuser, mail=self.user.mail, phone=self.user.mobile,
                             )
         # 判断是否要修改生活分享
-        if obj == "lifeshare":
+        elif obj == "lifeshare":
             tagShare = self.session.query(LifeShare).filter(LifeShare.id == id).first()
             # 确定存在该id的文章
             if tagShare:
@@ -569,6 +608,18 @@ class SystemUpdateHandler(BaseHandle):
                             share_describe=describe,share_visibility=visibility, share_date=date,
                             share_id=id,inipictureaddress=inipictureaddress,
                             current_user=self.currentuser, mail=self.user.mail, phone=self.user.mobile,
+                            )
+        # 判断是否要修改生活分享
+        elif obj == "category":
+            tagCategory = self.session.query(Category).filter(Category.id == id).first()
+            # 确定存在该id的文章
+            if tagCategory:
+                id = tagCategory.id
+                categoryname = tagCategory.categoryname
+                describe = tagCategory.describe
+
+                self.render(r"backstage\update-category.html", current_user=self.currentuser, mail=self.user.mail,
+                            phone=self.user.mobile,id =id,categoryname=categoryname,describe=describe
                             )
 
     @tornado.web.authenticated
@@ -614,6 +665,41 @@ class SystemUpdateHandler(BaseHandle):
                 data = {'message': '生活分享已更新成功！', 'url': "/system/lifeshare"}  # 封装数据
                 #回传AJAX结果
                 self.write(json.dumps(data))
+
+        # 判断是否要修改栏目分类
+        elif obj == "category":
+            data = {'message': '栏目分类已修改成功！', 'status': "success"}  # 封装数据
+            #注意，这里的newid是要修改成的新id，id是原本的id
+            newid = self.get_argument("newid", None)
+            categoryname = self.get_argument("categoryname", None)
+            describe = self.get_argument("describe", None)
+            oldcategoryname = self.get_argument("oldcategoryname", None)
+            # 检查id与栏目名是否合法
+            if newid and categoryname:
+                # 如果ID已存在,且不等于原id
+                if self.session.query(Category).filter(Category.id == newid).first() and newid != id:
+                    data["message"] = "该ID已存在，请重新填写！"
+                    data["status"] = "fail"
+                    self.write(json.dumps(data))
+                    self.flush()
+                    return
+                # 如果栏目名称已存在则提示
+                elif self.session.query(Category).filter(Category.categoryname == categoryname).first() and oldcategoryname != categoryname:
+                    data["message"] = "该栏目名称已存在，请重新填写！"
+                    data["status"] = "fail"
+                    self.write(json.dumps(data))
+                    self.flush()
+                    return
+                else:
+                    tarcategory = self.session.query(Category).filter(Category.id == newid).first()
+                    tarcategory.id = newid
+                    tarcategory.categoryname = categoryname
+                    tarcategory.describe = describe
+                    self.session.commit()
+                    # 回传AJAX结果
+                    self.write(json.dumps(data))
+
+
         #如果都不是前面的，就是修改系统信息
         else:
             #print(self.request.body_arguments)
@@ -674,6 +760,13 @@ class SystemDeleteHandler(BaseHandle):
                 self.session.commit()
             # 重定向回文章管理界面
             self.redirect("/system/message")
+        if (obj == "category"):
+            # 确认参数是否正确
+            tagCategory = self.session.query(Category).filter(Category.id == cls).first()
+            if tagCategory:
+                self.session.delete(tagCategory)
+                self.session.commit()
+            self.redirect("/system/category")
 
     #post用于处理下方的多选删除请求
     @tornado.web.authenticated
@@ -709,6 +802,7 @@ class SystemDeleteHandler(BaseHandle):
                     if tagArticle:
                         self.session.delete(tagArticle)
                 self.session.commit()
+
         self.write("ture")
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is modules --------------------------------------------
@@ -822,6 +916,7 @@ application = tornado.web.Application([
     (r"/system/handle/addarticle", SystemAddArticleHandler),
     (r"/system/handle/addlifeshare", SystemAddLifeShareHandler),
     (r"/system/handle/addbbsmssage", SystemAddBBSMssageHandler),
+    (r"/system/handle/addcategory", SystemAddCategoryHandler),
     (r"/system/handle/update/(\w+)/(\d+)", SystemUpdateHandler),
     (r"/system/handle/delete/(\w+)/(\w+)", SystemDeleteHandler),
 ],**settings)

@@ -10,14 +10,18 @@
             <h1 class="page-header">添加</h1>
             <form>
                 <div class="form-group">
-                    <label for="category-keywords">文章分类</label>
-                    <input type="text" id="category-keywords" name="keywords" class="form-control" placeholder="在此处输入栏目关键字" autocomplete="off">
-                    <span class="prompt-text">文章分类会出现在添加学习网页的选择中。</span> </div>
+                    <label for="category-id">栏目ID</label>
+                    <input type="number" id="category-id" name="category-id" class="form-control" placeholder="在此处输入栏目ID" autocomplete="off" min="0" max="99">
+                    <span class="prompt-text">栏目ID会影响排列顺序。</span> </div>
                 <div class="form-group">
-                    <label for="category-describe">描述</label>
-                    <textarea class="form-control" id="category-describe" name="describe" rows="4" autocomplete="off"></textarea>
-                    <span class="prompt-text">对于各分类的描述。</span> </div>
-                <button class="btn btn-primary" type="submit" name="submit">添加分类</button>
+                    <label for="category-keywords">栏目分类</label>
+                    <input type="text" id="category-keywords" name="category-keywords" class="form-control" placeholder="在此处输入栏目关键字" autocomplete="off">
+                    <span class="prompt-text">栏目分类会出现在添加学习网页的选择中。</span> </div>
+                <div class="form-group">
+                    <label for="category-describe">栏目描述</label>
+                    <textarea class="form-control" id="category-describe" name="category-describe" rows="4" autocomplete="off"></textarea>
+                    <span class="prompt-text">对于各栏目分类的描述。</span> </div>
+                <button class="btn btn-primary" type="button" id="submit" name="submit">添加分类</button>
             </form>
         </div>
         <div class="col-md-7">
@@ -49,56 +53,39 @@
 {% block AfterJavaScript %}
 <script>
 
-    var checkall = document.getElementsByName("checkbox[]");
-
-    //全选
-    function select() {
-        for (var $i = 0; $i < checkall.length; $i++) {
-            checkall[$i].checked = true;
-        }
-    };
-
-    //反选
-    function reverse() {
-        for (var $i = 0; $i < checkall.length; $i++) {
-            if (checkall[$i].checked) {
-                checkall[$i].checked = false;
-            } else {
-                checkall[$i].checked = true;
-            }
-        }
-    };
-
-    //全不选
-    function noselect() {
-        for (var $i = 0; $i < checkall.length; $i++) {
-            checkall[$i].checked = false;
-        }
-    };
-
     //是否确认删除
     $(function () {
-        $("#checkbox_delete").click(function () {
-            obj = document.getElementsByName("checkbox[]");
-            check_val = [];
-            for (k in obj) {
-                if (obj[k].checked)
-                    check_val.push(obj[k].value);
-            }
-            //alert(check_val);
-            if (window.confirm("此操作不可逆，是否确认？")) {
+        $("#submit").click(function () {
+            var categoryname = $("#category-keywords").val();
+            var describe = $("#category-describe").val();
+            var id = $("#category-id").val();
+            //必须都填写才能提交
+            if(categoryname && describe && id)
+            {
                 $.ajax({
                     type: "POST",
-                    url: "/system/handle/delete/lifeshare/all",
+                    dataType: "json",
+                    url: "/system/handle/addcategory",
                     data: {
-                        "check_val": check_val,
+                        "categoryname": categoryname,
+                        "describe": describe,
+                        "id": id,
                     },
                     cache: false, //不缓存此页面
                     success: function (data) {
-                        window.location.reload();
+                        if(data["status"] == "fail")
+                        {
+                            alert(data["message"]);
+                        }
+                        else
+                        {
+                            alert(data["message"]);
+                            window.location.reload();
+                        }
                     }
                 });
-            };
+            }
+
         });
     });
 </script>

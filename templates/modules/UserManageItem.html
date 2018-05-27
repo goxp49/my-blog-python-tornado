@@ -1,0 +1,12 @@
+<tr>
+    <td>{{ user["id"] }}</td>
+    <td>{{ user["name"] }}</td>
+    <td>{{ user["sex"] }}</td>
+    <td>{{ user["regdate"] }}</td>
+    <td>{{ user["curtime"] }}</td>
+    <td>{{ user["admin"] }}</td>
+    <td>
+        <a href="/system/handle/update/{{ user["id"] }}" name="see">修改</a>
+        <a href="/system/handle/delete/{{ user["id"] }}" name="delete">删除</a>
+    </td>
+</tr>

@@ -393,7 +393,8 @@ class SystemCategoryHandler(BaseHandle):
                     tempDict["id"] = category.id
                     tempDict["categoryname"] = category.categoryname
                     tempDict["describe"] = category.describe
-                    tempDict["number"] = category.number
+                    #分类文章量直接从Article数据库查询
+                    tempDict["number"] = self.session.query(Article).filter(Article.category == category.id).count()
                     allCategory.append(tempDict)
             else:
                 for defualtData in defaultCategory:
@@ -408,6 +409,27 @@ class SystemCategoryHandler(BaseHandle):
             self.render(r"backstage\category.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
                         categoryItem = allCategory)
 
+class SystemManageUserHandler(BaseHandle):
+    @tornado.web.authenticated
+    def get(self):
+        #当前用户为管理员，否则无法查看
+        if(self.session.query(User).filter(User.name == self.currentuser,User.admin == True).first()):
+            allUserDase = self.session.query(User).all()
+            userNumber = 0
+            allUser = []
+            for user in allUserDase:
+                userNumber += 1
+                tempDict = {}
+                tempDict["id"] = user.id
+                tempDict["name"] = user.name
+                tempDict["sex"] = user.sex
+                tempDict["regdate"] = user.regdate
+                tempDict["curtime"] = user.curtime
+                tempDict["admin"] = user.admin
+                allUser.append(tempDict)
+
+            self.render(r"backstage\manage-user.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
+                        userItem = allUser,userNumber=userNumber)
 
 class SystemArticleAddPageHandler(BaseHandle):
     @tornado.web.authenticated
@@ -419,6 +441,7 @@ class SystemArticleAddPageHandler(BaseHandle):
             tempDict = {}
             tempDict["id"] = categoryDataBase.id
             tempDict["categoryname"] = categoryDataBase.categoryname
+            tempDict["check"] = "checked"
             allCategory.append(tempDict)
 
         self.render(r"backstage\add-article.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
@@ -588,13 +611,27 @@ class SystemUpdateHandler(BaseHandle):
                 title = tagArticle.title
                 content = tagArticle.content
                 describe = tagArticle.describe
-                category = categoryCheck[tagArticle.category]
                 keywork = tagArticle.keywork
                 passwork = tagArticle.password
                 visibility = visibilitySelect[tagArticle.visibility]
                 date = tagArticle.date
+
+                # 获取栏目分类 by 2018.5.27
+                allCategory = []
+                allCategoryDataBase = self.session.query(Category).all()
+                # 提取所有数据,用于顶部标签显示
+                for categoryDataBase in allCategoryDataBase:
+                    tempDict = {}
+                    tempDict["id"] = categoryDataBase.id
+                    tempDict["categoryname"] = categoryDataBase.categoryname
+                    if tagArticle.category == categoryDataBase.id:
+                        tempDict["check"] = "checked"
+                    else:
+                        tempDict["check"] = ""
+                    allCategory.append(tempDict)
+
                 self.render(r"backstage\update-article.html",article_title = title,article_content = content,
-                            article_describe = describe,article_category = category,article_keywork = keywork,
+                            article_describe = describe,article_keywork = keywork,categoryItem=allCategory,
                             article_passwork = passwork,article_visibility = visibility,article_date = date,
                             article_id = id,
                             current_user=self.currentuser, mail=self.user.mail, phone=self.user.mobile,
@@ -745,7 +782,7 @@ class SystemDeleteHandler(BaseHandle):
                 self.session.commit()
             #重定向回文章管理界面
             self.redirect("/system/learning")
-        if(obj == "lifeshare"):
+        elif(obj == "lifeshare"):
             tagArticle = self.session.query(LifeShare).filter(LifeShare.id == cls).first()
             # 确定存在该id的文章
             if tagArticle:
@@ -758,7 +795,7 @@ class SystemDeleteHandler(BaseHandle):
                 self.session.commit()
             # 重定向回文章管理界面
             self.redirect("/system/lifeshare")
-        if (obj == "message"):
+        elif (obj == "message"):
             tagArticle = self.session.query(BBS).filter(BBS.id == cls).first()
             # 确定存在该id的文章
             if tagArticle:
@@ -766,12 +803,16 @@ class SystemDeleteHandler(BaseHandle):
                 self.session.commit()
             # 重定向回文章管理界面
             self.redirect("/system/message")
-        if (obj == "category"):
+        elif (obj == "category"):
             # 确认参数是否正确
             tagCategory = self.session.query(Category).filter(Category.id == cls).first()
+            #先删除该分类下的文章，再删除分类
+            allArticleDase = self.session.query(Article).filter(Article.category == tagCategory.id).all()
+            for article in allArticleDase:
+                self.session.delete(article)
             if tagCategory:
                 self.session.delete(tagCategory)
-                self.session.commit()
+            self.session.commit()
             self.redirect("/system/category")
 
     #post用于处理下方的多选删除请求
@@ -878,6 +919,9 @@ class CommonItemModul(tornado.web.UIModule):
             return self.render_string("modules\CategoryManageItem.html",category=data)
         elif moduleClass == "addArticleCategory":
             return self.render_string("modules\AddArticleCategoryItem.html",category=data)
+        elif moduleClass == "UserMange":
+            return self.render_string(r"modules\UserManageItem.html",user=data)
+
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is initial --------------------------------------------
 #----------------------------------------------------------------------------------------------------------
@@ -918,6 +962,7 @@ application = tornado.web.Application([
     (r"/system/message", SystemMessageHandler),
     (r"/system/about", SystemAboutHandler),
     (r"/system/category", SystemCategoryHandler),
+    (r"/system/manageuser", SystemManageUserHandler),
     (r"/system/article/add", SystemArticleAddPageHandler),
     (r"/system/lifeshare/add", SystemLifeShareAddPageHandler),
     (r"/system/handle/upload/(\w+)", SystemFileUploadHandler),

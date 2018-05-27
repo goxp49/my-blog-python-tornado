@@ -1,5 +1,5 @@
 <li>
     <label>
-        <input name="category" type="radio" value="{{ category["id"] }}" checked>
+        <input name="category" type="radio" value="{{ category["id"] }}" {{ category["check"] }}>
         {{ category["categoryname"] }} <em class="hidden-md">( 栏目ID: <span>{{ category["id"] }}</span> )</em></label>
 </li>

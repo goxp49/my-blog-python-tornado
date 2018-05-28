@@ -70,9 +70,9 @@ $(document).ready(function () {
                 minlength: 3,
                 equalTo: '.password'
             },
-            phone_number: {
+            mobile: {
                 required: true,
-                phone_number: true,//自定义的规则
+                mobile: true,//自定义的规则
                 digits: true,//整数
             }
         },
@@ -98,7 +98,7 @@ $(document).ready(function () {
                 minlength: "确认密码不能少于3个字符",
                 equalTo: "两次输入密码不一致",//与另一个元素相同
             },
-            phone_number: {
+            mobile: {
                 required: "请输入手机号码",
                 digits: "请输入正确的手机号码",
             },
@@ -106,7 +106,7 @@ $(document).ready(function () {
         },
     });
     //添加自定义验证规则
-    jQuery.validator.addMethod("phone_number", function (value, element) {
+    jQuery.validator.addMethod("mobile", function (value, element) {
         var length = value.length;
         var phone_number = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/
         //当element为空时this.optional(element)=true，用于在该控件为非必填项目时可以通过验证，及条件可以不填但是不能填错格式。

@@ -37,7 +37,7 @@
 {% block BeforeJavaScript %}
 <div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel">
   <div class="modal-dialog" role="document" style="max-width:450px;">
-    <form action="/User/add" method="post" autocomplete="off" draggable="false">
+    <form draggable="false">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -50,24 +50,42 @@
             </thead>
             <tbody>
               <tr>
-                <td wdith="20%">姓名:</td>
-                <td width="80%"><input type="text" value="" class="form-control" name="truename" maxlength="10" autocomplete="off" /></td>
+                <td wdith="20%">用户名:</td>
+                <td width="80%"><input type="text" class="form-control" id="username" maxlength="20" autocomplete="off"/></td>
               </tr>
               <tr>
-                <td wdith="20%">用户名:</td>
-                <td width="80%"><input type="text" value="" class="form-control" name="username" maxlength="10" autocomplete="off" /></td>
+                <td wdith="20%">邮箱:</td>
+                <td width="80%"><input type="text" class="form-control" id="mail" maxlength="30" autocomplete="off" /></td>
               </tr>
               <tr>
                 <td wdith="20%">电话:</td>
-                <td width="80%"><input type="text" value="" class="form-control" name="usertel" maxlength="13" autocomplete="off" /></td>
+                <td width="80%"><input type="text" class="form-control" id="mobile" maxlength="11" autocomplete="off" /></td>
               </tr>
               <tr>
-                <td wdith="20%">新密码:</td>
-                <td width="80%"><input type="password" class="form-control" name="password" maxlength="18" autocomplete="off" /></td>
+                <td wdith="20%">性别:</td>
+                <td width="80%">
+                  <select id="sex" class="form-control">
+                  <option>男</option>
+                  <option>女</option>
+                </select>
+                </td>
+              </tr>
+              <tr>
+                <td wdith="20%">用户组:</td>
+                <td width="80%">
+                  <select id="admin" class="form-control">
+                  <option>普通用户</option>
+                  <option>管理员</option>
+                </select>
+                </td>
+              </tr>
+              <tr>
+                <td wdith="20%">密码:</td>
+                <td width="80%"><input type="password" class="form-control" id="password" maxlength="20" autocomplete="off" /></td>
               </tr>
               <tr>
                 <td wdith="20%">确认密码:</td>
-                <td width="80%"><input type="password" class="form-control" name="new_password" maxlength="18" autocomplete="off" /></td>
+                <td width="80%"><input type="password" class="form-control" id="re_password" maxlength="20" autocomplete="off" /></td>
               </tr>
             </tbody>
             <tfoot>
@@ -77,7 +95,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-          <button type="submit" class="btn btn-primary">提交</button>
+          <button id="adduser-btn" type="button" class="btn btn-primary">提交</button>
         </div>
       </div>
     </form>
@@ -89,36 +107,61 @@
 <script>
 
     $(function () {
-        $("#submit").click(function () {
-            var categoryname = $("#category-keywords").val();
-            var describe = $("#category-describe").val();
-            var id = $("#category-id").val();
-            //必须都填写才能提交
-            if(categoryname && describe && id)
+        $("#adduser-btn").click(function () {
+            var username = $("#username").val();
+            var mail = $("#mail").val();
+            var mobile = $("#mobile").val();
+            var sex = $("#sex").val();
+            var admin = $("#admin").val();
+            var password = $("#password").val();
+            var re_password = $("#re_password").val();
+            var mailRet = /[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+            var usernameRet = /^[a-zA-Z0-9_]{3,20}$/;
+            var passwordRet = /^[a-zA-Z0-9_]{3,20}$/;
+            if(!usernameRet.test(username))
             {
-                if(id > 99)
-                {
-                    alert("ID范围：0 ~ 99 ，请重新输入ID值");
-                    return;
-                }
+                alert("请输入3 ~ 20个英文或数字字符作为用户名");
+                return;
+            }
+            else if(!mailRet.test(mail))
+            {
+                alert("请输入正确的邮箱");
+                return;
+            }
+            else if(password != re_password)
+            {
+                alert("请检查两次输入密码是否一致");
+                return;
+            }
+            else if(!passwordRet.test(password))
+            {
+                alert("请输入3 ~ 20个英文或数字字符作为密码");
+                return;
+            }
+            else
+            {
+
                 $.ajax({
                     type: "POST",
                     dataType: "json",
-                    url: "/system/handle/addcategory",
+                    url: "/register",
                     data: {
-                        "categoryname": categoryname,
-                        "describe": describe,
-                        "id": id,
+                        "username": username,
+                        "mail": mail,
+                        "mobile": mobile,
+                        "sex": sex == "男"?true:false,
+                        "admin": admin == "管理员"?true:false,
+                        "password": password,
                     },
                     cache: false, //不缓存此页面
                     success: function (data) {
-                        if(data["status"] == "fail")
+                        if(data["status"] == false)
                         {
                             alert(data["message"]);
                         }
                         else
                         {
-                            alert(data["message"]);
+                            alert("用户添加成功！");
                             window.location.reload();
                         }
                     }

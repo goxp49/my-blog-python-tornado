@@ -13,13 +13,10 @@ import random                       #用于生成随机数
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is database --------------------------------------------
 #----------------------------------------------------------------------------------------------------------
+SexSelect = ["女","男"]
 
-categoryCheck = [["checked", "", "", "", "", ""],
-                  ["", "checked", "", "", ""],
-                  ["", "", "checked", "", ""],
-                  ["", "", "", "checked", ""],
-                  ["", "", "", "", "checked"],
-                  ]
+UserClass = ["普通用户","管理员"]
+
 visibilitySelect = [["checked", ""],
                     ["", "checked"],
                     ]
@@ -186,19 +183,28 @@ class RegisterHandler(BaseHandle):
         target = self.get_argument("target", None)
         username = self.get_argument("username", None)
         password = self.get_argument("password", None)
-        phone_number = self.get_argument("phone_number", None)
-        email = self.get_argument("email", None)
+        mobile = self.get_argument("mobile", None)
+        mail = self.get_argument("mail", None)
+        sex = True if self.get_argument("sex", False) == "true" else False
+        admin = True if self.get_argument("admin", False) == "true" else False
+        print(username)
+        print(password)
+        print(mobile)
+        print(mail)
+        print(sex)
+        print(admin)
+        userNameCheck = self.session.query(User).filter(User.name == username).first()
         #先处理单独项目Ajax提交
         #如果需要查询username，则判断数据库中是否已存在
         if target == "username":
-            if self.session.query(User).filter(User.name == username).first():
+            if userNameCheck:
                 self.write("false")
             else:
                 self.write("true")
             return self.finish()  # 如果不加这一段，还会执行下面的语句，类似break
-        # 处理from提交,validate已经确保用户名合法且不重复
-        if not target and username and password and phone_number and email:
-            self.session.add(User(name=username, password=password, mail=email, regdate=datetime.now(),mobile=phone_number))
+        elif not target and not userNameCheck and username and password and mail:
+            self.session.add(User(name=username, password=password, mail=mail, regdate=datetime.now(),mobile=mobile,
+                                  admin=admin,sex=sex))
             self.session.commit()
             #更新传递给前端的信息
             data['status'] = True
@@ -422,10 +428,10 @@ class SystemManageUserHandler(BaseHandle):
                 tempDict = {}
                 tempDict["id"] = user.id
                 tempDict["name"] = user.name
-                tempDict["sex"] = user.sex
+                tempDict["sex"] = SexSelect[user.sex]
                 tempDict["regdate"] = user.regdate
                 tempDict["curtime"] = user.curtime
-                tempDict["admin"] = user.admin
+                tempDict["admin"] = UserClass[user.admin]
                 allUser.append(tempDict)
 
             self.render(r"backstage\manage-user.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,

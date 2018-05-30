@@ -747,7 +747,25 @@ class SystemUpdateHandler(BaseHandle):
                     self.session.commit()
                     # 回传AJAX结果
                     self.write(json.dumps(data))
-
+        # 判断是否要修改栏目分类
+        elif obj == "user":
+            data = {'message': '用户信息已修改成功！', 'status': "success"}  # 封装数据
+            mail = self.get_argument("mail", None)
+            mobile = self.get_argument("mobile", None)
+            sex = SexSelect.index(self.get_argument("sex", None))
+            admin = UserClass.index(self.get_argument("admin", None))
+            password = self.get_argument("admin", None)
+            tarUser = self.session.query(User).filter(User.id == id).first()
+            if tarUser:
+                tarUser.mail = mail
+                tarUser.mobile = mobile
+                tarUser.sex = sex
+                tarUser.admin = admin
+                tarUser.password = password
+                self.session.commit()
+            else:
+                data = {'message': '用户不存在！', 'status': "false"}  # 封装数据
+            self.write(json.dumps(data))
 
         #如果都不是前面的，就是修改系统信息
         else:
@@ -820,6 +838,13 @@ class SystemDeleteHandler(BaseHandle):
                 self.session.delete(tagCategory)
             self.session.commit()
             self.redirect("/system/category")
+        elif (obj == "manageuser"):
+            # 确认参数是否正确
+            tagUser = self.session.query(User).filter(User.id == cls).first()
+            if tagUser:
+                self.session.delete(tagUser)
+                self.session.commit()
+            self.redirect("/system/manageuser")
 
     #post用于处理下方的多选删除请求
     @tornado.web.authenticated
@@ -857,6 +882,27 @@ class SystemDeleteHandler(BaseHandle):
                 self.session.commit()
 
         self.write("ture")
+
+
+class SystemQueryHandler(BaseHandle):
+    #get用于处理单个删除请求
+    @tornado.web.authenticated
+    def post(self, obj, tag):
+        if obj == "user":
+            queryTar = self.get_argument(tag)
+            tarUser = self.session.query(User).filter(User.id == queryTar).first()
+            userData = {}
+            userData["status"] = False
+            if tarUser:
+                userData["status"] = True
+                userData["id"] = tarUser.id
+                userData["name"] = tarUser.name
+                userData["mail"] = tarUser.mail
+                userData["sex"] = SexSelect[tarUser.sex]
+                userData["mobile"] = tarUser.mobile
+                userData["admin"] = UserClass[tarUser.admin]
+            self.write(json.dumps(userData))
+
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is modules --------------------------------------------
 #----------------------------------------------------------------------------------------------------------
@@ -978,6 +1024,7 @@ application = tornado.web.Application([
     (r"/system/handle/addcategory", SystemAddCategoryHandler),
     (r"/system/handle/update/(\w+)/(\d+)", SystemUpdateHandler),
     (r"/system/handle/delete/(\w+)/(\w+)", SystemDeleteHandler),
+    (r"/system/handle/query/(\w+)/(\w+)", SystemQueryHandler),
 ],**settings)
 
 if __name__ == "__main__":

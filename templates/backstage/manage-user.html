@@ -1,6 +1,6 @@
 {% extends "__BackstageBase__.html" %}
 
-{% block title_category %}class="active"{% end %}
+{% block title_mangeuser %}class="active"{% end %}
 
 {% block Body %}
 
@@ -101,6 +101,85 @@
     </form>
   </div>
 </div>
+
+<div class="modal fade" id="modifyUser" tabindex="-1" role="dialog" aria-labelledby="modifyUserModalLabel">
+    <div class="modal-dialog" role="document" style="max-width:450px;">
+        <form draggable="false">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">修改用户</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table" style="margin-bottom:0px;">
+                        <thead>
+                        <tr></tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td wdith="20%">id:</td>
+                            <td width="80%"><input type="text" class="form-control" id="modify_id" maxlength="20"
+                                                   autocomplete="off" readonly/></td>
+                        </tr>
+                        <tr>
+                            <td wdith="20%">用户名:</td>
+                            <td width="80%"><input type="text" class="form-control" id="modify_username" maxlength="20"
+                                                   autocomplete="off" readonly/></td>
+                        </tr>
+                        <tr>
+                            <td wdith="20%">邮箱:</td>
+                            <td width="80%"><input type="text" class="form-control" id="modify_mail" maxlength="30"
+                                                   autocomplete="off"/></td>
+                        </tr>
+                        <tr>
+                            <td wdith="20%">电话:</td>
+                            <td width="80%"><input type="text" class="form-control" id="modify_mobile" maxlength="11"
+                                                   autocomplete="off"/></td>
+                        </tr>
+                        <tr>
+                            <td wdith="20%">性别:</td>
+                            <td width="80%">
+                                <select id="modify_sex" class="form-control">
+                                    <option>男</option>
+                                    <option>女</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td wdith="20%">用户组:</td>
+                            <td width="80%">
+                                <select id="modify_admin" class="form-control">
+                                    <option>普通用户</option>
+                                    <option>管理员</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td wdith="20%">密码:</td>
+                            <td width="80%"><input type="password" class="form-control" id="modify_password" maxlength="20"
+                                                   autocomplete="off"/></td>
+                        </tr>
+                        <tr>
+                            <td wdith="20%">确认密码:</td>
+                            <td width="80%"><input type="password" class="form-control" id="modify_re_password" maxlength="20"
+                                                   autocomplete="off"/></td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr></tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button id="modify-btn" type="button" class="btn btn-primary">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 {% end %}
 
 {% block AfterJavaScript %}
@@ -118,6 +197,7 @@
             var mailRet = /[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
             var usernameRet = /^[a-zA-Z0-9_]{3,20}$/;
             var passwordRet = /^[a-zA-Z0-9_]{3,20}$/;
+
             if(!usernameRet.test(username))
             {
                 alert("请输入3 ~ 20个英文或数字字符作为用户名");
@@ -150,7 +230,7 @@
                         "mail": mail,
                         "mobile": mobile,
                         "sex": sex == "男"?true:false,
-                        "admin": admin == "管理员"?true:false,
+                        "admin": (admin == "管理员")?true:false,
                         "password": password,
                     },
                     cache: false, //不缓存此页面
@@ -170,5 +250,93 @@
 
         });
     });
+
+    $(function () {
+        $("#modify-btn").click(function () {
+            var id = $("#modify_id").val();
+            var mail = $("#modify_mail").val();
+            var mobile = $("#modify_mobile").val();
+            var sex = $("#modify_sex").val();
+            var admin = $("#modify_admin").val();
+            var password = $("#modify_password").val();
+            var re_password = $("#modify_re_password").val();
+            var mailRet = /[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+            var passwordRet = /^[a-zA-Z0-9_]{3,20}$/;
+
+            if(!mailRet.test(mail))
+            {
+                alert("请输入正确的邮箱");
+                return;
+            }
+            else if(password != re_password)
+            {
+                alert("请检查两次输入密码是否一致");
+                return;
+            }
+            else if(!passwordRet.test(password))
+            {
+                alert("请输入3 ~ 20个英文或数字字符作为密码");
+                return;
+            }
+            else
+            {
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/system/handle/update/user/" + id,
+                    data: {
+                        "mail": mail,
+                        "mobile": mobile,
+                        "sex": sex,
+                        "admin": admin,
+                        "password": password,
+                    },
+                    cache: false, //不缓存此页面
+                    success: function (data) {
+                        if(data["status"] == false)
+                        {
+                            alert(data["message"]);
+                        }
+                        else
+                        {
+                            alert("用户信息修改成功！");
+                            window.location.reload();
+                        }
+                    }
+                });
+            }
+
+        });
+    });
+
+    //用于处理修改用户信息模态窗
+    function Show_Modify_Modal(id) {
+        //先获取要修改的对象信息
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/system/handle/query/user/id",
+            data: {
+                "id": id,
+            },
+            cache: false, //不缓存此页面
+            success: function (data) {
+                if (data["status"]) {
+                    $("#modify_id").val(data["id"]);
+                    $("#modify_username").val(data["name"]);
+                    $("#modify_mail").val(data["mail"]);
+                    $("#modify_mobile").val(data["mobile"]);
+                    $("#modify_sex").val(data["sex"]);
+                    $("#modify_admin").val(data["admin"]);
+                    $('#modifyUser').modal('show');
+                }
+                else {
+                    alert("要修改的用户不存在！");
+                }
+
+            }
+        });
+    }
 </script>
 {% end %}

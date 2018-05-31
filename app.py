@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlalchemy import func
 import tornado.web
 import orm
-from orm import User,Article,LifeShare,BBS,System,Category
+from orm import User,Article,LifeShare,BBS,System,Category,Loginlog
 import os,sys
 import hashlib                      #用于md5加密
 from PIL import Image               #用于图片处理
@@ -163,6 +163,8 @@ class LoginHandler(BaseHandle):
             result.lastip = result.curip
             result.curip = self.request.remote_ip
             print("当前登录用户为：" + result.name + "    密码：" + result.password)
+            #***********************2018.5.31 增加登录记录数据库表存储每次登录数据********************
+            self.session.add(Loginlog(username=result.name, ipaddress=self.request.remote_ip,date=datetime.now()))
             self.session.commit()
         #将data序列化为JSON回传给前端
         self.write(json.dumps(data))
@@ -436,6 +438,44 @@ class SystemManageUserHandler(BaseHandle):
 
             self.render(r"backstage\manage-user.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
                         userItem = allUser,userNumber=userNumber)
+
+class SystemLoginlogHandler(BaseHandle):
+    @tornado.web.authenticated
+    def get(self):
+        #当前用户为管理员，否则无法查看
+        if(self.session.query(User).filter(User.name == self.currentuser,User.admin == True).first()):
+            allLogDataBase = self.session.query(Loginlog).all()
+            logNumber = 0
+            allLog = []
+            for loginlog in allLogDataBase:
+                tempDict = {}
+                logNumber += 1
+                tempDict["id"] = loginlog.id
+                tempDict["username"] = loginlog.username
+                tempDict["ipaddress"] = loginlog.ipaddress
+                tempDict["date"] = loginlog.date
+                allLog.append(tempDict)
+
+            self.render(r"backstage\loginlog.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
+                        logItem = allLog,logNumber=logNumber)
+
+class SystemSettingHandler(BaseHandle):
+    @tornado.web.authenticated
+    def get(self,cls):
+        mainTitle = ""
+        subTitle = ""
+        webURL = ""
+        webKeywork = ""
+        webDescription = ""
+        webEmail = ""
+        webICP = ""
+        cookieTime = ""
+
+        if self.session.query(System).filter(System.dataclass == "main_title").first():
+            pass
+        self.render(r"backstage\base-setting.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
+                    )
+
 
 class SystemArticleAddPageHandler(BaseHandle):
     @tornado.web.authenticated
@@ -845,6 +885,17 @@ class SystemDeleteHandler(BaseHandle):
                 self.session.delete(tagUser)
                 self.session.commit()
             self.redirect("/system/manageuser")
+        elif (obj == "loginlog"):
+            #判断是单个删除还是全部删除
+            if cls == "all":
+                if self.session.query(Loginlog):
+                    self.session.query(Loginlog).delete()
+            else:
+                tarLoginlog = self.session.query(Loginlog).filter(Loginlog.id == cls).first()
+                if tarLoginlog:
+                    self.session.delete(tarLoginlog)
+            self.session.commit()
+            self.redirect("/system/loginlog")
 
     #post用于处理下方的多选删除请求
     @tornado.web.authenticated
@@ -973,6 +1024,8 @@ class CommonItemModul(tornado.web.UIModule):
             return self.render_string("modules\AddArticleCategoryItem.html",category=data)
         elif moduleClass == "UserMange":
             return self.render_string(r"modules\UserManageItem.html",user=data)
+        elif moduleClass == "Logoinlog":
+            return self.render_string(r"modules\LoginLogItem.html",loginlog=data)
 
 #----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is initial --------------------------------------------
@@ -1015,6 +1068,8 @@ application = tornado.web.Application([
     (r"/system/about", SystemAboutHandler),
     (r"/system/category", SystemCategoryHandler),
     (r"/system/manageuser", SystemManageUserHandler),
+    (r"/system/loginlog", SystemLoginlogHandler),
+    (r"/system/setting/(\w+)", SystemSettingHandler),
     (r"/system/article/add", SystemArticleAddPageHandler),
     (r"/system/lifeshare/add", SystemLifeShareAddPageHandler),
     (r"/system/handle/upload/(\w+)", SystemFileUploadHandler),

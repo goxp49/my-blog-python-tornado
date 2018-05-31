@@ -106,6 +106,14 @@ class Category(Base):
     describe = Column(String(100))
     number = Column(Integer, default=0)
 
+class Loginlog(Base):
+    __tablename__ = 'loginlog'  # 表名
+
+    id = Column(Integer,primary_key=True,autoincrement=True)
+    username = Column(String(20))
+    ipaddress = Column(String(30))
+    date = Column(DateTime)
+
 # 初始化数据库连接:
 engine = create_engine(  # 生成连接字符串，有特定的格式
     database_setting['database_type'] +

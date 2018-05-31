@@ -1,0 +1,8 @@
+<tr>
+    <td>{{ loginlog["id"] }}</td>
+    <td class="article-title">{{ loginlog["username"] }}</td>
+    <td>{{ loginlog["date"] }}</td>
+    <td>{{ loginlog["ipaddress"] }}</td>
+    <td><a href="/system/handle/delete/loginlog/{{ loginlog["id"] }}"
+        onClick="return confirm('确定要删除该记录?');");">删除</a></td>
+</tr>

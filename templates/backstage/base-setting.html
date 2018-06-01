@@ -12,37 +12,37 @@
                 <div class="add-article-box">
                     <h2 class="add-article-box-title"><span>站点标题</span></h2>
                     <div class="add-article-box-content">
-                        <input type="text" name="main_title" class="form-control" placeholder="请输入站点标题" required autofocus autocomplete="off"
-                               value="{{ mainTitle }}">
+                        <input type="text" name="mainTitle" class="form-control" placeholder="请输入站点标题" required autofocus autocomplete="off"
+                               value="{{ htmlHead["mainTitle"] }}">
                     </div>
                 </div>
                 <div class="add-article-box">
                     <h2 class="add-article-box-title"><span>副标题</span></h2>
                     <div class="add-article-box-content">
-                        <input type="text" name="sub_title" class="form-control" placeholder="请输入站点副标题" autocomplete="off"
-                        value="{{ subTitle }}">
+                        <input type="text" name="subTitle" class="form-control" placeholder="请输入站点副标题" autocomplete="off"
+                        value="{{ htmlHead["subTitle"] }}">
                         <span class="prompt-text">用简洁的文字描述本站点。</span></div>
                 </div>
                 <div class="add-article-box">
                     <h2 class="add-article-box-title"><span>站点地址（URL）</span></h2>
                     <div class="add-article-box-content">
-                        <input type="text" name="web_url" class="form-control" placeholder="在此处输入站点地址（URL）" required
-                               autocomplete="off" value="{{ webURL }}">
+                        <input type="text" name="webURL" class="form-control" placeholder="在此处输入站点地址（URL）" required
+                               autocomplete="off" value="{{ htmlHead["webURL"] }}">
                     </div>
                 </div>
                 <div class="add-article-box">
                     <h2 class="add-article-box-title"><span>站点关键字</span></h2>
                     <div class="add-article-box-content">
-                        <textarea class="form-control" name="web_keywords" autocomplete="off">
-                            {{ webKeywork }}
+                        <textarea class="form-control" name="webKeywork" autocomplete="off">
+                            {{ htmlHead["webKeywork"] }}
                         </textarea>
                         <span class="prompt-text">关键字会出现在网页的keywords属性中。</span></div>
                 </div>
                 <div class="add-article-box">
                     <h2 class="add-article-box-title"><span>站点描述</span></h2>
                     <div class="add-article-box-content">
-                        <textarea class="form-control" name="web_describe" rows="4" autocomplete="off">
-                            {{ webDescription }}
+                        <textarea class="form-control" name="webDescription" rows="4" autocomplete="off">
+                            {{ htmlHead["webDescription"] }}
                         </textarea>
                         <span class="prompt-text">描述会出现在网页的description属性中。</span></div>
                 </div>
@@ -52,22 +52,22 @@
                 <div class="add-article-box">
                     <h2 class="add-article-box-title"><span>电子邮件地址</span></h2>
                     <div class="add-article-box-content">
-                        <input type="email" name="web_email" class="form-control" placeholder="在此处输入邮箱" autocomplete="off"
-                            value="{{ webEmail }}"/>
+                        <input type="email" name="webEmail" class="form-control" placeholder="在此处输入邮箱" autocomplete="off"
+                            value="{{ htmlHead["webEmail"] }}"/>
                         <span class="prompt-text">这个电子邮件地址仅为了管理方便而填写</span></div>
                 </div>
                 <div class="add-article-box">
                     <h2 class="add-article-box-title"><span>ICP备案号</span></h2>
                     <div class="add-article-box-content">
-                        <input type="email" name="web_icp" class="form-control" placeholder="在此处输入备案号"
-                               autocomplete="off" value="{{ webICP }}"/>
+                        <input type="text" name="webICP" class="form-control" placeholder="在此处输入备案号"
+                               autocomplete="off" value="{{ htmlHead["webICP"] }}"/>
                     </div>
                 </div>
                 <div class="add-article-box">
                     <h2 class="add-article-box-title"><span>登录超时</span></h2>
                     <div class="add-article-box-content">
-                        <input type="number" name="cookie_time" class="form-control" placeholder="在此处输入超时时间(h)"
-                               required autocomplete="off" value="{{ cookieTime }}"/>
+                        <input type="number" name="cookieTime" class="form-control" placeholder="在此处输入超时时间(h)"
+                               required autocomplete="off" value="{{ htmlHead["cookieTime"] }}"/>
                         <span class="prompt-text">单位(小时),超时将强制退出</span></div>
                 </div>
                 <div class="add-article-box">

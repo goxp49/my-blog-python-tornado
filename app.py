@@ -6,7 +6,7 @@ from sqlalchemy import func
 import tornado.web
 import orm
 from orm import User,Article,LifeShare,BBS,System,Category,Loginlog
-import os,sys
+import os,sys,time
 import hashlib                      #用于md5加密
 from PIL import Image               #用于图片处理
 import random                       #用于生成随机数
@@ -27,6 +27,38 @@ defaultCategory = [{"id":0,"categoryname":"python","describe":"python","number":
                    {"id": 3, "categoryname": "Sqlalchemy", "describe": "Sqlalchemy", "number": 3},
                    {"id": 4, "categoryname": "第三方插件", "describe": "第三方插件", "number": 4}]
 #----------------------------------------------------------------------------------------------------------
+#-------------------------------------------- there is common define --------------------------------------
+#----------------------------------------------------------------------------------------------------------
+def ReadHtmlHeadSetting(self):
+    htmlHead = {}
+    htmlHead["mainTitle"] = ""
+    htmlHead["subTitle"] = ""
+    htmlHead["webURL"] = ""
+    htmlHead["webKeywork"] = ""
+    htmlHead["webDescription"] = ""
+    htmlHead["webEmail"] = ""
+    htmlHead["webICP"] = ""
+    htmlHead["cookieTime"] = ""
+    if self.session.query(System).filter(System.dataclass == "mainTitle").first():
+        htmlHead["mainTitle"] = self.session.query(System).filter(System.dataclass == "mainTitle").first().content
+    if self.session.query(System).filter(System.dataclass == "subTitle").first():
+        htmlHead["subTitle"] = self.session.query(System).filter(System.dataclass == "subTitle").first().content
+    if self.session.query(System).filter(System.dataclass == "webURL").first():
+        htmlHead["webURL"] = self.session.query(System).filter(System.dataclass == "webURL").first().content
+    if self.session.query(System).filter(System.dataclass == "webKeywork").first():
+        htmlHead["webKeywork"] = self.session.query(System).filter(System.dataclass == "webKeywork").first().content
+    if self.session.query(System).filter(System.dataclass == "webDescription").first():
+        htmlHead["webDescription"] = self.session.query(System).filter(System.dataclass == "webDescription").first().content
+    if self.session.query(System).filter(System.dataclass == "webEmail").first():
+        htmlHead["webEmail"] = self.session.query(System).filter(System.dataclass == "webEmail").first().content
+    if self.session.query(System).filter(System.dataclass == "webICP").first():
+        htmlHead["webICP"] = self.session.query(System).filter(System.dataclass == "webICP").first().content
+    if self.session.query(System).filter(System.dataclass == "cookieTime").first():
+        htmlHead["cookieTime"] = self.session.query(System).filter(System.dataclass == "cookieTime").first().content
+
+    return htmlHead
+
+#----------------------------------------------------------------------------------------------------------
 #-------------------------------------------- there is handler --------------------------------------------
 #----------------------------------------------------------------------------------------------------------
 
@@ -36,11 +68,13 @@ class BaseHandle(tornado.web.RequestHandler):
 
     def get_current_user(self):
         user = self.session.query(User).filter(User.name == self.get_secure_cookie("username")).first()
+        print(self.get_secure_cookie("username"))
         if user:
             self.currentuser = self.get_secure_cookie("username")
             self.user = self.session.query(User).filter(User.name == self.currentuser).first()
-            print("BaseHandle："+self.user.name)
+            #print("BaseHandle："+self.user.name)
             return True
+        print("认证失败")
         return False
 
 
@@ -51,6 +85,7 @@ class IndexHandler(BaseHandle):
     def get(self):
         #self.session.add(User(name="wll",password="12345",mail="444@qq.com",regdate="2018-04-03 21:27:55",sex=True,mobile="13875987564"))
         #self.session.commit()
+
         allArticles = []
         articles = self.session.query(Article).all()
         for article in articles:
@@ -63,12 +98,14 @@ class IndexHandler(BaseHandle):
             tempList["date"] = article.date
             tempList["pictuername"] = article.pictuername
             allArticles.append(tempList)
-        self.render("index.html",TitleNum = range(3),Articles = allArticles)
+        htmlHead = ReadHtmlHeadSetting(self)
+        self.render("index.html",TitleNum = range(3),Articles = allArticles,htmlHead=htmlHead)
 
 class AboutHandler(BaseHandle):
     def get(self):
         tarData = self.session.query(System).filter(System.dataclass == "introduce").first()
-        self.render("about.html",ItemNum = ["n1","n2","n3","n4","n5"],introduce = tarData.content)
+        htmlHead = ReadHtmlHeadSetting(self)
+        self.render("about.html",ItemNum = ["n1","n2","n3","n4","n5"],introduce = tarData.content,htmlHead=htmlHead)
 
 class LifeHandler(BaseHandle):
     def get(self):
@@ -81,7 +118,8 @@ class LifeHandler(BaseHandle):
             tempList["describe"] = lifeshare.describe
             tempList["pictuername"] = lifeshare.pictuername
             allShares.append(tempList)
-        self.render("slowlife.html",ShareNum = allShares)
+        htmlHead = ReadHtmlHeadSetting(self)
+        self.render("slowlife.html",ShareNum = allShares,htmlHead=htmlHead)
 
 class LearnHandler(BaseHandle):
     def get(self,clas):
@@ -112,7 +150,8 @@ class LearnHandler(BaseHandle):
                 tempList["date"] = article.date
                 tempList["pictuername"] = article.pictuername
                 allArticles.append(tempList)
-        self.render("learn.html",categories = allCategory,Articles = allArticles)
+        htmlHead = ReadHtmlHeadSetting(self)
+        self.render("learn.html",categories = allCategory,Articles = allArticles,htmlHead=htmlHead)
 
 class BBSHandler(BaseHandle):
     def get(self):
@@ -128,7 +167,8 @@ class BBSHandler(BaseHandle):
             # 头像图片，还没实现
             tempList["icon"] = "ico_%d.jpg" % (message.icon)    #"ico_1.jpg"
             allMessages.append(tempList)
-        self.render("bbs.html",allMessages = allMessages)
+        htmlHead = ReadHtmlHeadSetting(self)
+        self.render("bbs.html",allMessages = allMessages,htmlHead=htmlHead)
 
 
 class LoginHandler(BaseHandle):
@@ -146,14 +186,19 @@ class LoginHandler(BaseHandle):
         data = {'status': False, 'message': '用户名或密码错误，请重新输入！', 'url': "/login"}  # 封装数据
         username = self.get_argument("username", None)
         password = self.get_argument("password", None)
-        print("Ajax Post:" + username + "密码为:" + password)
+        #print("Ajax Post:" + username + "密码为:" + password)
         result = self.session.query(User).filter(User.name == username,User.password == password).first()
         #如果用户存在，则返回User对象
         if result:
             data['status'] = True
             data["message"] = "successfully"
             data["url"] = "/system/index"
-            self.set_secure_cookie("username", result.name,expires_days=1) #这里设置有效期为1天
+            #2018.6.1增加从数据库中读取Cookie有效期
+            cookieTime = self.session.query(System).filter(System.dataclass == "cookieTime").first()
+            if cookieTime:
+                self.set_secure_cookie("username", result.name,expires=time.time()+int(cookieTime.content)*60) #单位是分钟，要加上时区
+            else:
+                self.set_secure_cookie("username", result.name,expires_days=1) #这里设置有效期默认为1天
             #登陆次数+1
             result.loginnum = result.loginnum + 1
             #更新最后一次登录时间
@@ -189,12 +234,12 @@ class RegisterHandler(BaseHandle):
         mail = self.get_argument("mail", None)
         sex = True if self.get_argument("sex", False) == "true" else False
         admin = True if self.get_argument("admin", False) == "true" else False
-        print(username)
-        print(password)
-        print(mobile)
-        print(mail)
-        print(sex)
-        print(admin)
+        # print(username)
+        # print(password)
+        # print(mobile)
+        # print(mail)
+        # print(sex)
+        # print(admin)
         userNameCheck = self.session.query(User).filter(User.name == username).first()
         #先处理单独项目Ajax提交
         #如果需要查询username，则判断数据库中是否已存在
@@ -225,9 +270,11 @@ class ViewHandler(BaseHandle):
                 date = lifeshare.date
                 username = lifeshare.userName
                 viewNum = 0
-            self.render("view-lifeshare.html",title=title,content=content,date=date,username=username,viewNum=viewNum)
+            htmlHead = ReadHtmlHeadSetting(self)
+            self.render("view-lifeshare.html",title=title,content=content,date=date,username=username,viewNum=viewNum,
+                        htmlHead=htmlHead)
 
-        if (obj == "learn"):
+        elif (obj == "learn"):
             article = self.session.query(Article).filter(Article.id == id).first()
             # 判断文章是否存在
             if article:
@@ -236,8 +283,9 @@ class ViewHandler(BaseHandle):
                 date = article.date
                 username = article.userName
                 viewNum = 0
+            htmlHead = ReadHtmlHeadSetting(self)
             self.render("view-learn.html", title=title, content=content, date=date, username=username,
-                        viewNum=viewNum)
+                        viewNum=viewNum,htmlHead=htmlHead)
 
 class SystemIndexHandler(BaseHandle):
     @tornado.web.authenticated
@@ -464,34 +512,9 @@ class SystemLoginlogHandler(BaseHandle):
 class SystemSettingHandler(BaseHandle):
     @tornado.web.authenticated
     def get(self,cls):
-        mainTitle = ""
-        subTitle = ""
-        webURL = ""
-        webKeywork = ""
-        webDescription = ""
-        webEmail = ""
-        webICP = ""
-        cookieTime = ""
-        #如果数据库里已经有数据则显示出来
-        if self.session.query(System).filter(System.dataclass == "main_title").first():
-            mainTitle = self.session.query(System).filter(System.dataclass == "main_title").first().content
-        if self.session.query(System).filter(System.dataclass == "sub_title").first():
-            subTitle = self.session.query(System).filter(System.dataclass == "sub_title").first().content
-        if self.session.query(System).filter(System.dataclass == "web_url").first():
-            webURL = self.session.query(System).filter(System.dataclass == "web_url").first().content
-        if self.session.query(System).filter(System.dataclass == "web_keywork").first():
-            webKeywork = self.session.query(System).filter(System.dataclass == "web_keywork").first().content
-        if self.session.query(System).filter(System.dataclass == "web_description").first():
-            webDescription = self.session.query(System).filter(System.dataclass == "web_description").first().content
-        if self.session.query(System).filter(System.dataclass == "web_email").first():
-            webEmail = self.session.query(System).filter(System.dataclass == "web_email").first().content
-        if self.session.query(System).filter(System.dataclass == "web_icp").first():
-            webICP = self.session.query(System).filter(System.dataclass == "web_icp").first().content
-        if self.session.query(System).filter(System.dataclass == "cookie_time").first():
-            cookieTime = self.session.query(System).filter(System.dataclass == "cookie_time").first().content
+        htmlHead = ReadHtmlHeadSetting(self)
         self.render(r"backstage\base-setting.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
-                    mainTitle=mainTitle,subTitle=subTitle,webURL=webURL,webKeywork=webKeywork,webDescription=webDescription,
-                    webEmail=webEmail,webICP=webICP,cookieTime=cookieTime)
+                    htmlHead = htmlHead)
 
 
 class SystemArticleAddPageHandler(BaseHandle):
@@ -576,8 +599,6 @@ class SystemAddCategoryHandler(BaseHandle):
         id = self.get_argument("id",None)
         categoryname = self.get_argument("categoryname",None)
         describe = self.get_argument("describe",None)
-        print(id)
-        print(categoryname)
         #检查id与栏目名是否合法
         if id and categoryname :
             #如果ID已存在则提示
@@ -609,7 +630,7 @@ class SystemFileUploadHandler(BaseHandle):
             #这里的属性名要和html中的name一样
             FileData =  self.request.files["input-file"]
             for file in FileData:
-                print(file)
+                #print(file)
                 #filetype = file["content_type"]
                 #filename = file["filename"]
                 filebody = file["body"]
@@ -620,7 +641,7 @@ class SystemFileUploadHandler(BaseHandle):
                 #设置存储图片路径,文件命名方式：用户名 + 日期 + hash值
                 filename = hashlib.md5((self.user.name + datetime.now().strftime("%Y%m%d%H%M%S") + filehash).encode('utf-8')).hexdigest() + filesuffix
                 filepath = os.path.join(sys.path[0],"static","images","articlecover",filename)
-                print(filepath)
+                #print(filepath)
                 with open(filepath, 'wb') as f:
                     f.write(filebody)
                 try:
@@ -647,7 +668,7 @@ class SystemFileUploadHandler(BaseHandle):
                 #设置存储图片路径,文件命名方式：用户名 + 日期 + hash值
                 filename = hashlib.md5((self.user.name + datetime.now().strftime("%Y%m%d%H%M%S") + filehash).encode('utf-8')).hexdigest() + filesuffix
                 filepath = os.path.join(sys.path[0],"static","images","editorpicture",filename)
-                print(filepath)
+                #print(filepath)
                 with open(filepath, 'wb') as f:
                     f.write(filebody)
                 #注意：此处路径static前有"/"表示使用的是绝对路径
@@ -825,11 +846,9 @@ class SystemUpdateHandler(BaseHandle):
             self.write(json.dumps(data))
         # 判断是否要修改系统设置
         elif obj == "setting":
-            print(self.request.body_arguments)
             requestData = self.request.body_arguments
             for dataclass in requestData:
                 content = self.get_argument(dataclass, "")
-                print(content)
                 #判断是否已经存在该设置内容
                 tarDataBase = self.session.query(System).filter(System.dataclass == dataclass).first()
                 if tarDataBase:
@@ -1005,7 +1024,6 @@ class IndexImageHeadModule(tornado.web.UIModule):
 
 class TimeLineModule(tornado.web.UIModule):
     def render(self, article):
-        print(article)
         articleData = {
             "id":article["id"],
             "month_day":article["date"].strftime("%m-%d"),
@@ -1014,8 +1032,6 @@ class TimeLineModule(tornado.web.UIModule):
             "image":article["pictuername"],
             "describe":article["describe"],
         }
-        print(type(article["date"]))
-        print(article["date"].strftime("%Y-%m-%d"))
         return self.render_string("modules\TimeLine.html",article=articleData)
 
 class AboutTimeLineModul(tornado.web.UIModule):

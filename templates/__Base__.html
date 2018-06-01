@@ -2,13 +2,13 @@
 <html>
 <head>
     <title>
-        {{ main_title }}
+        {{ htmlHead["mainTitle"] }}
     </title>
     <meta charset="UTF-8">
 
-    <meta name="keywords" content="{{ web_keywork }}"/>
-    <meta name="description" content="{{ web_description }}"/>
-    <meta name="author" content="{{ web_email }}"/>
+    <meta name="keywords" content="{{ htmlHead["webKeywork"] }}"/>
+    <meta name="description" content="{{ htmlHead["webDescription"] }}"/>
+    <meta name="author" content="{{ htmlHead["webEmail"] }}"/>
     <link href=" {{static_url("css/base.css")}}" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="{{static_url("js/modernizr.js")}}"></script>

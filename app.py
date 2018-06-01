@@ -472,11 +472,26 @@ class SystemSettingHandler(BaseHandle):
         webEmail = ""
         webICP = ""
         cookieTime = ""
-
+        #如果数据库里已经有数据则显示出来
         if self.session.query(System).filter(System.dataclass == "main_title").first():
-            pass
+            mainTitle = self.session.query(System).filter(System.dataclass == "main_title").first().content
+        if self.session.query(System).filter(System.dataclass == "sub_title").first():
+            subTitle = self.session.query(System).filter(System.dataclass == "sub_title").first().content
+        if self.session.query(System).filter(System.dataclass == "web_url").first():
+            webURL = self.session.query(System).filter(System.dataclass == "web_url").first().content
+        if self.session.query(System).filter(System.dataclass == "web_keywork").first():
+            webKeywork = self.session.query(System).filter(System.dataclass == "web_keywork").first().content
+        if self.session.query(System).filter(System.dataclass == "web_description").first():
+            webDescription = self.session.query(System).filter(System.dataclass == "web_description").first().content
+        if self.session.query(System).filter(System.dataclass == "web_email").first():
+            webEmail = self.session.query(System).filter(System.dataclass == "web_email").first().content
+        if self.session.query(System).filter(System.dataclass == "web_icp").first():
+            webICP = self.session.query(System).filter(System.dataclass == "web_icp").first().content
+        if self.session.query(System).filter(System.dataclass == "cookie_time").first():
+            cookieTime = self.session.query(System).filter(System.dataclass == "cookie_time").first().content
         self.render(r"backstage\base-setting.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
-                    )
+                    mainTitle=mainTitle,subTitle=subTitle,webURL=webURL,webKeywork=webKeywork,webDescription=webDescription,
+                    webEmail=webEmail,webICP=webICP,cookieTime=cookieTime)
 
 
 class SystemArticleAddPageHandler(BaseHandle):
@@ -808,8 +823,27 @@ class SystemUpdateHandler(BaseHandle):
             else:
                 data = {'message': '用户不存在！', 'status': "false"}  # 封装数据
             self.write(json.dumps(data))
-
-        #如果都不是前面的，就是修改系统信息
+        # 判断是否要修改系统设置
+        elif obj == "setting":
+            print(self.request.body_arguments)
+            requestData = self.request.body_arguments
+            for dataclass in requestData:
+                content = self.get_argument(dataclass, "")
+                print(content)
+                #判断是否已经存在该设置内容
+                tarDataBase = self.session.query(System).filter(System.dataclass == dataclass).first()
+                if tarDataBase:
+                    tarDataBase.handlers = self.user.name
+                    tarDataBase.ipaddress = self.request.remote_ip
+                    tarDataBase.dataclass = dataclass
+                    tarDataBase.content = content
+                    tarDataBase.date = datetime.now()
+                else:
+                    self.session.add(System(handlers=self.user.name, ipaddress=self.request.remote_ip, dataclass=dataclass, content=content,
+                                            date=datetime.now()))
+                self.session.commit()
+            self.redirect("/system/setting/base")
+        #如果都不是前面的，就是通过AJAX修改系统信息
         else:
             #print(self.request.body_arguments)
             #print(self.get_body_argument('dataclass'))

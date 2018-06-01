@@ -1,12 +1,14 @@
 <!doctype html>
 <html>
 <head>
+    <title>
+        {{ main_title }}
+    </title>
     <meta charset="UTF-8">
-    {% block HearTitle %}
-        <title> Welcome to my blog! </title>
-    {% end %}
-    <meta name="keywords" content="个人博客,王超个人博客,Tornado测试"/>
-    <meta name="description" content="会当凌绝顶，一览山外有山，高又高"/>
+
+    <meta name="keywords" content="{{ web_keywork }}"/>
+    <meta name="description" content="{{ web_description }}"/>
+    <meta name="author" content="{{ web_email }}"/>
     <link href=" {{static_url("css/base.css")}}" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="{{static_url("js/modernizr.js")}}"></script>

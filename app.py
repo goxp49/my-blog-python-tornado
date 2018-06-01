@@ -356,6 +356,7 @@ class SystemMessageHandler(BaseHandle):
     @tornado.web.authenticated
     def get(self):
         allMessage = []
+        messageNum = 0
         #如果当前用户为管理员，则显示所有人的留言，否则无法查看
         if(self.session.query(User).filter(User.name == self.currentuser,User.admin == True).first()):
             print("当前是管理员，显示所有文章")
@@ -370,8 +371,9 @@ class SystemMessageHandler(BaseHandle):
                 tempList["date"] = message.date
                 tempList["ipaddress"] = message.ipaddress
                 allMessage.append(tempList)
-            self.render(r"backstage\message.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
-                        messageNum = messageNum,allMessage = allMessage)
+
+        self.render(r"backstage\message.html",current_user = self.currentuser,mail = self.user.mail,phone = self.user.mobile,
+                    messageNum = messageNum,allMessage = allMessage)
 
 class SystemAboutHandler(BaseHandle):
     @tornado.web.authenticated
@@ -1082,8 +1084,28 @@ application = tornado.web.Application([
     (r"/system/handle/query/(\w+)/(\w+)", SystemQueryHandler),
 ],**settings)
 
+
+def MainIni():
+    #先将表格初始化
+    session = orm.SessionType()
+    checkCategory = session.query(Category).all()
+    if not checkCategory:
+        for defualtData in defaultCategory:
+            categoryDataBase = Category()
+            categoryDataBase.id = defualtData["id"]
+            categoryDataBase.categoryname = defualtData["categoryname"]
+            categoryDataBase.describe = defualtData["describe"]
+            categoryDataBase.number = defualtData["number"]
+            session.add(categoryDataBase)
+        session.commit()
+    session.close()
+
+
+
+
 if __name__ == "__main__":
     #初始化数据库
     orm.Base.metadata.create_all(orm.engine)
     application.listen(8888)
+    MainIni()
     tornado.ioloop.IOLoop.instance().start()

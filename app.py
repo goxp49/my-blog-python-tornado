@@ -196,7 +196,7 @@ class LoginHandler(BaseHandle):
             #2018.6.1增加从数据库中读取Cookie有效期
             cookieTime = self.session.query(System).filter(System.dataclass == "cookieTime").first()
             if cookieTime:
-                self.set_secure_cookie("username", result.name,expires=time.time()+int(cookieTime.content)*60) #单位是分钟，要加上时区
+                self.set_secure_cookie("username", result.name,expires=time.time()+int(cookieTime.content)*60*60) #单位是秒，要加上时区
             else:
                 self.set_secure_cookie("username", result.name,expires_days=1) #这里设置有效期默认为1天
             #登陆次数+1
@@ -334,10 +334,12 @@ class SystemIndexHandler(BaseHandle):
         member_num = self.session.query(func.count(User.id)).first()[0]
         current_ip = self.request.remote_ip
         time = datetime.now()
+        article_num = self.session.query(Article).count()
+        messageNumber = self.session.query(BBS).count()
         self.render("backstage\index.html",current_user = self.currentuser,login_num = self.user.loginnum,mail = self.user.mail,
                     phone = self.user.mobile,last_time = self.user.lasttime,last_ip = self.user.lastip,admin_num = admin_num,
                     browser = browser,python_version = platform.python_version(),os = windows,member_num = member_num,
-                    current_ip = current_ip,time = time)
+                    current_ip = current_ip,time = time,articleNumber=article_num,messageNumber=messageNumber)
 
 
 class SystemLearningHandler(BaseHandle):

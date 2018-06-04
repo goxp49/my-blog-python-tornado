@@ -104,8 +104,13 @@ class IndexHandler(BaseHandle):
 class AboutHandler(BaseHandle):
     def get(self):
         tarData = self.session.query(System).filter(System.dataclass == "introduce").first()
+        if tarData:
+            introduce = tarData.content
+        else:
+            introduce = "这家伙很懒，个人简介都没写！"
         htmlHead = ReadHtmlHeadSetting(self)
-        self.render("about.html",ItemNum = ["n1","n2","n3","n4","n5"],introduce = tarData.content,htmlHead=htmlHead)
+
+        self.render("about.html",ItemNum = ["n1","n2","n3","n4","n5"],introduce = introduce,htmlHead=htmlHead)
 
 class LifeHandler(BaseHandle):
     def get(self):
@@ -231,15 +236,15 @@ class RegisterHandler(BaseHandle):
         username = self.get_argument("username", None)
         password = self.get_argument("password", None)
         mobile = self.get_argument("mobile", None)
-        mail = self.get_argument("mail", None)
+        email = self.get_argument("email", None)
         sex = True if self.get_argument("sex", False) == "true" else False
         admin = True if self.get_argument("admin", False) == "true" else False
-        # print(username)
-        # print(password)
-        # print(mobile)
-        # print(mail)
-        # print(sex)
-        # print(admin)
+        print(username)
+        print(password)
+        print(mobile)
+        print(email)
+        print(sex)
+        print(admin)
         userNameCheck = self.session.query(User).filter(User.name == username).first()
         #先处理单独项目Ajax提交
         #如果需要查询username，则判断数据库中是否已存在
@@ -249,8 +254,8 @@ class RegisterHandler(BaseHandle):
             else:
                 self.write("true")
             return self.finish()  # 如果不加这一段，还会执行下面的语句，类似break
-        elif not target and not userNameCheck and username and password and mail:
-            self.session.add(User(name=username, password=password, mail=mail, regdate=datetime.now(),mobile=mobile,
+        elif not target and not userNameCheck and username and password and email:
+            self.session.add(User(name=username, password=password, mail=email, regdate=datetime.now(),mobile=mobile,
                                   admin=admin,sex=sex))
             self.session.commit()
             #更新传递给前端的信息
@@ -582,7 +587,6 @@ class SystemAddLifeShareHandler(BaseHandle):
         self.write(json.dumps(data))
 
 class SystemAddBBSMssageHandler(BaseHandle):
-    @tornado.web.authenticated
     def post(self):
         #由于CSS问题，此处要将wangeditor自动生成的<p>标签删除，否则会显示异常
         content = self.get_argument("content").replace('<p>','').replace('</p>','')
